@@ -123,15 +123,21 @@ export default function App() {
 
       setAuthStatus('loading')
       const profileRef = doc(db, 'users', nextUser.uid)
-      const profileSnap = await getDoc(profileRef)
-      if (!profileSnap.exists()) {
+      try {
+        const profileSnap = await getDoc(profileRef)
+        if (!profileSnap.exists()) {
+          setPendingProfile(nextUser)
+          setAuthStatus('pending-profile')
+          return
+        }
+
+        setPendingProfile(null)
+        setAuthStatus('ready')
+      } catch (error) {
+        console.error('Failed to load profile', error)
         setPendingProfile(nextUser)
         setAuthStatus('pending-profile')
-        return
       }
-
-      setPendingProfile(null)
-      setAuthStatus('ready')
     })
 
     return unsubscribe

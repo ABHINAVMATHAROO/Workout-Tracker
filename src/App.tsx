@@ -1,11 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut,
-  type User,
-} from 'firebase/auth'
+import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
 import {
   collection,
   deleteDoc,

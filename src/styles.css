@@ -363,10 +363,38 @@ p {
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .hero {
-    flex-direction: column;
     align-items: flex-start;
+  }
+
+  .hero-card {
+    padding: 14px 16px;
+    border-radius: 18px;
+    min-width: 160px;
+  }
+
+  .goal-value {
+    font-size: 1.6rem;
+  }
+
+  .goal-caption {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-card {
+    min-width: 140px;
+    padding: 12px 14px;
+  }
+
+  .label {
+    font-size: 0.7rem;
+  }
+
+  .goal-slider {
+    height: 16px;
   }
 
   .week-top {
@@ -376,6 +404,40 @@ p {
 
   .progress-track {
     width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero {
+    flex-wrap: nowrap;
+    gap: 16px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .subhead {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .hero {
+    gap: 12px;
+  }
+
+  h1 {
+    font-size: 1.45rem;
+  }
+
+  .hero-card {
+    min-width: 120px;
+    padding: 10px 12px;
+  }
+
+  .goal-value {
+    font-size: 1.3rem;
   }
 }
 

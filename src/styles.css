@@ -334,22 +334,108 @@ p {
   background: linear-gradient(130deg, rgba(255, 255, 255, 0.95), rgba(230, 245, 255, 0.9));
 }
 
-.muscle-map {
-  margin-top: 16px;
+.muscle-map-grid {
   display: grid;
-  place-items: center;
-  border-radius: 18px;
-  border: 1px dashed rgba(75, 124, 255, 0.4);
-  padding: 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
-.muscle-placeholder {
+.map-panel {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid rgba(15, 18, 32, 0.08);
+}
+
+.map-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--ink-700);
+}
+
+.muscle-map {
   width: 100%;
-  min-height: 140px;
-  display: grid;
-  place-items: center;
-  font-family: 'IBM Plex Sans', sans-serif;
-  color: var(--ink-500);
+  height: auto;
+}
+
+.muscle-svg-frame {
+  width: 100%;
+  aspect-ratio: 64 / 100;
+}
+
+.muscle-map {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.muscle-image {
+  pointer-events: none;
+}
+
+.body-base {
+  fill: rgba(17, 20, 37, 0.08);
+}
+
+.muscle-base {
+  pointer-events: none;
+}
+
+.muscle-base path {
+  fill: rgba(17, 20, 37, 0.08);
+}
+
+.muscle-region {
+  pointer-events: all;
+}
+
+.muscle-region rect,
+.muscle-region path,
+.muscle-region polygon,
+.muscle-region ellipse,
+.muscle-region circle {
+  fill: rgba(255, 122, 89, 0.01);
+  stroke: rgba(255, 122, 89, 0.05);
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: fill 150ms ease, stroke 150ms ease;
+}
+
+.muscle-region:hover rect,
+.muscle-region:hover path,
+.muscle-region:hover polygon,
+.muscle-region:hover ellipse,
+.muscle-region:hover circle {
+  fill: rgba(75, 124, 255, 0.25);
+  stroke: rgba(75, 124, 255, 0.6);
+}
+
+.muscle-region.worked rect,
+.muscle-region.worked path,
+.muscle-region.worked polygon,
+.muscle-region.worked ellipse,
+.muscle-region.worked circle {
+  fill: rgba(45, 204, 140, 0.28);
+  stroke: rgba(45, 204, 140, 0.65);
+}
+
+.muscle-region[data-group='Triceps'].worked path {
+  stroke: transparent;
+}
+
+.muscle-region[data-group='Biceps'].worked path {
+  stroke: transparent;
+}
+
+.muscle-region[data-group='Chest'].worked path {
+  stroke: transparent;
+}
+
+.muscle-count {
+  font-size: 12px;
+  fill: var(--ink-900);
+  font-weight: 700;
 }
 
 @keyframes rise {
@@ -404,6 +490,10 @@ p {
 
   .progress-track {
     width: 100%;
+  }
+
+  .muscle-map-grid {
+    grid-template-columns: 1fr;
   }
 }
 

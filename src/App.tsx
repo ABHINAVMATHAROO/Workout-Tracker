@@ -12,6 +12,7 @@ import {
   where,
 } from 'firebase/firestore'
 import { auth, db, googleProvider } from './firebase'
+import MuscleMapSvg from './MuscleMapSvg'
 
 const MUSCLE_GROUPS = [
   'Chest',
@@ -28,6 +29,8 @@ type Workout = {
   date: string
   muscleGroups: string[]
 }
+
+type MuscleCounts = Map<string, number>
 
 const formatIsoDate = (date: Date) => date.toISOString().slice(0, 10)
 
@@ -60,6 +63,22 @@ const formatRange = (start: Date, end: Date) => {
   return `${startFmt} - ${endFmt}`
 }
 
+const getCount = (counts: MuscleCounts, group: string) => counts.get(group) ?? 0
+
+type MuscleMapProps = {
+  weeklyCounts: MuscleCounts
+  onToggle: (group: string) => void
+}
+
+function MuscleMap({ weeklyCounts, onToggle }: MuscleMapProps) {
+  const workedGroups = useMemo(
+    () => new Set(Array.from(weeklyCounts.keys()).filter((group) => getCount(weeklyCounts, group) > 0)),
+    [weeklyCounts]
+  )
+
+  return <MuscleMapSvg workedGroups={workedGroups} onToggle={onToggle} />
+}
+
 type AuthStatus = 'signed-out' | 'loading' | 'pending-profile' | 'ready'
 
 export default function App() {
@@ -74,6 +93,7 @@ export default function App() {
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading')
   const [user, setUser] = useState<User | null>(null)
   const [pendingProfile, setPendingProfile] = useState<User | null>(null)
+  const [showAllMuscleHighlights, setShowAllMuscleHighlights] = useState(false)
   const weekStart = useMemo(() => startOfWeekMonday(today), [today])
   const weekDates = useMemo(
     () => Array.from({ length: 7 }, (_, idx) => addDays(weekStart, idx)),
@@ -108,6 +128,13 @@ export default function App() {
     })
     return counts
   }, [workoutsThisWeek])
+
+  const highlightCounts = useMemo(() => {
+    if (!showAllMuscleHighlights) return weeklyMuscleCounts
+    const all = new Map<string, number>()
+    MUSCLE_GROUPS.forEach((group) => all.set(group, 1))
+    return all
+  }, [showAllMuscleHighlights, weeklyMuscleCounts])
 
   const dayWorkout = workouts.find((workout) => workout.date === selectedDate)
   const dayMuscles = dayWorkout?.muscleGroups ?? []
@@ -374,14 +401,34 @@ export default function App() {
         </div>
       </section>
 
-      <section className="card future-card">
-        <h2>Coming soon</h2>
-        <p className="muted">
-          Interactive muscle map with touch selection and weekly heat overlay.
-        </p>
-        <div className="muscle-map">
-          <div className="muscle-placeholder">Muscle map preview</div>
+      <section className="card">
+        <div className="section-head">
+          <div>
+            <h2>Muscle map</h2>
+            <p className="muted">Tap a region to toggle it for the selected day.</p>
+          </div>
+          <div className="chip-grid">
+            <span className="pill">Weekly highlight</span>
+            <button
+              type="button"
+              className={`chip ${showAllMuscleHighlights ? 'selected' : ''}`}
+              onClick={() => setShowAllMuscleHighlights((prev) => !prev)}
+            >
+              {showAllMuscleHighlights ? 'Show weekly' : 'Highlight all'}
+            </button>
+          </div>
         </div>
+        <MuscleMap
+          weeklyCounts={highlightCounts}
+          onToggle={toggleDayMuscle}
+        />
+      </section>
+
+      <section className="card future-card">
+        <h2>Next steps</h2>
+        <p className="muted">
+          We can replace this with a detailed silhouette SVG once we pick a source file.
+        </p>
       </section>
     </div>
   )

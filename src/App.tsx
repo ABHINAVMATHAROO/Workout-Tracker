@@ -26,6 +26,12 @@ const MUSCLE_GROUPS = [
   'Core',
 ]
 
+const MUSCLE_CATEGORIES = {
+  Push: ['Chest', 'Triceps', 'Shoulder'],
+  Pull: ['Back', 'Biceps', 'Forearms'],
+  Other: ['Legs', 'Core'],
+} as const
+
 type Workout = {
   date: string
   muscleGroups: string[]
@@ -33,7 +39,15 @@ type Workout = {
 
 type MuscleCounts = Map<string, number>
 
-const formatIsoDate = (date: Date) => date.toISOString().slice(0, 10)
+const pad = (value: number) => String(value).padStart(2, '0')
+
+const formatLocalIsoDate = (date: Date) =>
+  `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+
+const parseIsoDate = (iso: string) => {
+  const [year, month, day] = iso.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
 
 const startOfWeekMonday = (date: Date) => {
   const dayIndex = (date.getDay() + 6) % 7
@@ -63,6 +77,12 @@ const formatRange = (start: Date, end: Date) => {
   }).format(end)
   return `${startFmt} - ${endFmt}`
 }
+
+const formatShortDate = (date: Date) =>
+  new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+  }).format(date)
 
 const getCount = (counts: MuscleCounts, group: string) => counts.get(group) ?? 0
 
@@ -103,7 +123,7 @@ export default function App() {
     return now
   }, [])
 
-  const [goalDays] = useState(4)
+  const [goalDays, setGoalDays] = useState(4)
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading')
   const [user, setUser] = useState<User | null>(null)
@@ -111,6 +131,7 @@ export default function App() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null)
   const [showAllMuscleHighlights, setShowAllMuscleHighlights] = useState(false)
   const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
+  const [showGoalDialog, setShowGoalDialog] = useState(false)
   const weekStart = useMemo(() => startOfWeekMonday(today), [today])
   const weekDates = useMemo(
     () => Array.from({ length: 7 }, (_, idx) => addDays(weekStart, idx)),
@@ -118,8 +139,8 @@ export default function App() {
   )
 
   const workoutsThisWeek = useMemo(() => {
-    const startIso = formatIsoDate(weekStart)
-    const endIso = formatIsoDate(addDays(weekStart, 6))
+    const startIso = formatLocalIsoDate(weekStart)
+    const endIso = formatLocalIsoDate(addDays(weekStart, 6))
     return workouts.filter(
       (workout) => workout.date >= startIso && workout.date <= endIso
     )
@@ -133,7 +154,8 @@ export default function App() {
 
   const daysWorked = workoutDateSet.size
   const daysToGo = Math.max(0, goalDays - daysWorked)
-  const progress = Math.min(100, Math.round((daysWorked / goalDays) * 100))
+  const daysOverGoal = Math.max(0, daysWorked - goalDays)
+  const goalBoxCount = Math.max(7, goalDays)
   const { currentWorkoutStreak, currentGoalStreak, bestWorkoutStreak, bestGoalStreak } =
     useMemo(() => calculateStreaks(workouts, goalDays, today), [workouts, goalDays, today])
   const bestWorkoutDisplay = Math.max(
@@ -145,7 +167,7 @@ export default function App() {
     profileData?.bestGoalStreakWeeks ?? 0
   )
 
-  const [selectedDate, setSelectedDate] = useState(() => formatIsoDate(today))
+  const [selectedDate, setSelectedDate] = useState(() => formatLocalIsoDate(today))
   const weeklyMuscleCounts = useMemo(() => {
     const counts = new Map<string, number>()
     workoutsThisWeek.forEach((workout) => {
@@ -165,6 +187,10 @@ export default function App() {
 
   const dayWorkout = workouts.find((workout) => workout.date === selectedDate)
   const dayMuscles = dayWorkout?.muscleGroups ?? []
+  const weeklyWorkedGroups = useMemo(
+    () => new Set(Array.from(weeklyMuscleCounts.keys()).filter((group) => getCount(weeklyMuscleCounts, group) > 0)),
+    [weeklyMuscleCounts]
+  )
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (nextUser) => {
@@ -355,6 +381,7 @@ export default function App() {
   }
 
   return (
+    <>
     <div className="app">
       <header className="hero">
         <div>
@@ -384,26 +411,20 @@ export default function App() {
       </header>
 
       <section className="card week-card">
-        <div className="week-top">
-          <div>
-            <h2>This week</h2>
-            <p className="muted">
-              {daysWorked} workouts logged - {daysToGo === 0 ? 'Goal met' : `${daysToGo} to go`}
-            </p>
+        <div className="section-head section-head-inline">
+          <div className="section-title">
+            <h2 className="section-title-nowrap">Select Day</h2>
           </div>
-          <div className="progress">
-            <div className="progress-track">
-              <div className="progress-fill" style={{ width: `${progress}%` }} />
-            </div>
-            <span>{progress}%</span>
+          <div className="chip-grid">
+            <span className="pill pill-week">{daysWorked} workouts this week</span>
           </div>
         </div>
 
         <div className="week-grid">
           {weekDates.map((date) => {
-            const iso = formatIsoDate(date)
+            const iso = formatLocalIsoDate(date)
             const hasWorkout = workoutDateSet.has(iso)
-            const isToday = iso === formatIsoDate(today)
+            const isToday = iso === formatLocalIsoDate(today)
             const isSelected = iso === selectedDate
             const isFuture = date.getTime() > today.getTime()
             return (
@@ -426,13 +447,15 @@ export default function App() {
       </section>
 
       <section className="card">
-        <div className="section-head">
-          <div>
-            <h2>Muscle map</h2>
-            <p className="muted">Tap a region to toggle it for the selected day.</p>
+        <div className="section-head section-head-inline">
+          <div className="section-title">
+            <h2 className="section-title-nowrap">Log workout</h2>
+           
           </div>
           <div className="chip-grid">
-            <span className="pill pill-today">Today</span>
+            <span className="pill pill-today">
+              {formatShortDate(parseIsoDate(selectedDate))}
+            </span>
             <span className="pill pill-week">Week</span>
           </div>
         </div>
@@ -461,28 +484,117 @@ export default function App() {
       </section>
 
       <section className="card">
-        <div className="section-head">
-          <div>
-            <h2>Day details</h2>
-            <p className="muted">
-              {selectedDate} - Tap to edit the muscle groups you trained.
-            </p>
+        <div className="section-head section-head-inline">
+          <div className="section-title">
+            <h2 className="section-title-nowrap">Workout Details</h2>
           </div>
-          <span className="pill">{dayMuscles.length} groups</span>
+          <div className="chip-grid">
+            <span className="pill pill-today">
+              {formatShortDate(parseIsoDate(selectedDate))}
+            </span>
+            <span className="pill pill-week">Week</span>
+          </div>
         </div>
 
-        <div className="chip-grid">
-          {MUSCLE_GROUPS.map((group) => (
-            <button
-              key={group}
-              className={`chip ${dayMuscles.includes(group) ? 'selected' : ''}`}
-              onClick={() => toggleDayMuscle(group)}
-            >
-              {group}
-            </button>
+        <div className="muscle-categories">
+          {Object.entries(MUSCLE_CATEGORIES).map(([category, groups]) => (
+            <div key={category} className="muscle-category">
+              <p className="label">{category}</p>
+              <div className="chip-grid">
+                {groups.map((group) => {
+                  const workedToday = dayMuscles.includes(group)
+                  const workedThisWeek = weeklyWorkedGroups.has(group)
+                  const weeklyCount = getCount(weeklyMuscleCounts, group)
+                  const label = weeklyCount > 0 ? `${group} - ${weeklyCount}` : group
+                  const toneClass = workedToday
+                    ? 'chip-today'
+                    : workedThisWeek
+                      ? 'chip-week'
+                      : ''
+                  return (
+                    <button
+                      key={group}
+                      className={`chip ${toneClass} ${workedToday ? 'selected' : ''}`}
+                      onClick={() => toggleDayMuscle(group)}
+                    >
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
           ))}
         </div>
       </section>
+
+      <section className="card">
+        <div className="section-head section-head-inline">
+          <div className="section-title">
+            <h2 className="section-title-nowrap">This week</h2>
+          </div>
+          <div className="chip-grid">
+            <span className="pill pill-done">{daysWorked} done</span>
+            <span className="pill pill-remaining">{daysToGo} left</span>
+            <span className="pill pill-over">{daysOverGoal} over</span>
+          </div>
+        </div>
+        <div className="goal-visual">
+          <div className="goal-circles">
+            {Array.from({ length: goalBoxCount }, (_, index) => {
+              const filled = index < daysWorked
+              const extra = filled && index >= goalDays
+              const target = goalDays > 0 && index === goalDays - 1
+              return (
+                <span
+                  key={`goal-${index}`}
+                  className={`goal-circle ${filled ? 'filled' : ''} ${extra ? 'extra' : ''} ${target ? 'is-target' : ''}`}
+                >
+                  {target ? (
+                    <img
+                      className={`goal-target ${daysWorked >= goalDays ? 'met' : ''}`}
+                      src={`${import.meta.env.BASE_URL}target.svg`}
+                      alt="Goal"
+                    />
+                  ) : null}
+                </span>
+              )
+            })}
+            <button type="button" className="goal-edit" onClick={() => setShowGoalDialog(true)}>
+              New goal
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
+    {showGoalDialog ? (
+      <div className="dialog-backdrop" role="presentation" onClick={() => setShowGoalDialog(false)}>
+        <div
+          className="dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="goal-dialog-title"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <h3 id="goal-dialog-title">Set weekly goal</h3>
+          <p className="muted">Choose how many days you want to work out this week.</p>
+          <div className="goal-slider">
+            <input
+              type="range"
+              min={1}
+              max={7}
+              value={goalDays}
+              onChange={(event) => setGoalDays(Number(event.target.value))}
+            />
+            <span className="goal-slider-value">{goalDays} days</span>
+          </div>
+          <div className="dialog-actions">
+            <button type="button" className="ghost" onClick={() => setShowGoalDialog(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    ) : null}
+    </>
   )
 }

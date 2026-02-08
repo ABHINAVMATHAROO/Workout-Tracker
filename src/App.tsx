@@ -129,7 +129,7 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null)
   const [pendingProfile, setPendingProfile] = useState<User | null>(null)
   const [profileData, setProfileData] = useState<ProfileData | null>(null)
-  const [showAllMuscleHighlights] = useState(false)
+  const [showAllMuscleHighlights, setShowAllMuscleHighlights] = useState(false)
   const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
   const [showGoalDialog, setShowGoalDialog] = useState(false)
   const weekStart = useMemo(() => startOfWeekMonday(today), [today])
@@ -175,10 +175,8 @@ export default function App() {
   }, [workoutsThisWeek])
 
   const highlightCounts = useMemo(() => {
-    if (!showAllMuscleHighlights) return weeklyMuscleCounts
-    const all = new Map<string, number>()
-    MUSCLE_GROUPS.forEach((group) => all.set(group, 1))
-    return all
+    if (!showAllMuscleHighlights) return new Map<string, number>()
+    return weeklyMuscleCounts
   }, [showAllMuscleHighlights, weeklyMuscleCounts])
 
   const dayWorkout = workouts.find((workout) => workout.date === selectedDate)
@@ -442,20 +440,22 @@ export default function App() {
             const iso = formatLocalIsoDate(date)
             const hasWorkout = workoutDateSet.has(iso)
             const isToday = iso === formatLocalIsoDate(today)
+            const isTodayActive = isToday && selectedDate === iso
             const isSelected = iso === selectedDate
             const isFuture = date.getTime() > today.getTime()
+            const isPast = date.getTime() < today.getTime()
             return (
               <button
                 key={iso}
                 type="button"
-                className={`day-pill ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}`}
+                className={`day-pill ${isTodayActive ? 'today' : ''} ${isSelected ? 'selected' : ''}`}
                 onClick={() => setSelectedDate(iso)}
                 disabled={isFuture}
               >
                 <span className="day-name">{formatWeekday(date)}</span>
-                <span className="day-date">{date.getDate()}</span>
+                <span className={`day-date ${isPast ? 'past' : ''}`}>{date.getDate()}</span>
                 <span
-                  className={`dot ${isToday ? 'today' : ''} ${hasWorkout ? 'active' : ''}`}
+                  className={`dot ${isTodayActive ? 'today' : ''} ${hasWorkout ? 'active' : ''}`}
                 />
               </button>
             )
@@ -473,12 +473,18 @@ export default function App() {
             <span className="pill pill-today">
               {formatShortDate(parseIsoDate(selectedDate))}
             </span>
-            <span className="pill pill-week">Week</span>
+            <button
+              type="button"
+              className={`pill pill-week ${showAllMuscleHighlights ? 'active' : ''}`}
+              onClick={() => setShowAllMuscleHighlights((prev) => !prev)}
+            >
+              Week
+            </button>
           </div>
         </div>
         <MuscleMap
           weeklyCounts={highlightCounts}
-          selectedGroups={dayMuscles}
+          selectedGroups={showAllMuscleHighlights ? [] : dayMuscles}
           view={muscleView}
           onToggle={toggleDayMuscle}
         />
@@ -509,7 +515,13 @@ export default function App() {
             <span className="pill pill-today">
               {formatShortDate(parseIsoDate(selectedDate))}
             </span>
-            <span className="pill pill-week">Week</span>
+            <button
+              type="button"
+              className={`pill pill-week ${showAllMuscleHighlights ? 'active' : ''}`}
+              onClick={() => setShowAllMuscleHighlights((prev) => !prev)}
+            >
+              Week
+            </button>
           </div>
         </div>
 
@@ -519,8 +531,8 @@ export default function App() {
               <p className="label">{category}</p>
               <div className="chip-grid">
                 {groups.map((group) => {
-                  const workedToday = dayMuscles.includes(group)
-                  const workedThisWeek = weeklyWorkedGroups.has(group)
+                  const workedToday = !showAllMuscleHighlights && dayMuscles.includes(group)
+                  const workedThisWeek = showAllMuscleHighlights && weeklyWorkedGroups.has(group)
                   const weeklyCount = getCount(weeklyMuscleCounts, group)
                   const label = weeklyCount > 0 ? `${group} - ${weeklyCount}` : group
                   const toneClass = workedToday

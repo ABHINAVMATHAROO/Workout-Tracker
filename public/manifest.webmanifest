@@ -1,0 +1,20 @@
+{
+  "name": "CADAX",
+  "short_name": "CADAX",
+  "start_url": "/Workout-Tracker/",
+  "display": "standalone",
+  "background_color": "#f4f7ff",
+  "theme_color": "#f4f7ff",
+  "icons": [
+    {
+      "src": "/Workout-Tracker/cadax-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Workout-Tracker/cadax-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -129,7 +129,7 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null)
   const [pendingProfile, setPendingProfile] = useState<User | null>(null)
   const [profileData, setProfileData] = useState<ProfileData | null>(null)
-  const [showAllMuscleHighlights, setShowAllMuscleHighlights] = useState(false)
+  const [showAllMuscleHighlights] = useState(false)
   const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
   const [showGoalDialog, setShowGoalDialog] = useState(false)
   const weekStart = useMemo(() => startOfWeekMonday(today), [today])
@@ -156,15 +156,11 @@ export default function App() {
   const daysToGo = Math.max(0, goalDays - daysWorked)
   const daysOverGoal = Math.max(0, daysWorked - goalDays)
   const goalBoxCount = Math.max(7, goalDays)
-  const { currentWorkoutStreak, currentGoalStreak, bestWorkoutStreak, bestGoalStreak } =
+  const { currentWorkoutStreak, bestWorkoutStreak, bestGoalStreak } =
     useMemo(() => calculateStreaks(workouts, goalDays, today), [workouts, goalDays, today])
   const bestWorkoutDisplay = Math.max(
     bestWorkoutStreak,
     profileData?.bestWorkoutStreakWeeks ?? 0
-  )
-  const bestGoalDisplay = Math.max(
-    bestGoalStreak,
-    profileData?.bestGoalStreakWeeks ?? 0
   )
 
   const [selectedDate, setSelectedDate] = useState(() => formatLocalIsoDate(today))

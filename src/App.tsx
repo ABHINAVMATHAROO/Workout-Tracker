@@ -331,7 +331,7 @@ export default function App() {
     return (
       <div className="app auth-screen">
         <div className="card auth-card">
-          <h1>Workout Tracker</h1>
+          <h1>CADAX</h1>
           <p className="muted">Loading your account...</p>
         </div>
       </div>
@@ -343,7 +343,7 @@ export default function App() {
       <div className="app auth-screen">
         <div className="card auth-card">
           <p className="eyebrow">Welcome back</p>
-          <h1>Workout Tracker</h1>
+          <h1>CADAX</h1>
           <p className="muted">Sign in to track your workouts across devices.</p>
           <button className="cta" onClick={handleGoogleSignIn}>
             Continue with Google
@@ -384,11 +384,11 @@ export default function App() {
           <p className="eyebrow">
             {user?.displayName ? `Hi ${user.displayName}` : 'Weekly focus'}
           </p>
-          <h1>Workout Tracker</h1>
+          <h1>CADAX</h1>
           <p className="subhead">{formatRange(weekStart, addDays(weekStart, 6))}</p>
         </div>
         <div className="hero-card streak-card">
-          <p className="label">Streaks</p>
+          <p className="label">Streak</p>
           <div className="streak-split">
             <div className="streak-current">
               <div className="streak-number">{currentWorkoutStreak}</div>

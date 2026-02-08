@@ -15,17 +15,6 @@ import { auth, db, googleProvider } from './firebase'
 import MuscleMapSvg from './MuscleMapSvg'
 import { calculateStreaks } from './streakCalculator'
 
-const MUSCLE_GROUPS = [
-  'Chest',
-  'Back',
-  'Triceps',
-  'Biceps',
-  'Shoulder',
-  'Forearms',
-  'Legs',
-  'Core',
-]
-
 const MUSCLE_CATEGORIES = {
   Push: ['Chest', 'Triceps', 'Shoulder'],
   Pull: ['Back', 'Biceps', 'Forearms'],

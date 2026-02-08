@@ -114,24 +114,71 @@ p {
   color: var(--ink-500);
 }
 
-.goal-line {
+.streak-card {
+  min-width: 260px;
+}
+
+.streak-split {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1.2fr auto 0.8fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.streak-current {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin: 8px 0 12px;
+  align-items: center;
+  gap: 14px;
 }
 
-.goal-value {
-  font-size: 2rem;
+.streak-number {
+  font-size: 2.8rem;
   font-weight: 700;
+  line-height: 1;
+  color: var(--ink-900);
 }
 
-.goal-caption {
+.streak-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.streak-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--ink-500);
 }
 
-.goal-slider {
-  width: 100%;
+.streak-subtitle {
+  font-size: 0.9rem;
+  color: var(--ink-700);
+}
+
+.streak-divider {
+  width: 1px;
+  height: 44px;
+  background: var(--line);
+}
+
+.streak-best {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.streak-best-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.streak-best-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink-900);
 }
 
 .card {
@@ -202,6 +249,8 @@ p {
   background: rgba(255, 255, 255, 0.7);
   display: grid;
   gap: 6px;
+  justify-items: center;
+  align-items: center;
   cursor: pointer;
   transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
 }
@@ -233,11 +282,15 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-500);
+  text-align: center;
+  width: 100%;
 }
 
 .day-date {
   font-size: 1.1rem;
   font-weight: 600;
+  text-align: center;
+  width: 100%;
 }
 
 .dot {
@@ -251,6 +304,22 @@ p {
 .dot.active {
   background: var(--accent-3);
   box-shadow: 0 0 0 4px rgba(45, 204, 140, 0.2);
+}
+
+.dot.today {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(255, 122, 89, 0.25);
+  animation: breathe-dot 1.8s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+.dot.today:not(.active) {
+  box-shadow: 0 0 0 4px rgba(255, 122, 89, 0.25);
+}
+
+.dot.today.active {
+  background: var(--accent-3);
+  box-shadow: 0 0 0 4px rgba(45, 204, 140, 0.2);
+  animation: breathe-dot 1.8s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
 }
 
 .section-head {
@@ -330,6 +399,16 @@ p {
   font-weight: 600;
 }
 
+.pill-today {
+  background: rgba(45, 204, 140, 0.2);
+  color: var(--ink-700);
+}
+
+.pill-week {
+  background: rgba(127, 93, 240, 0.18);
+  color: var(--ink-700);
+}
+
 .future-card {
   background: linear-gradient(130deg, rgba(255, 255, 255, 0.95), rgba(230, 245, 255, 0.9));
 }
@@ -352,6 +431,13 @@ p {
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--ink-700);
+}
+
+.muscle-toggle {
+  display: none;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .muscle-map {
@@ -395,8 +481,8 @@ p {
 .muscle-region polygon,
 .muscle-region ellipse,
 .muscle-region circle {
-  fill: rgba(255, 122, 89, 0.01);
-  stroke: rgba(255, 122, 89, 0.05);
+  fill: rgba(13, 15, 26, 0.02);
+  stroke: transparent;
   stroke-width: 1.5;
   cursor: pointer;
   transition: fill 150ms ease, stroke 150ms ease;
@@ -408,27 +494,24 @@ p {
 .muscle-region:hover ellipse,
 .muscle-region:hover circle {
   fill: rgba(75, 124, 255, 0.25);
-  stroke: rgba(75, 124, 255, 0.6);
+  stroke: transparent;
 }
 
-.muscle-region.worked rect,
-.muscle-region.worked path,
-.muscle-region.worked polygon,
-.muscle-region.worked ellipse,
-.muscle-region.worked circle {
+.muscle-region.worked-week rect,
+.muscle-region.worked-week path,
+.muscle-region.worked-week polygon,
+.muscle-region.worked-week ellipse,
+.muscle-region.worked-week circle {
+  fill: rgba(75, 124, 255, 0.18);
+  stroke: transparent;
+}
+
+.muscle-region.worked-selected rect,
+.muscle-region.worked-selected path,
+.muscle-region.worked-selected polygon,
+.muscle-region.worked-selected ellipse,
+.muscle-region.worked-selected circle {
   fill: rgba(45, 204, 140, 0.28);
-  stroke: rgba(45, 204, 140, 0.65);
-}
-
-.muscle-region[data-group='Triceps'].worked path {
-  stroke: transparent;
-}
-
-.muscle-region[data-group='Biceps'].worked path {
-  stroke: transparent;
-}
-
-.muscle-region[data-group='Chest'].worked path {
   stroke: transparent;
 }
 
@@ -449,6 +532,19 @@ p {
   }
 }
 
+@keyframes breathe-dot {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 4px rgba(45, 204, 140, 0.2);
+  }
+  50% {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 8px rgba(45, 204, 140, 0.14);
+  }
+}
+
+
 @media (max-width: 900px) {
   .hero {
     align-items: flex-start;
@@ -460,12 +556,20 @@ p {
     min-width: 160px;
   }
 
-  .goal-value {
-    font-size: 1.6rem;
+  .streak-split {
+    gap: 12px;
   }
 
-  .goal-caption {
-    font-size: 0.8rem;
+  .streak-number {
+    font-size: 2.2rem;
+  }
+
+  .streak-subtitle {
+    font-size: 0.82rem;
+  }
+
+  .streak-best-value {
+    font-size: 1.35rem;
   }
 }
 
@@ -479,10 +583,6 @@ p {
     font-size: 0.7rem;
   }
 
-  .goal-slider {
-    height: 16px;
-  }
-
   .week-top {
     flex-direction: column;
     align-items: flex-start;
@@ -494,6 +594,15 @@ p {
 
   .muscle-map-grid {
     grid-template-columns: 1fr;
+  }
+
+  .muscle-map-grid[data-view='front'] .map-panel:nth-of-type(2),
+  .muscle-map-grid[data-view='back'] .map-panel:nth-of-type(1) {
+    display: none;
+  }
+
+  .muscle-toggle {
+    display: flex;
   }
 }
 
@@ -509,6 +618,15 @@ p {
 
   .subhead {
     font-size: 0.9rem;
+  }
+
+  .day-name {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+  }
+
+  .day-date {
+    font-size: 1rem;
   }
 }
 
@@ -526,8 +644,22 @@ p {
     padding: 10px 12px;
   }
 
-  .goal-value {
-    font-size: 1.3rem;
+  .streak-split {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .streak-divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .streak-number {
+    font-size: 2rem;
+  }
+
+  .streak-best {
+    justify-items: start;
   }
 }
 
@@ -537,6 +669,7 @@ p {
   }
 
   .day-pill {
-    padding: 10px 6px;
+    padding: 10px 1px;
   }
 }
+

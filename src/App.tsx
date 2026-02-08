@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore'
 import { auth, db, googleProvider } from './firebase'
 import MuscleMapSvg from './MuscleMapSvg'
+import { calculateStreaks } from './streakCalculator'
 
 const MUSCLE_GROUPS = [
   'Chest',
@@ -67,19 +68,33 @@ const getCount = (counts: MuscleCounts, group: string) => counts.get(group) ?? 0
 
 type MuscleMapProps = {
   weeklyCounts: MuscleCounts
+  selectedGroups: string[]
+  view: 'front' | 'back'
   onToggle: (group: string) => void
 }
 
-function MuscleMap({ weeklyCounts, onToggle }: MuscleMapProps) {
+function MuscleMap({ weeklyCounts, selectedGroups, view, onToggle }: MuscleMapProps) {
   const workedGroups = useMemo(
     () => new Set(Array.from(weeklyCounts.keys()).filter((group) => getCount(weeklyCounts, group) > 0)),
     [weeklyCounts]
   )
 
-  return <MuscleMapSvg workedGroups={workedGroups} onToggle={onToggle} />
+  return (
+    <MuscleMapSvg
+      workedGroups={workedGroups}
+      selectedGroups={new Set(selectedGroups)}
+      view={view}
+      onToggle={onToggle}
+    />
+  )
 }
 
 type AuthStatus = 'signed-out' | 'loading' | 'pending-profile' | 'ready'
+
+type ProfileData = {
+  bestWorkoutStreakWeeks?: number
+  bestGoalStreakWeeks?: number
+}
 
 export default function App() {
   const today = useMemo(() => {
@@ -88,12 +103,14 @@ export default function App() {
     return now
   }, [])
 
-  const [goalDays, setGoalDays] = useState(4)
+  const [goalDays] = useState(4)
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading')
   const [user, setUser] = useState<User | null>(null)
   const [pendingProfile, setPendingProfile] = useState<User | null>(null)
+  const [profileData, setProfileData] = useState<ProfileData | null>(null)
   const [showAllMuscleHighlights, setShowAllMuscleHighlights] = useState(false)
+  const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
   const weekStart = useMemo(() => startOfWeekMonday(today), [today])
   const weekDates = useMemo(
     () => Array.from({ length: 7 }, (_, idx) => addDays(weekStart, idx)),
@@ -117,6 +134,16 @@ export default function App() {
   const daysWorked = workoutDateSet.size
   const daysToGo = Math.max(0, goalDays - daysWorked)
   const progress = Math.min(100, Math.round((daysWorked / goalDays) * 100))
+  const { currentWorkoutStreak, currentGoalStreak, bestWorkoutStreak, bestGoalStreak } =
+    useMemo(() => calculateStreaks(workouts, goalDays, today), [workouts, goalDays, today])
+  const bestWorkoutDisplay = Math.max(
+    bestWorkoutStreak,
+    profileData?.bestWorkoutStreakWeeks ?? 0
+  )
+  const bestGoalDisplay = Math.max(
+    bestGoalStreak,
+    profileData?.bestGoalStreakWeeks ?? 0
+  )
 
   const [selectedDate, setSelectedDate] = useState(() => formatIsoDate(today))
   const weeklyMuscleCounts = useMemo(() => {
@@ -145,6 +172,7 @@ export default function App() {
       if (!nextUser) {
         setAuthStatus('signed-out')
         setWorkouts([])
+        setProfileData(null)
         return
       }
 
@@ -159,6 +187,7 @@ export default function App() {
         }
 
         setPendingProfile(null)
+        setProfileData(profileSnap.data() as ProfileData)
         setAuthStatus('ready')
       } catch (error) {
         console.error('Failed to load profile', error)
@@ -185,6 +214,39 @@ export default function App() {
     })
   }, [authStatus, user])
 
+  useEffect(() => {
+    if (!user || authStatus !== 'ready') {
+      return
+    }
+
+    const storedWorkoutBest = profileData?.bestWorkoutStreakWeeks ?? 0
+    const storedGoalBest = profileData?.bestGoalStreakWeeks ?? 0
+    const nextWorkoutBest = Math.max(storedWorkoutBest, bestWorkoutStreak)
+    const nextGoalBest = Math.max(storedGoalBest, bestGoalStreak)
+
+    if (
+      nextWorkoutBest === storedWorkoutBest &&
+      nextGoalBest === storedGoalBest
+    ) {
+      return
+    }
+
+    void setDoc(
+      doc(db, 'users', user.uid),
+      {
+        bestWorkoutStreakWeeks: nextWorkoutBest,
+        bestGoalStreakWeeks: nextGoalBest,
+      },
+      { merge: true }
+    )
+
+    setProfileData((prev) => ({
+      ...(prev ?? {}),
+      bestWorkoutStreakWeeks: nextWorkoutBest,
+      bestGoalStreakWeeks: nextGoalBest,
+    }))
+  }, [authStatus, bestGoalStreak, bestWorkoutStreak, profileData, user])
+
   const handleGoogleSignIn = async () => {
     setAuthStatus('loading')
     await signInWithPopup(auth, googleProvider)
@@ -200,8 +262,11 @@ export default function App() {
       email: pendingProfile.email ?? '',
       name: pendingProfile.displayName ?? '',
       photoUrl: pendingProfile.photoURL ?? '',
+      bestWorkoutStreakWeeks: 0,
+      bestGoalStreakWeeks: 0,
       createdAt: serverTimestamp(),
     })
+    setProfileData({ bestWorkoutStreakWeeks: 0, bestGoalStreakWeeks: 0 })
     setPendingProfile(null)
     setAuthStatus('ready')
   }
@@ -299,21 +364,22 @@ export default function App() {
           <h1>Workout Tracker</h1>
           <p className="subhead">{formatRange(weekStart, addDays(weekStart, 6))}</p>
         </div>
-        <div className="hero-card">
-          <p className="label">Goal</p>
-          <div className="goal-line">
-            <span className="goal-value">{goalDays}</span>
-            <span className="goal-caption">days/week</span>
+        <div className="hero-card streak-card">
+          <p className="label">Streaks</p>
+          <div className="streak-split">
+            <div className="streak-current">
+              <div className="streak-number">{currentWorkoutStreak}</div>
+              <div className="streak-copy">
+                <span className="streak-title">Current</span>
+                <span className="streak-subtitle">Workout weeks</span>
+              </div>
+            </div>
+            <div className="streak-divider" />
+            <div className="streak-best">
+              <span className="streak-best-label">Best</span>
+              <span className="streak-best-value">{bestWorkoutDisplay}</span>
+            </div>
           </div>
-          <input
-            className="goal-slider"
-            type="range"
-            min={1}
-            max={7}
-            value={goalDays}
-            onChange={(event) => setGoalDays(Number(event.target.value))}
-            aria-label="Workout goal days per week"
-          />
         </div>
       </header>
 
@@ -350,10 +416,47 @@ export default function App() {
               >
                 <span className="day-name">{formatWeekday(date)}</span>
                 <span className="day-date">{date.getDate()}</span>
-                <span className={`dot ${hasWorkout ? 'active' : ''}`} />
+                <span
+                  className={`dot ${isToday ? 'today' : ''} ${hasWorkout ? 'active' : ''}`}
+                />
               </button>
             )
           })}
+        </div>
+      </section>
+
+      <section className="card">
+        <div className="section-head">
+          <div>
+            <h2>Muscle map</h2>
+            <p className="muted">Tap a region to toggle it for the selected day.</p>
+          </div>
+          <div className="chip-grid">
+            <span className="pill pill-today">Today</span>
+            <span className="pill pill-week">Week</span>
+          </div>
+        </div>
+        <MuscleMap
+          weeklyCounts={highlightCounts}
+          selectedGroups={dayMuscles}
+          view={muscleView}
+          onToggle={toggleDayMuscle}
+        />
+        <div className="muscle-toggle">
+          <button
+            type="button"
+            className={`chip ${muscleView === 'front' ? 'selected' : ''}`}
+            onClick={() => setMuscleView('front')}
+          >
+            Front
+          </button>
+          <button
+            type="button"
+            className={`chip ${muscleView === 'back' ? 'selected' : ''}`}
+            onClick={() => setMuscleView('back')}
+          >
+            Back
+          </button>
         </div>
       </section>
 
@@ -379,56 +482,6 @@ export default function App() {
             </button>
           ))}
         </div>
-      </section>
-
-      <section className="card">
-        <div className="section-head">
-          <div>
-            <h2>Worked this week</h2>
-            <p className="muted">Already hit these muscle groups.</p>
-          </div>
-          <span className="pill">{weeklyMuscleCounts.size} groups</span>
-        </div>
-        <div className="chip-grid compact">
-          {weeklyMuscleCounts.size === 0 && (
-            <p className="muted">No workouts logged for the week yet.</p>
-          )}
-          {Array.from(weeklyMuscleCounts.entries()).map(([group, count]) => (
-            <span key={group} className="chip accent">
-              {group} - {count}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      <section className="card">
-        <div className="section-head">
-          <div>
-            <h2>Muscle map</h2>
-            <p className="muted">Tap a region to toggle it for the selected day.</p>
-          </div>
-          <div className="chip-grid">
-            <span className="pill">Weekly highlight</span>
-            <button
-              type="button"
-              className={`chip ${showAllMuscleHighlights ? 'selected' : ''}`}
-              onClick={() => setShowAllMuscleHighlights((prev) => !prev)}
-            >
-              {showAllMuscleHighlights ? 'Show weekly' : 'Highlight all'}
-            </button>
-          </div>
-        </div>
-        <MuscleMap
-          weeklyCounts={highlightCounts}
-          onToggle={toggleDayMuscle}
-        />
-      </section>
-
-      <section className="card future-card">
-        <h2>Next steps</h2>
-        <p className="muted">
-          We can replace this with a detailed silhouette SVG once we pick a source file.
-        </p>
       </section>
     </div>
   )

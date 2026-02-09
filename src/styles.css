@@ -10,6 +10,7 @@
   --surface-strong: #ffffff;
   --cadax-green-light: 174 234 0;
   --cadax-blue-light: 77 208 225;
+  --toggle-font-size: 0.6rem;
   --accent: rgb(var(--cadax-green-light));
   --accent-2: rgb(var(--cadax-blue-light));
   --accent-3: #ffb300;
@@ -474,7 +475,7 @@ p {
   border-radius: 999px;
   background: rgba(255, 179, 0, 0.2);
   color: var(--ink-700);
-  font-size: 0.8rem;
+  font-size: var(--toggle-font-size);
   font-weight: 600;
 }
 
@@ -486,6 +487,7 @@ p {
 .pill-week {
   background: rgb(var(--cadax-blue-light) / 0.2);
   color: var(--ink-700);
+  font-size: var(--toggle-font-size);
 }
 
 .pill-week.active {
@@ -547,7 +549,7 @@ p {
 }
 
 .week-toggle-label {
-  font-size: 0.6rem;
+  font-size: var(--toggle-font-size);
   font-weight: 600;
   color: rgb(var(--cadax-green-light));
   white-space: nowrap;

@@ -447,7 +447,9 @@ export default function App() {
             <h2 className="section-title-nowrap">Select Day</h2>
           </div>
           <div className="chip-grid">
-            <span className="pill pill-week">{daysWorked} workouts this week</span>
+            <span className="pill pill-week">
+              {daysWorked} {daysWorked === 1 ? 'workout' : 'workouts'} this week
+            </span>
           </div>
         </div>
 

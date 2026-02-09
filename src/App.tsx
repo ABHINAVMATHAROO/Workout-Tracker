@@ -80,9 +80,10 @@ type MuscleMapProps = {
   selectedGroups: string[]
   view: 'front' | 'back'
   onToggle: (group: string) => void
+  onFlip: () => void
 }
 
-function MuscleMap({ weeklyCounts, selectedGroups, view, onToggle }: MuscleMapProps) {
+function MuscleMap({ weeklyCounts, selectedGroups, view, onToggle, onFlip }: MuscleMapProps) {
   const workedGroups = useMemo(
     () => new Set(Array.from(weeklyCounts.keys()).filter((group) => getCount(weeklyCounts, group) > 0)),
     [weeklyCounts]
@@ -94,6 +95,7 @@ function MuscleMap({ weeklyCounts, selectedGroups, view, onToggle }: MuscleMapPr
       selectedGroups={new Set(selectedGroups)}
       view={view}
       onToggle={onToggle}
+      onFlip={onFlip}
     />
   )
 }
@@ -321,7 +323,7 @@ export default function App() {
           <h1 className="brand">
             <img
               className="brand-mark"
-              src={`${import.meta.env.BASE_URL}cadax.png`}
+              src={`${import.meta.env.BASE_URL}cadax.svg`}
               alt=""
             />
             CADAX
@@ -340,7 +342,7 @@ export default function App() {
           <h1 className="brand">
             <img
               className="brand-mark"
-              src={`${import.meta.env.BASE_URL}cadax.png`}
+              src={`${import.meta.env.BASE_URL}cadax.svg`}
               alt=""
             />
             CADAX
@@ -383,12 +385,12 @@ export default function App() {
       <header className="hero">
         <div>
           <p className="eyebrow">
-            {user?.displayName ? `Hi ${user.displayName}` : 'Weekly focus'}
+            {user?.displayName ? `Hi, ${user.displayName}` : 'Weekly focus'}
           </p>
           <h1 className="brand">
             <img
               className="brand-mark"
-              src={`${import.meta.env.BASE_URL}cadax.png`}
+              src={`${import.meta.env.BASE_URL}cadax.svg`}
               alt=""
             />
             CADAX
@@ -476,23 +478,10 @@ export default function App() {
           selectedGroups={showAllMuscleHighlights ? [] : dayMuscles}
           view={muscleView}
           onToggle={toggleDayMuscle}
+          onFlip={() =>
+            setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))
+          }
         />
-        <div className="muscle-toggle">
-          <button
-            type="button"
-            className={`chip ${muscleView === 'front' ? 'selected' : ''}`}
-            onClick={() => setMuscleView('front')}
-          >
-            Front
-          </button>
-          <button
-            type="button"
-            className={`chip ${muscleView === 'back' ? 'selected' : ''}`}
-            onClick={() => setMuscleView('back')}
-          >
-            Back
-          </button>
-        </div>
       </section>
 
       <section className="card">
@@ -578,7 +567,7 @@ export default function App() {
               )
             })}
             <button type="button" className="goal-edit" onClick={() => setShowGoalDialog(true)}>
-              New goal
+              Set target
             </button>
           </div>
         </div>
@@ -593,8 +582,8 @@ export default function App() {
           aria-labelledby="goal-dialog-title"
           onClick={(event) => event.stopPropagation()}
         >
-          <h3 id="goal-dialog-title">Set weekly goal</h3>
-          <p className="muted">Choose how many days you want to work out this week.</p>
+          <h3 id="goal-dialog-title">Set weekly target</h3>
+          <p className="muted">How many days you want to work out every week?</p>
           <div className="goal-slider">
             <input
               type="range"
@@ -607,7 +596,7 @@ export default function App() {
           </div>
           <div className="dialog-actions">
             <button type="button" className="ghost" onClick={() => setShowGoalDialog(false)}>
-              Close
+              Save and close
             </button>
           </div>
         </div>

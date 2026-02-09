@@ -93,8 +93,8 @@ h1 {
 }
 
 .brand-mark {
-  width: 28px;
-  height: 28px;
+  width: 0.98em;
+  height: 0.98em;
   display: inline-block;
 }
 
@@ -385,12 +385,13 @@ p {
 }
 
 .ghost {
+  -webkit-appearance: none;
   border: 1px solid rgba(77, 208, 225, 0.45);
   background: transparent;
   color: var(--ink-700);
   padding: 8px 14px;
   border-radius: 999px;
-  font-weight: 600;
+  font-size: 0.8rem;
   cursor: pointer;
 }
 
@@ -560,10 +561,22 @@ p {
   border: 1px solid rgba(77, 208, 225, 0.45);
   background: transparent;
   color: var(--ink-700);
-  padding: 6px 12px;
+  height: 26px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
   border-radius: 999px;
   font-weight: 600;
+  font-size: 0.8rem;
   cursor: pointer;
+}
+
+.goal-slider-footer .ghost {
+  height: 26px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
 }
 
 .dialog-backdrop {
@@ -584,7 +597,7 @@ p {
   padding: 20px;
   box-shadow: 0 24px 60px rgba(10, 16, 32, 0.28);
   display: grid;
-  gap: 12px;
+  gap: 8px;
 }
 
 .dialog h3 {
@@ -593,11 +606,52 @@ p {
 
 .goal-slider {
   display: grid;
-  gap: 10px;
+  gap: 16px;
+}
+
+.goal-slider-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .goal-slider input[type='range'] {
   width: 100%;
+  background: transparent;
+}
+
+.goal-slider input[type='range']::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(174, 234, 0, 0.35);
+}
+
+.goal-slider input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #aeea00;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(10, 16, 32, 0.2);
+  margin-top: -6px;
+}
+
+.goal-slider input[type='range']::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(174, 234, 0, 0.35);
+}
+
+.goal-slider input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #aeea00;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(10, 16, 32, 0.2);
 }
 
 .goal-slider-value {
@@ -628,11 +682,25 @@ p {
   border: 1px solid var(--line);
 }
 
-.map-title {
-  font-size: 0.9rem;
-  font-weight: 600;
+.map-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
   margin-bottom: 8px;
+}
+
+.map-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0;
   color: var(--ink-700);
+}
+
+.map-rotate {
+  width: 0.8rem;
+  height: 0.8rem;
+  display: block;
 }
 
 .muscle-toggle {
@@ -650,12 +718,15 @@ p {
 .muscle-svg-frame {
   width: 100%;
   aspect-ratio: 64 / 100;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .muscle-map {
   width: 100%;
   height: 100%;
   display: block;
+  outline: none;
 }
 
 .muscle-image {
@@ -695,7 +766,7 @@ p {
 .muscle-region:hover polygon,
 .muscle-region:hover ellipse,
 .muscle-region:hover circle {
-  fill: rgba(77, 208, 225, 0.25);
+  fill: rgba(170, 178, 200, 0.25);
   stroke: transparent;
 }
 

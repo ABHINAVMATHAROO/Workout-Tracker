@@ -8,8 +8,10 @@
   --line: #d6e0ff;
   --surface: #ffffff;
   --surface-strong: #ffffff;
-  --accent: #aeea00;
-  --accent-2: #4dd0e1;
+  --cadax-green-light: 174 234 0;
+  --cadax-blue-light: 77 208 225;
+  --accent: rgb(var(--cadax-green-light));
+  --accent-2: rgb(var(--cadax-blue-light));
   --accent-3: #ffb300;
   --shadow: 0 20px 40px rgba(17, 20, 37, 0.14);
 }
@@ -279,6 +281,7 @@ p {
   transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
   color: var(--ink-900);
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .day-date.past {
@@ -298,21 +301,21 @@ p {
 }
 
 .day-pill.today {
-  border-color: rgba(174, 234, 0, 0.6);
-  background: rgba(174, 234, 0, 0.22);
-  box-shadow: 0 10px 18px rgba(174, 234, 0, 0.28);
+  border-color: rgb(var(--cadax-green-light) / 0.6);
+  background: rgb(var(--cadax-green-light) / 0.22);
+  box-shadow: 0 10px 18px rgb(var(--cadax-green-light) / 0.28);
 }
 
 .day-pill.selected {
-  border-color: rgba(77, 208, 225, 0.7);
-  box-shadow: 0 12px 22px rgba(77, 208, 225, 0.25);
-  background: rgba(77, 208, 225, 0.2);
+  border-color: rgb(var(--cadax-blue-light) / 0.7);
+  box-shadow: 0 12px 22px rgb(var(--cadax-blue-light) / 0.25);
+  background: rgb(var(--cadax-blue-light) / 0.2);
 }
 
 .day-pill.today.selected {
-  border-color: rgba(174, 234, 0, 0.6);
-  box-shadow: 0 10px 18px rgba(174, 234, 0, 0.28);
-  background: rgba(174, 234, 0, 0.22);
+  border-color: rgb(var(--cadax-green-light) / 0.6);
+  box-shadow: 0 10px 18px rgb(var(--cadax-green-light) / 0.28);
+  background: rgb(var(--cadax-green-light) / 0.22);
 }
 
 .day-name {
@@ -342,7 +345,7 @@ p {
 
 .dot.active {
   background: var(--accent-2);
-  box-shadow: 0 0 0 4px rgba(77, 208, 225, 0.25);
+  box-shadow: 0 0 0 4px rgb(var(--cadax-blue-light) / 0.25);
 }
 
 .dot.today {
@@ -386,7 +389,8 @@ p {
 
 .ghost {
   -webkit-appearance: none;
-  border: 1px solid rgba(77, 208, 225, 0.45);
+  appearance: none;
+  border: 1px solid rgb(var(--cadax-blue-light) / 0.45);
   background: transparent;
   color: var(--ink-700);
   padding: 8px 14px;
@@ -438,26 +442,26 @@ p {
 }
 
 .chip.selected {
-  background: rgba(77, 208, 225, 0.18);
-  border-color: rgba(77, 208, 225, 0.6);
+  background: rgb(var(--cadax-blue-light) / 0.18);
+  border-color: rgb(var(--cadax-blue-light) / 0.6);
   color: var(--ink-900);
 }
 
 .chip.chip-today {
-  background: rgba(174, 234, 0, 0.22);
-  border-color: rgba(174, 234, 0, 0.7);
+  background: rgb(var(--cadax-green-light) / 0.22);
+  border-color: rgb(var(--cadax-green-light) / 0.7);
   color: var(--ink-900);
 }
 
 .chip.chip-week {
-  background: rgba(77, 208, 225, 0.2);
-  border-color: rgba(77, 208, 225, 0.55);
+  background: rgb(var(--cadax-blue-light) / 0.2);
+  border-color: rgb(var(--cadax-blue-light) / 0.55);
   color: var(--ink-900);
 }
 
 .chip.accent {
-  background: rgba(77, 208, 225, 0.14);
-  border-color: rgba(77, 208, 225, 0.4);
+  background: rgb(var(--cadax-blue-light) / 0.14);
+  border-color: rgb(var(--cadax-blue-light) / 0.4);
   color: var(--ink-900);
   cursor: default;
 }
@@ -475,22 +479,86 @@ p {
 }
 
 .pill-today {
-  background: rgba(174, 234, 0, 0.25);
+  background: rgb(var(--cadax-green-light) / 0.25);
   color: var(--ink-700);
 }
 
 .pill-week {
-  background: rgba(77, 208, 225, 0.2);
+  background: rgb(var(--cadax-blue-light) / 0.2);
   color: var(--ink-700);
 }
 
 .pill-week.active {
-  background: rgba(77, 208, 225, 0.35);
+  background: rgb(var(--cadax-blue-light) / 0.35);
   color: var(--ink-900);
 }
 
+.week-toggle {
+  height: 26px;
+  min-width: 96px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  background: rgb(var(--cadax-green-light) / 0.35);
+  color: var(--ink-900);
+  position: relative;
+  transition: background 150ms ease;
+  overflow: hidden;
+}
+
+.week-toggle.is-week {
+  background: rgb(var(--cadax-blue-light) / 0.35);
+}
+
+.week-toggle-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.week-toggle-track-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: rgba(10, 16, 32, 0.55);
+  white-space: nowrap;
+}
+
+.week-toggle-thumb {
+  height: 18px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 150ms ease;
+  position: relative;
+  z-index: 1;
+}
+
+.week-toggle.is-week .week-toggle-thumb {
+  transform: translateX(calc(100% - 5px));
+}
+
+.week-toggle-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: rgb(var(--cadax-green-light));
+  white-space: nowrap;
+}
+
+.week-toggle.is-week .week-toggle-label {
+  color: rgb(var(--cadax-blue-light));
+}
+
 .pill-done {
-  background: rgba(174, 234, 0, 0.25);
+  background: rgb(var(--cadax-green-light) / 0.25);
   color: var(--ink-700);
 }
 
@@ -536,8 +604,8 @@ p {
 }
 
 .goal-circle.filled {
-  background: rgba(174, 234, 0, 0.35);
-  border-color: rgba(174, 234, 0, 0.7);
+  background: rgb(var(--cadax-green-light) / 0.35);
+  border-color: rgb(var(--cadax-green-light) / 0.7);
 }
 
 .goal-circle.extra {
@@ -558,7 +626,7 @@ p {
 }
 
 .goal-edit {
-  border: 1px solid rgba(77, 208, 225, 0.45);
+  border: 1px solid rgb(var(--cadax-blue-light) / 0.45);
   background: transparent;
   color: var(--ink-700);
   height: 26px;
@@ -624,7 +692,7 @@ p {
 .goal-slider input[type='range']::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 999px;
-  background: rgba(174, 234, 0, 0.35);
+  background: rgb(var(--cadax-green-light) / 0.35);
 }
 
 .goal-slider input[type='range']::-webkit-slider-thumb {
@@ -633,7 +701,7 @@ p {
   width: 18px;
   height: 18px;
   border-radius: 999px;
-  background: #aeea00;
+  background: rgb(var(--cadax-green-light));
   border: 2px solid #ffffff;
   box-shadow: 0 4px 10px rgba(10, 16, 32, 0.2);
   margin-top: -6px;
@@ -642,14 +710,14 @@ p {
 .goal-slider input[type='range']::-moz-range-track {
   height: 6px;
   border-radius: 999px;
-  background: rgba(174, 234, 0, 0.35);
+  background: rgb(var(--cadax-green-light) / 0.35);
 }
 
 .goal-slider input[type='range']::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 999px;
-  background: #aeea00;
+  background: rgb(var(--cadax-green-light));
   border: 2px solid #ffffff;
   box-shadow: 0 4px 10px rgba(10, 16, 32, 0.2);
 }
@@ -775,7 +843,7 @@ p {
 .muscle-region.worked-week polygon,
 .muscle-region.worked-week ellipse,
 .muscle-region.worked-week circle {
-  fill: rgba(77, 208, 225, 0.2);
+  fill: rgb(var(--cadax-blue-light) / 0.2);
   stroke: transparent;
 }
 
@@ -784,7 +852,7 @@ p {
 .muscle-region.worked-selected polygon,
 .muscle-region.worked-selected ellipse,
 .muscle-region.worked-selected circle {
-  fill: rgba(174, 234, 0, 0.28);
+  fill: rgb(var(--cadax-green-light) / 0.28);
   stroke: transparent;
 }
 
@@ -809,11 +877,11 @@ p {
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 4px rgba(174, 234, 0, 0.3);
+    box-shadow: 0 0 0 4px rgb(var(--cadax-green-light) / 0.3);
   }
   50% {
     transform: scale(1.35);
-    box-shadow: 0 0 0 8px rgba(174, 234, 0, 0.2);
+    box-shadow: 0 0 0 8px rgb(var(--cadax-green-light) / 0.2);
   }
 }
 

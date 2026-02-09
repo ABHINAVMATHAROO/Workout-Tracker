@@ -83,6 +83,31 @@ type MuscleMapProps = {
   onFlip: () => void
 }
 
+type WeekToggleProps = {
+  isWeek: boolean
+  dayLabel: string
+  onToggle: () => void
+}
+
+function WeekToggle({ isWeek, dayLabel, onToggle }: WeekToggleProps) {
+  return (
+    <button
+      type="button"
+      className={`week-toggle ${isWeek ? 'is-week' : 'is-day'}`}
+      onClick={onToggle}
+      aria-pressed={isWeek}
+    >
+      <span className="week-toggle-track">
+        <span className="week-toggle-track-label">{dayLabel}</span>
+        <span className="week-toggle-track-label">Week</span>
+      </span>
+      <span className="week-toggle-thumb">
+        <span className="week-toggle-label">{isWeek ? 'Week' : dayLabel}</span>
+      </span>
+    </button>
+  )
+}
+
 function MuscleMap({ weeklyCounts, selectedGroups, view, onToggle, onFlip }: MuscleMapProps) {
   const workedGroups = useMemo(
     () => new Set(Array.from(weeklyCounts.keys()).filter((group) => getCount(weeklyCounts, group) > 0)),
@@ -461,16 +486,11 @@ export default function App() {
            
           </div>
           <div className="chip-grid">
-            <span className="pill pill-today">
-              {formatShortDate(parseIsoDate(selectedDate))}
-            </span>
-            <button
-              type="button"
-              className={`pill pill-week ${showAllMuscleHighlights ? 'active' : ''}`}
-              onClick={() => setShowAllMuscleHighlights((prev) => !prev)}
-            >
-              Week
-            </button>
+            <WeekToggle
+              isWeek={showAllMuscleHighlights}
+              dayLabel={formatShortDate(parseIsoDate(selectedDate))}
+              onToggle={() => setShowAllMuscleHighlights((prev) => !prev)}
+            />
           </div>
         </div>
         <MuscleMap
@@ -490,16 +510,11 @@ export default function App() {
             <h2 className="section-title-nowrap">Workout Details</h2>
           </div>
           <div className="chip-grid">
-            <span className="pill pill-today">
-              {formatShortDate(parseIsoDate(selectedDate))}
-            </span>
-            <button
-              type="button"
-              className={`pill pill-week ${showAllMuscleHighlights ? 'active' : ''}`}
-              onClick={() => setShowAllMuscleHighlights((prev) => !prev)}
-            >
-              Week
-            </button>
+            <WeekToggle
+              isWeek={showAllMuscleHighlights}
+              dayLabel={formatShortDate(parseIsoDate(selectedDate))}
+              onToggle={() => setShowAllMuscleHighlights((prev) => !prev)}
+            />
           </div>
         </div>
 

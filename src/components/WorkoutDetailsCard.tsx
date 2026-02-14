@@ -3,7 +3,7 @@ import WeekToggle from './WeekToggle'
 const getCount = (counts: Map<string, number>, group: string) => counts.get(group) ?? 0
 
 type WorkoutDetailsCardProps = {
-  muscleCategories: Record<string, string[]>
+  muscleCategories: Record<string, readonly string[]>
   showAllMuscleHighlights: boolean
   selectedDate: string
   dayMuscles: string[]

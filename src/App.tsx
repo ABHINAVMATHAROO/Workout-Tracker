@@ -14,12 +14,50 @@ import {
 import { auth, db, googleProvider } from './firebase'
 import MuscleMapSvg from './MuscleMapSvg'
 import { calculateStreaks } from './streakCalculator'
+import AuthScreen from './AuthScreen'
+import { type HyperspeedOptions } from './hyperspeed/background'
 
 const MUSCLE_CATEGORIES = {
   Push: ['Chest', 'Triceps', 'Shoulder'],
   Pull: ['Back', 'Biceps', 'Forearms'],
   Other: ['Legs', 'Core'],
 } as const
+
+const hyperspeedOptions: HyperspeedOptions = {
+  distortion: 'turbulentDistortion',
+  length: 400,
+  roadWidth: 10,
+  islandWidth: 2,
+  lanesPerRoad: 3,
+  fov: 90,
+  fovSpeedUp: 150,
+  speedUp: 2,
+  carLightsFade: 0.4,
+  totalSideLightSticks: 20,
+  lightPairsPerRoadWay: 40,
+  shoulderLinesWidthPercentage: 0.05,
+  brokenLinesWidthPercentage: 0.1,
+  brokenLinesLengthPercentage: 0.5,
+  lightStickWidth: [0.12, 0.5],
+  lightStickHeight: [1.3, 1.7],
+  movingAwaySpeed: [60, 80],
+  movingCloserSpeed: [-120, -160],
+  carLightsLength: [12, 80],
+  carLightsRadius: [0.05, 0.14],
+  carWidthPercentage: [0.3, 0.5],
+  carShiftX: [-0.8, 0.8],
+  carFloorSeparation: [0, 5],
+  colors: {
+    roadColor: 0x04070f,
+    islandColor: 0x0a1020,
+    background: 0x0a1020,
+    shoulderLines: 0xaeea00,
+    brokenLines: 0xffb300,
+    leftCars: [0xaeea00, 0xffb300],
+    rightCars: [0x4dd0e1, 0xffb300],
+    sticks: 0x4dd0e1,
+  },
+}
 
 type Workout = {
   date: string
@@ -130,6 +168,11 @@ type AuthStatus = 'signed-out' | 'loading' | 'pending-profile' | 'ready'
 type ProfileData = {
   bestWorkoutStreakWeeks?: number
   bestGoalStreakWeeks?: number
+}
+
+const signInWithGoogle = async (setAuthStatus: (status: AuthStatus) => void) => {
+  setAuthStatus('loading')
+  await signInWithPopup(auth, googleProvider)
 }
 
 export default function App() {
@@ -344,8 +387,7 @@ export default function App() {
   }, [authStatus, bestGoalStreak, bestWorkoutStreak, goalDays, profileData, user, weeklyCountsByWeek])
 
   const handleGoogleSignIn = async () => {
-    setAuthStatus('loading')
-    await signInWithPopup(auth, googleProvider)
+    await signInWithGoogle(setAuthStatus)
   }
 
   const handleProfileCreate = async () => {
@@ -403,64 +445,37 @@ export default function App() {
 
   if (authStatus === 'loading') {
     return (
-      <div className="app auth-screen">
-        <div className="card auth-card">
-          <h1 className="brand">
-            <img
-              className="brand-mark"
-              src={`${import.meta.env.BASE_URL}cadax.svg`}
-              alt=""
-            />
-            CADAX
-          </h1>
-          <p className="muted">Loading your account...</p>
-        </div>
-      </div>
+      <AuthScreen
+        variant="loading"
+        onSignIn={handleGoogleSignIn}
+        onCreateProfile={handleProfileCreate}
+        onDeclineProfile={handleProfileDecline}
+        effectOptions={hyperspeedOptions}
+      />
     )
   }
 
   if (authStatus === 'signed-out') {
     return (
-      <div className="app auth-screen">
-        <div className="card auth-card">
-          <p className="eyebrow">Welcome back</p>
-          <h1 className="brand">
-            <img
-              className="brand-mark"
-              src={`${import.meta.env.BASE_URL}cadax.svg`}
-              alt=""
-            />
-            CADAX
-          </h1>
-          <p className="muted">Sign in to track your workouts across devices.</p>
-          <button className="cta" onClick={handleGoogleSignIn}>
-            Continue with Google
-          </button>
-        </div>
-      </div>
+      <AuthScreen
+        variant="signed-out"
+        onSignIn={handleGoogleSignIn}
+        onCreateProfile={handleProfileCreate}
+        onDeclineProfile={handleProfileDecline}
+        effectOptions={hyperspeedOptions}
+      />
     )
   }
 
   if (authStatus === 'pending-profile' && pendingProfile) {
     return (
-      <div className="app auth-screen">
-        <div className="card auth-card">
-          <p className="eyebrow">Almost there</p>
-          <h1>Create your account?</h1>
-          <p className="muted">
-            We found your Google account but not an app profile yet. Want to create
-            one now?
-          </p>
-          <div className="auth-actions">
-            <button className="cta" onClick={handleProfileCreate}>
-              Create account
-            </button>
-            <button className="ghost" onClick={handleProfileDecline}>
-              Not now
-            </button>
-          </div>
-        </div>
-      </div>
+      <AuthScreen
+        variant="pending-profile"
+        onSignIn={handleGoogleSignIn}
+        onCreateProfile={handleProfileCreate}
+        onDeclineProfile={handleProfileDecline}
+        effectOptions={hyperspeedOptions}
+      />
     )
   }
 

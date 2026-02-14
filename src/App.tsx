@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
 import {
   collection,
@@ -174,10 +174,7 @@ export default function App() {
   const goalBoxCount = Math.max(7, goalDays)
   const { currentWorkoutStreak, bestWorkoutStreak, bestGoalStreak } =
     useMemo(() => calculateStreaks(workouts, goalDays, today), [workouts, goalDays, today])
-  const bestWorkoutDisplay = Math.max(
-    bestWorkoutStreak,
-    profileData?.bestWorkoutStreakWeeks ?? 0
-  )
+  const bestWorkoutDisplay = bestWorkoutStreak
 
   const [selectedDate, setSelectedDate] = useState(() => formatLocalIsoDate(today))
   const weeklyMuscleCounts = useMemo(() => {
@@ -200,6 +197,51 @@ export default function App() {
   const weeklyWorkedGroups = useMemo(
     () => new Set(Array.from(weeklyMuscleCounts.keys()).filter((group) => getCount(weeklyMuscleCounts, group) > 0)),
     [weeklyMuscleCounts]
+  )
+
+  const weeklyCountsByWeek = useMemo(() => {
+    const weekMap = new Map<string, Set<string>>()
+    workouts.forEach((workout) => {
+      const weekKey = formatLocalIsoDate(startOfWeekMonday(parseIsoDate(workout.date)))
+      const set = weekMap.get(weekKey) ?? new Set<string>()
+      set.add(workout.date)
+      weekMap.set(weekKey, set)
+    })
+    const counts = new Map<string, number>()
+    weekMap.forEach((set, key) => {
+      counts.set(key, set.size)
+    })
+    return counts
+  }, [workouts])
+
+  const previousWeekCountsRef = useRef<Map<string, number> | null>(null)
+  const previousGoalDaysRef = useRef<number | null>(null)
+
+  const historyWeeks = useMemo(() => {
+    const count = 8
+    return Array.from({ length: count }, (_, idx) => {
+      const start = addDays(weekStart, -7 * (count - 1 - idx))
+      const end = addDays(start, 6)
+      const startIso = formatLocalIsoDate(start)
+      const endIso = formatLocalIsoDate(end)
+      const uniqueDates = new Set(
+        workouts
+          .filter((workout) => workout.date >= startIso && workout.date <= endIso)
+          .map((workout) => workout.date)
+      )
+      return {
+        start,
+        count: uniqueDates.size,
+        isCurrent: start.getTime() === weekStart.getTime(),
+      }
+    })
+  }, [weekStart, workouts])
+
+  const historyMax = 7
+
+  const historyTicks = useMemo(
+    () => Array.from({ length: historyMax + 1 }, (_, idx) => historyMax - idx),
+    [historyMax]
   )
 
   useEffect(() => {
@@ -257,13 +299,35 @@ export default function App() {
 
     const storedWorkoutBest = profileData?.bestWorkoutStreakWeeks ?? 0
     const storedGoalBest = profileData?.bestGoalStreakWeeks ?? 0
-    const nextWorkoutBest = Math.max(storedWorkoutBest, bestWorkoutStreak)
-    const nextGoalBest = Math.max(storedGoalBest, bestGoalStreak)
+    const nextWorkoutBest = bestWorkoutStreak
+    const nextGoalBest = bestGoalStreak
 
-    if (
-      nextWorkoutBest === storedWorkoutBest &&
-      nextGoalBest === storedGoalBest
-    ) {
+    let allowDecreaseWrite = false
+    const previousWeekCounts = previousWeekCountsRef.current
+    if (previousWeekCounts) {
+      previousWeekCounts.forEach((prevCount, weekKey) => {
+        const nextCount = weeklyCountsByWeek.get(weekKey) ?? 0
+        if (prevCount > 0 && nextCount === 0) {
+          allowDecreaseWrite = true
+        }
+        if (prevCount >= goalDays && nextCount < goalDays) {
+          allowDecreaseWrite = true
+        }
+      })
+    }
+    if (previousGoalDaysRef.current !== null && previousGoalDaysRef.current !== goalDays) {
+      allowDecreaseWrite = true
+    }
+
+    previousWeekCountsRef.current = weeklyCountsByWeek
+    previousGoalDaysRef.current = goalDays
+
+    const hasIncrease =
+      nextWorkoutBest > storedWorkoutBest || nextGoalBest > storedGoalBest
+    const hasDecrease =
+      nextWorkoutBest < storedWorkoutBest || nextGoalBest < storedGoalBest
+
+    if (!hasIncrease && !(hasDecrease && allowDecreaseWrite)) {
       return
     }
 
@@ -281,7 +345,7 @@ export default function App() {
       bestWorkoutStreakWeeks: nextWorkoutBest,
       bestGoalStreakWeeks: nextGoalBest,
     }))
-  }, [authStatus, bestGoalStreak, bestWorkoutStreak, profileData, user])
+  }, [authStatus, bestGoalStreak, bestWorkoutStreak, goalDays, profileData, user, weeklyCountsByWeek])
 
   const handleGoogleSignIn = async () => {
     setAuthStatus('loading')
@@ -466,7 +530,7 @@ export default function App() {
               <button
                 key={iso}
                 type="button"
-                className={`day-pill ${isTodayActive ? 'today' : ''} ${isSelected ? 'selected' : ''}`}
+                className={`day-pill ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}`}
                 onClick={() => setSelectedDate(iso)}
                 disabled={isFuture}
               >
@@ -558,8 +622,11 @@ export default function App() {
           </div>
           <div className="chip-grid">
             <span className="pill pill-done">{daysWorked} done</span>
-            <span className="pill pill-remaining">{daysToGo} left</span>
-            <span className="pill pill-over">{daysOverGoal} over</span>
+            {daysOverGoal > 0 ? (
+              <span className="pill pill-over">{daysOverGoal} over</span>
+            ) : (
+              <span className="pill pill-remaining">{daysToGo} left</span>
+            )}
           </div>
         </div>
         <div className="goal-visual">
@@ -586,6 +653,46 @@ export default function App() {
             <button type="button" className="goal-edit" onClick={() => setShowGoalDialog(true)}>
               Set target
             </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="card history-card">
+        <div className="section-head section-head-inline">
+          <div className="section-title">
+            <h2 className="section-title-nowrap">Workout history</h2>
+          </div>
+        </div>
+        <div
+          className="history-chart"
+          style={{ '--target-line': `${(goalDays / historyMax) * 100}%` } as CSSProperties}
+        >
+          <div className="history-bars">
+            <div className="history-target" />
+            {historyWeeks.map((week) => {
+              const barHeight = (week.count / historyMax) * 100
+              return (
+                <div className="history-bar" key={formatLocalIsoDate(week.start)}>
+                  <div className="history-bar-track">
+                    <div
+                      className={`history-bar-fill ${week.isCurrent ? 'is-current' : ''}`}
+                      style={{ '--bar-height': `${barHeight}%` } as CSSProperties}
+                    />
+                  </div>
+                  <span className="history-bar-label">{formatShortDate(week.start)}</span>
+                </div>
+              )
+            })}
+          </div>
+          <div className="history-axis">
+            <span className="label history-axis-top">{historyMax}</span>
+            <span className="history-axis-mid" aria-hidden="true">
+              <img
+                className="history-axis-target"
+                src={`${import.meta.env.BASE_URL}target.svg`}
+                alt=""
+              />
+            </span>
           </div>
         </div>
       </section>

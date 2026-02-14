@@ -172,7 +172,9 @@ export default function App() {
   const [showAllMuscleHighlights, setShowAllMuscleHighlights] = useState(false)
   const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
   const [showGoalDialog, setShowGoalDialog] = useState(false)
-  const weekStart = useMemo(() => startOfWeekMonday(today), [today])
+  const [weekOffset, setWeekOffset] = useState(0)
+  const weekStart = useMemo(() => startOfWeekMonday(addDays(today, weekOffset * 7)), [today, weekOffset])
+  const currentWeekStart = useMemo(() => startOfWeekMonday(today), [today])
   const weekDates = useMemo(
     () => Array.from({ length: 7 }, (_, idx) => addDays(weekStart, idx)),
     [weekStart]
@@ -493,6 +495,9 @@ export default function App() {
         formatWeekday={formatWeekday}
         formatLocalIsoDate={formatLocalIsoDate}
         onSelectDate={setSelectedDate}
+        onPrevWeek={() => setWeekOffset((prev) => prev - 1)}
+        onNextWeek={() => setWeekOffset((prev) => prev + 1)}
+        canGoNext={weekStart.getTime() < currentWeekStart.getTime()}
       />
 
       <LogWorkoutCard

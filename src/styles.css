@@ -8,8 +8,11 @@
   --ink-700: #3a4668;
   --ink-500: #6a789a;
   --line: #d6e0ff;
-  --surface: #ffffff;
-  --surface-strong: #ffffff;
+  --cadax-card-bg: #F8FBFF;
+  --surface: var(--cadax-card-bg);
+  --surface-strong: var(--cadax-card-bg);
+  --cadax-bg: #0a1020;
+  --cadax-bg-rgb: 10 16 32;
   --cadax-green-light: 174 234 0;
   --cadax-blue-light: 77 208 225;
   --cadax-orange: 255 179 0;
@@ -43,7 +46,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   font-family: 'Space Grotesk', 'IBM Plex Sans', 'Segoe UI', sans-serif;
-  background: #f4f7ff;
+  background: var(--cadax-bg);
   color: var(--ink-900);
 }
 
@@ -62,19 +65,24 @@ body {
   justify-content: center;
 }
 
+/* AuthScreen layout + hyperspeed background (AuthScreen) */
 .auth-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: #0a1020;
+  background: var(--cadax-bg);
 }
 
 .auth-bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 10% 10%, rgba(10, 16, 32, 0.3), rgba(10, 16, 32, 0.95));
+  background: radial-gradient(
+    circle at 10% 10%,
+    rgb(var(--cadax-bg-rgb) / 0.3),
+    rgb(var(--cadax-bg-rgb) / 0.95)
+  );
 }
 
 /* AuthScreen content wrapper (AuthScreen) */
@@ -255,10 +263,12 @@ h1 {
   letter-spacing: -0.02em;
 }
 
+/* App header brand (App) */
 .brand {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  color: #ffffff;
 }
 
 .brand-mark {
@@ -300,6 +310,11 @@ p {
   border: 1px solid var(--line);
   min-width: 220px;
   box-shadow: var(--shadow);
+  background-image: linear-gradient(
+    to top,
+    rgb(var(--cadax-orange) / 0.2),
+    transparent 20%
+  );
 }
 
 .label {
@@ -383,7 +398,7 @@ p {
 
 /* Best streak value (StreakCard) */
 .streak-best-value {
-  font-size: 1.6rem;
+  font-size: clamp(1.1rem, 3.2vw, 1.6rem);
   font-weight: 700;
   color: rgb(var(--cadax-orange));
 }
@@ -447,6 +462,65 @@ p {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 12px;
+}
+
+/* SelectDayCard grid wrapper + desktop nav (SelectDayCard) */
+.week-grid-wrap {
+  position: relative;
+}
+
+.week-nav-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--surface);
+  color: rgba(58, 70, 104, 0.6);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 150ms ease;
+  position: absolute;
+  top: 50%;
+  margin-top: -9px;
+  z-index: 2;
+  padding: 0;
+  font-size: 18px;
+  line-height: 18px;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.week-nav-btn:focus,
+.week-nav-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.week-nav-prev {
+  left: -10px;
+}
+
+.week-nav-next {
+  right: -10px;
+}
+
+.week-nav-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.week-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .week-nav-btn {
+    display: none;
+  }
 }
 
 /* SelectDayCard day button (SelectDayCard) */
@@ -779,12 +853,20 @@ p {
 .muscle-categories {
   display: grid;
   gap: 16px;
+  justify-items: center;
 }
 
 /* WorkoutDetails category label (WorkoutDetailsCard) */
 .muscle-category .label {
   margin-bottom: 8px;
   display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+/* WorkoutDetails chip alignment (WorkoutDetailsCard) */
+.muscle-category .chip-grid {
+  justify-content: center;
 }
 
 /* WorkoutDetails chip (WorkoutDetailsCard) */
@@ -917,12 +999,12 @@ p {
 .week-toggle-label {
   font-size: var(--toggle-font-size);
   font-weight: 600;
-  color: rgb(var(--cadax-green-light));
+  color: var(--ink-900);
   white-space: nowrap;
 }
 
 .week-toggle.is-week .week-toggle-label {
-  color: rgb(var(--cadax-blue-light));
+  color: var(--ink-900);
 }
 
 /* ThisWeekCard done pill (ThisWeekCard) */

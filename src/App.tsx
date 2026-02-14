@@ -239,10 +239,6 @@ export default function App() {
 
   const historyMax = 7
 
-  const historyTicks = useMemo(
-    () => Array.from({ length: historyMax + 1 }, (_, idx) => historyMax - idx),
-    [historyMax]
-  )
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (nextUser) => {

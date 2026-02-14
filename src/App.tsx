@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
 import {
   collection,
@@ -16,6 +16,12 @@ import MuscleMapSvg from './MuscleMapSvg'
 import { calculateStreaks } from './streakCalculator'
 import AuthScreen from './AuthScreen'
 import { type HyperspeedOptions } from './hyperspeed/background'
+import StreakCard from './components/StreakCard'
+import SelectDayCard from './components/SelectDayCard'
+import LogWorkoutCard from './components/LogWorkoutCard'
+import WorkoutDetailsCard from './components/WorkoutDetailsCard'
+import ThisWeekCard from './components/ThisWeekCard'
+import WorkoutHistoryCard from './components/WorkoutHistoryCard'
 
 const MUSCLE_CATEGORIES = {
   Push: ['Chest', 'Triceps', 'Shoulder'],
@@ -119,31 +125,6 @@ type MuscleMapProps = {
   view: 'front' | 'back'
   onToggle: (group: string) => void
   onFlip: () => void
-}
-
-type WeekToggleProps = {
-  isWeek: boolean
-  dayLabel: string
-  onToggle: () => void
-}
-
-function WeekToggle({ isWeek, dayLabel, onToggle }: WeekToggleProps) {
-  return (
-    <button
-      type="button"
-      className={`week-toggle ${isWeek ? 'is-week' : 'is-day'}`}
-      onClick={onToggle}
-      aria-pressed={isWeek}
-    >
-      <span className="week-toggle-track">
-        <span className="week-toggle-track-label">{dayLabel}</span>
-        <span className="week-toggle-track-label">Week</span>
-      </span>
-      <span className="week-toggle-thumb">
-        <span className="week-toggle-label">{isWeek ? 'Week' : dayLabel}</span>
-      </span>
-    </button>
-  )
 }
 
 function MuscleMap({ weeklyCounts, selectedGroups, view, onToggle, onFlip }: MuscleMapProps) {
@@ -497,79 +478,30 @@ export default function App() {
           </h1>
           <p className="subhead">{formatRange(weekStart, addDays(weekStart, 6))}</p>
         </div>
-        <div className="hero-card streak-card">
-          <p className="label">Streak</p>
-          <div className="streak-split">
-            <div className="streak-current">
-              <div className="streak-number">{currentWorkoutStreak}</div>
-              <div className="streak-copy">
-                <span className="streak-title">Current</span>
-                <span className="streak-subtitle">Workout weeks</span>
-              </div>
-            </div>
-            <div className="streak-divider" />
-            <div className="streak-best">
-              <span className="streak-best-label">Best</span>
-              <span className="streak-best-value">{bestWorkoutDisplay}</span>
-            </div>
-          </div>
-        </div>
+        <StreakCard
+          currentWorkoutStreak={currentWorkoutStreak}
+          bestWorkoutStreak={bestWorkoutDisplay}
+        />
       </header>
 
-      <section className="card week-card">
-        <div className="section-head section-head-inline">
-          <div className="section-title">
-            <h2 className="section-title-nowrap">Select Day</h2>
-          </div>
-          <div className="chip-grid">
-            <span className="pill pill-week">
-              {daysWorked} {daysWorked === 1 ? 'workout' : 'workouts'} this week
-            </span>
-          </div>
-        </div>
+      <SelectDayCard
+        weekDates={weekDates}
+        today={today}
+        selectedDate={selectedDate}
+        daysWorked={daysWorked}
+        workoutDateSet={workoutDateSet}
+        formatWeekday={formatWeekday}
+        formatLocalIsoDate={formatLocalIsoDate}
+        onSelectDate={setSelectedDate}
+      />
 
-        <div className="week-grid">
-          {weekDates.map((date) => {
-            const iso = formatLocalIsoDate(date)
-            const hasWorkout = workoutDateSet.has(iso)
-            const isToday = iso === formatLocalIsoDate(today)
-            const isTodayActive = isToday && selectedDate === iso
-            const isSelected = iso === selectedDate
-            const isFuture = date.getTime() > today.getTime()
-            const isPast = date.getTime() < today.getTime()
-            return (
-              <button
-                key={iso}
-                type="button"
-                className={`day-pill ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}`}
-                onClick={() => setSelectedDate(iso)}
-                disabled={isFuture}
-              >
-                <span className="day-name">{formatWeekday(date)}</span>
-                <span className={`day-date ${isPast ? 'past' : ''}`}>{date.getDate()}</span>
-                <span
-                  className={`dot ${isTodayActive ? 'today' : ''} ${hasWorkout ? 'active' : ''}`}
-                />
-              </button>
-            )
-          })}
-        </div>
-      </section>
-
-      <section className="card">
-        <div className="section-head section-head-inline">
-          <div className="section-title">
-            <h2 className="section-title-nowrap">Log workout</h2>
-           
-          </div>
-          <div className="chip-grid">
-            <WeekToggle
-              isWeek={showAllMuscleHighlights}
-              dayLabel={formatShortDate(parseIsoDate(selectedDate))}
-              onToggle={() => setShowAllMuscleHighlights((prev) => !prev)}
-            />
-          </div>
-        </div>
+      <LogWorkoutCard
+        showAllMuscleHighlights={showAllMuscleHighlights}
+        selectedDate={selectedDate}
+        parseIsoDate={parseIsoDate}
+        formatShortDate={formatShortDate}
+        onToggleHighlights={() => setShowAllMuscleHighlights((prev) => !prev)}
+      >
         <MuscleMap
           weeklyCounts={highlightCounts}
           selectedGroups={showAllMuscleHighlights ? [] : dayMuscles}
@@ -579,134 +511,37 @@ export default function App() {
             setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))
           }
         />
-      </section>
+      </LogWorkoutCard>
 
-      <section className="card">
-        <div className="section-head section-head-inline">
-          <div className="section-title">
-            <h2 className="section-title-nowrap">Workout Details</h2>
-          </div>
-          <div className="chip-grid">
-            <WeekToggle
-              isWeek={showAllMuscleHighlights}
-              dayLabel={formatShortDate(parseIsoDate(selectedDate))}
-              onToggle={() => setShowAllMuscleHighlights((prev) => !prev)}
-            />
-          </div>
-        </div>
+      <WorkoutDetailsCard
+        muscleCategories={MUSCLE_CATEGORIES}
+        showAllMuscleHighlights={showAllMuscleHighlights}
+        selectedDate={selectedDate}
+        dayMuscles={dayMuscles}
+        weeklyMuscleCounts={weeklyMuscleCounts}
+        weeklyWorkedGroups={weeklyWorkedGroups}
+        parseIsoDate={parseIsoDate}
+        formatShortDate={formatShortDate}
+        onToggleHighlights={() => setShowAllMuscleHighlights((prev) => !prev)}
+        onToggleDayMuscle={toggleDayMuscle}
+      />
 
-        <div className="muscle-categories">
-          {Object.entries(MUSCLE_CATEGORIES).map(([category, groups]) => (
-            <div key={category} className="muscle-category">
-              <p className="label">{category}</p>
-              <div className="chip-grid">
-                {groups.map((group) => {
-                  const workedToday = !showAllMuscleHighlights && dayMuscles.includes(group)
-                  const workedThisWeek = showAllMuscleHighlights && weeklyWorkedGroups.has(group)
-                  const weeklyCount = getCount(weeklyMuscleCounts, group)
-                  const label = weeklyCount > 0 ? `${group} - ${weeklyCount}` : group
-                  const toneClass = workedToday
-                    ? 'chip-today'
-                    : workedThisWeek
-                      ? 'chip-week'
-                      : ''
-                  return (
-                    <button
-                      key={group}
-                      className={`chip ${toneClass} ${workedToday ? 'selected' : ''}`}
-                      onClick={() => toggleDayMuscle(group)}
-                    >
-                      {label}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ThisWeekCard
+        daysWorked={daysWorked}
+        daysToGo={daysToGo}
+        daysOverGoal={daysOverGoal}
+        goalDays={goalDays}
+        goalBoxCount={goalBoxCount}
+        onEditGoal={() => setShowGoalDialog(true)}
+      />
 
-      <section className="card">
-        <div className="section-head section-head-inline">
-          <div className="section-title">
-            <h2 className="section-title-nowrap">This week</h2>
-          </div>
-          <div className="chip-grid">
-            <span className="pill pill-done">{daysWorked} done</span>
-            {daysOverGoal > 0 ? (
-              <span className="pill pill-over">{daysOverGoal} over</span>
-            ) : (
-              <span className="pill pill-remaining">{daysToGo} left</span>
-            )}
-          </div>
-        </div>
-        <div className="goal-visual">
-          <div className="goal-circles">
-            {Array.from({ length: goalBoxCount }, (_, index) => {
-              const filled = index < daysWorked
-              const extra = filled && index >= goalDays
-              const target = goalDays > 0 && index === goalDays - 1
-              return (
-                <span
-                  key={`goal-${index}`}
-                  className={`goal-circle ${filled ? 'filled' : ''} ${extra ? 'extra' : ''} ${target ? 'is-target' : ''}`}
-                >
-                  {target ? (
-                    <img
-                      className={`goal-target ${daysWorked >= goalDays ? 'met' : ''}`}
-                      src={`${import.meta.env.BASE_URL}target.svg`}
-                      alt="Goal"
-                    />
-                  ) : null}
-                </span>
-              )
-            })}
-            <button type="button" className="goal-edit" onClick={() => setShowGoalDialog(true)}>
-              Set target
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section className="card history-card">
-        <div className="section-head section-head-inline">
-          <div className="section-title">
-            <h2 className="section-title-nowrap">Workout history</h2>
-          </div>
-        </div>
-        <div
-          className="history-chart"
-          style={{ '--target-line': `${(goalDays / historyMax) * 100}%` } as CSSProperties}
-        >
-          <div className="history-bars">
-            <div className="history-target" />
-            {historyWeeks.map((week) => {
-              const barHeight = (week.count / historyMax) * 100
-              return (
-                <div className="history-bar" key={formatLocalIsoDate(week.start)}>
-                  <div className="history-bar-track">
-                    <div
-                      className={`history-bar-fill ${week.isCurrent ? 'is-current' : ''}`}
-                      style={{ '--bar-height': `${barHeight}%` } as CSSProperties}
-                    />
-                  </div>
-                  <span className="history-bar-label">{formatShortDate(week.start)}</span>
-                </div>
-              )
-            })}
-          </div>
-          <div className="history-axis">
-            <span className="label history-axis-top">{historyMax}</span>
-            <span className="history-axis-mid" aria-hidden="true">
-              <img
-                className="history-axis-target"
-                src={`${import.meta.env.BASE_URL}target.svg`}
-                alt=""
-              />
-            </span>
-          </div>
-        </div>
-      </section>
+      <WorkoutHistoryCard
+        historyWeeks={historyWeeks}
+        historyMax={historyMax}
+        goalDays={goalDays}
+        formatShortDate={formatShortDate}
+        formatLocalIsoDate={formatLocalIsoDate}
+      />
     </div>
     {showGoalDialog ? (
       <div className="dialog-backdrop" role="presentation" onClick={() => setShowGoalDialog(false)}>

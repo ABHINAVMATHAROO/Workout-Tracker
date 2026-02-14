@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+/* Base tokens and resets (global) */
+
 :root {
   color-scheme: light;
   --ink-900: #0a1020;
@@ -35,6 +37,7 @@ a {
   color: inherit;
 }
 
+/* Global layout shell (App) */
 body {
   margin: 0;
   min-height: 100vh;
@@ -49,6 +52,7 @@ body {
   min-height: 100dvh;
 }
 
+/* AuthScreen layout + hyperspeed background (AuthScreen) */
 .auth-screen {
   position: relative;
   min-height: 100vh;
@@ -73,6 +77,7 @@ body {
   background: radial-gradient(circle at 10% 10%, rgba(10, 16, 32, 0.3), rgba(10, 16, 32, 0.95));
 }
 
+/* AuthScreen content wrapper (AuthScreen) */
 .auth-screen-content {
   position: relative;
   z-index: 1;
@@ -89,6 +94,7 @@ body {
   padding: 0;
 }
 
+/* Main app container (App) */
 .app {
   max-width: 980px;
   margin: 0 auto;
@@ -98,6 +104,7 @@ body {
   gap: 24px;
 }
 
+/* Auth card styles for non signed-out screens (AuthScreen) */
 .auth-card {
   max-width: 440px;
   width: min(92vw, 440px);
@@ -112,6 +119,7 @@ body {
   -webkit-backdrop-filter: blur(14px);
 }
 
+/* Transparent card variant (AuthScreen) */
 .auth-card--transparent {
   background: transparent;
   border-color: transparent;
@@ -120,6 +128,7 @@ body {
   -webkit-backdrop-filter: none;
 }
 
+/* Signed-out full-screen layout (AuthScreen) */
 .auth-layout {
   width: 100%;
   min-height: 100vh;
@@ -131,6 +140,7 @@ body {
   padding: 60px 0;
 }
 
+/* Signed-out regions (AuthScreen) */
 .auth-top,
 .auth-middle,
 .auth-bottom {
@@ -157,6 +167,7 @@ body {
   align-items: flex-end;
 }
 
+/* Cadax logo block (AuthScreen) */
 .auth-logo {
   position: relative;
   display: grid;
@@ -166,6 +177,7 @@ body {
   margin-bottom: 6px;
 }
 
+/* Logo glow wrapper (AuthScreen) */
 .auth-logo-mark-wrap {
   position: relative;
   display: inline-flex;
@@ -192,6 +204,7 @@ body {
   z-index: 0;
 }
 
+/* Logo mark image (AuthScreen) */
 .auth-logo-mark {
   width: clamp(96px, 20vw, 150px);
   height: auto;
@@ -200,6 +213,7 @@ body {
   z-index: 1;
 }
 
+/* Logo wordmark (AuthScreen) */
 .auth-logo-text {
   color: #ffffff;
   font-size: clamp(1.6rem, 3.8vw, 2.4rem);
@@ -209,21 +223,24 @@ body {
   z-index: 1;
 }
 
+/* Tagline text (AuthScreen) */
 .auth-tagline {
   text-align: center;
   font-size: clamp(0.7rem, 2vw, 1rem);
   font-family: 'IBM Plex Sans', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  margin-top: 60px;
+  margin-top: 24px;
 }
 
+/* Auth action row (AuthScreen) */
 .auth-actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
+/* Hero header and streak card (App + StreakCard) */
 .hero {
   display: flex;
   justify-content: space-between;
@@ -260,6 +277,7 @@ p {
   color: var(--ink-700);
 }
 
+/* Eyebrow label (App header) */
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -267,12 +285,14 @@ p {
   color: var(--ink-500);
 }
 
+/* Subhead date range (App header) */
 .subhead {
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 1rem;
   color: var(--ink-500);
 }
 
+/* StreakCard container (StreakCard) */
 .hero-card {
   background: var(--surface-strong);
   border-radius: 24px;
@@ -289,11 +309,13 @@ p {
   color: var(--ink-500);
 }
 
+/* StreakCard layout (StreakCard) */
 .streak-card {
   min-width: 220px;
   max-width: 240px;
 }
 
+/* StreakCard grid (StreakCard) */
 .streak-split {
   margin-top: 10px;
   display: grid;
@@ -302,12 +324,14 @@ p {
   gap: 16px;
 }
 
+/* StreakCard current block (StreakCard) */
 .streak-current {
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
+/* Streak number (StreakCard) */
 .streak-number {
   font-size: 2.8rem;
   font-weight: 700;
@@ -315,11 +339,13 @@ p {
   color: rgb(var(--cadax-orange));
 }
 
+/* Streak copy text (StreakCard) */
 .streak-copy {
   display: grid;
   gap: 4px;
 }
 
+/* Streak title (StreakCard) */
 .streak-title {
   font-size: 0.72rem;
   letter-spacing: 0.22em;
@@ -327,23 +353,27 @@ p {
   color: var(--ink-500);
 }
 
+/* Streak subtitle (StreakCard) */
 .streak-subtitle {
   font-size: 0.6rem;
   color: var(--ink-700);
 }
 
+/* Streak divider (StreakCard) */
 .streak-divider {
   width: 1px;
   height: 44px;
   background: var(--line);
 }
 
+/* Best streak block (StreakCard) */
 .streak-best {
   display: grid;
   gap: 6px;
   justify-items: start;
 }
 
+/* Best streak label (StreakCard) */
 .streak-best-label {
   font-size: 0.65rem;
   letter-spacing: 0.22em;
@@ -351,6 +381,7 @@ p {
   color: var(--ink-500);
 }
 
+/* Best streak value (StreakCard) */
 .streak-best-value {
   font-size: 1.6rem;
   font-weight: 700;
@@ -411,12 +442,14 @@ p {
   border-radius: inherit;
 }
 
+/* SelectDayCard grid (SelectDayCard) */
 .week-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 12px;
 }
 
+/* SelectDayCard day button (SelectDayCard) */
 .day-pill {
   border-radius: 18px;
   padding: 10px 8px 12px;
@@ -434,15 +467,18 @@ p {
   appearance: none;
 }
 
+/* SelectDayCard past date styling (SelectDayCard) */
 .day-date.past {
   color: rgba(58, 70, 104, 0.45);
 }
 
+/* SelectDayCard hover (SelectDayCard) */
 .day-pill:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 18px rgba(17, 20, 37, 0.12);
 }
 
+/* SelectDayCard disabled future day (SelectDayCard) */
 .day-pill:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -450,23 +486,27 @@ p {
   transform: none;
 }
 
+/* SelectDayCard today (SelectDayCard) */
 .day-pill.today {
   border-color: rgb(var(--cadax-green-light) / 0.6);
   box-shadow: none;
 }
 
+/* SelectDayCard selected day (SelectDayCard) */
 .day-pill.selected {
   border-color: rgb(var(--cadax-blue-light) / 0.7);
   box-shadow: 0 12px 22px rgb(var(--cadax-blue-light) / 0.25);
   background: rgb(var(--cadax-blue-light) / 0.2);
 }
 
+/* SelectDayCard today+selected (SelectDayCard) */
 .day-pill.today.selected {
   border-color: rgb(var(--cadax-green-light) / 0.6);
   box-shadow: 0 10px 18px rgb(var(--cadax-green-light) / 0.28);
   background: rgb(var(--cadax-green-light) / 0.22);
 }
 
+/* SelectDayCard weekday label (SelectDayCard) */
 .day-name {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -476,6 +516,7 @@ p {
   width: 100%;
 }
 
+/* SelectDayCard date number (SelectDayCard) */
 .day-date {
   font-size: 1.1rem;
   font-weight: 600;
@@ -484,6 +525,7 @@ p {
   color: var(--ink-900);
 }
 
+/* SelectDayCard workout dot (SelectDayCard) */
 .dot {
   width: 8px;
   height: 8px;
@@ -492,11 +534,13 @@ p {
   background: rgba(10, 16, 32, 0.2);
 }
 
+/* SelectDayCard active dot (SelectDayCard) */
 .dot.active {
   background: var(--accent-2);
   box-shadow: 0 0 0 4px rgb(var(--cadax-blue-light) / 0.25);
 }
 
+/* SelectDayCard today dot (SelectDayCard) */
 .dot.today {
   background: var(--accent);
   box-shadow: none;
@@ -511,10 +555,12 @@ p {
   box-shadow: none;
 }
 
+/* Workout history card (WorkoutHistoryCard) */
 .history-card {
   margin-bottom: 24px;
 }
 
+/* Workout history chart layout (WorkoutHistoryCard) */
 .history-chart {
   display: grid;
   grid-template-columns: 1fr 28px;
@@ -525,6 +571,7 @@ p {
   appearance: none;
 }
 
+/* Workout history axis (WorkoutHistoryCard) */
 .history-axis {
   position: relative;
   height: 180px;
@@ -549,6 +596,7 @@ p {
   transform: translate(-50%, 50%);
 }
 
+/* Workout history target icon (WorkoutHistoryCard) */
 .history-axis-target {
   width: 28px;
   height: 28px;
@@ -557,6 +605,7 @@ p {
 }
 
 
+/* Workout history bars row (WorkoutHistoryCard) */
 .history-bars {
   position: relative;
   height: 180px;
@@ -567,6 +616,7 @@ p {
   padding-bottom: 6px;
 }
 
+/* Workout history target line (WorkoutHistoryCard) */
 .history-target {
   position: absolute;
   left: 0;
@@ -576,6 +626,7 @@ p {
   pointer-events: none;
 }
 
+/* Workout history bar item (WorkoutHistoryCard) */
 .history-bar {
   display: grid;
   gap: 8px;
@@ -593,6 +644,7 @@ p {
   overflow: hidden;
 }
 
+/* Workout history bar fill (WorkoutHistoryCard) */
 .history-bar-fill {
   width: 100%;
   height: var(--bar-height);
@@ -633,11 +685,13 @@ p {
   white-space: nowrap;
 }
 
+/* Muted helper text (global) */
 .muted {
   color: var(--ink-500);
   font-family: 'IBM Plex Sans', sans-serif;
 }
 
+/* Ghost button (dialogs, auth) */
 .ghost {
   -webkit-appearance: none;
   appearance: none;
@@ -650,6 +704,7 @@ p {
   cursor: pointer;
 }
 
+/* Primary CTA button (auth) */
 .cta {
   border: none;
   background: linear-gradient(120deg, var(--accent), var(--accent-2));
@@ -661,6 +716,7 @@ p {
   box-shadow: 0 12px 22px rgba(17, 20, 37, 0.2);
 }
 
+/* Auth CTA variant (AuthScreen) */
 .auth-cta {
   background: rgb(var(--cadax-orange));
   color: var(--ink-900);
@@ -668,6 +724,7 @@ p {
   width: min(90vw, 550px);
 }
 
+/* Loading CTA variant (AuthScreen loading) */
 .auth-cta-loading {
   height: 60px;
   display: grid;
@@ -677,12 +734,14 @@ p {
   padding: 10px 16px;
 }
 
+/* Loading CTA title (AuthScreen loading) */
 .auth-cta-title {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.1;
 }
 
+/* Loading CTA subtitle (AuthScreen loading) */
 .auth-cta-subtitle {
   font-size: 0.75rem;
   font-weight: 500;
@@ -693,6 +752,7 @@ p {
   gap: 8px;
 }
 
+/* Loading CTA spinner (AuthScreen loading) */
 .auth-cta-spinner {
   width: 16px;
   height: 16px;
@@ -708,22 +768,26 @@ p {
   }
 }
 
+/* Chip grid layout (WeekToggle, WorkoutDetails) */
 .chip-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
+/* WorkoutDetails categories layout (WorkoutDetailsCard) */
 .muscle-categories {
   display: grid;
   gap: 16px;
 }
 
+/* WorkoutDetails category label (WorkoutDetailsCard) */
 .muscle-category .label {
   margin-bottom: 8px;
   display: inline-block;
 }
 
+/* WorkoutDetails chip (WorkoutDetailsCard) */
 .chip {
   border: 1px solid rgba(13, 15, 26, 0.12);
   border-radius: 999px;
@@ -739,18 +803,21 @@ p {
   box-shadow: 0 8px 16px rgba(17, 20, 37, 0.12);
 }
 
+/* WorkoutDetails selected chip (WorkoutDetailsCard) */
 .chip.selected {
   background: rgb(var(--cadax-blue-light) / 0.18);
   border-color: rgb(var(--cadax-blue-light) / 0.6);
   color: var(--ink-900);
 }
 
+/* WorkoutDetails chip for today (WorkoutDetailsCard) */
 .chip.chip-today {
   background: rgb(var(--cadax-green-light) / 0.22);
   border-color: rgb(var(--cadax-green-light) / 0.7);
   color: var(--ink-900);
 }
 
+/* WorkoutDetails chip for week (WorkoutDetailsCard) */
 .chip.chip-week {
   background: rgb(var(--cadax-blue-light) / 0.2);
   border-color: rgb(var(--cadax-blue-light) / 0.55);
@@ -764,6 +831,7 @@ p {
   cursor: default;
 }
 
+/* ThisWeekCard pills base (ThisWeekCard) */
 .pill {
   height: 26px;
   padding: 0 12px;
@@ -792,6 +860,7 @@ p {
   color: var(--ink-900);
 }
 
+/* WeekToggle control (WeekToggle) */
 .week-toggle {
   height: 26px;
   min-width: 96px;
@@ -856,21 +925,25 @@ p {
   color: rgb(var(--cadax-blue-light));
 }
 
+/* ThisWeekCard done pill (ThisWeekCard) */
 .pill-done {
   background: rgb(var(--cadax-green-light) / 0.25);
   color: var(--ink-700);
 }
 
+/* ThisWeekCard remaining pill (ThisWeekCard) */
 .pill-remaining {
   background: rgba(170, 178, 200, 0.35);
   color: var(--ink-700);
 }
 
+/* ThisWeekCard over pill (ThisWeekCard) */
 .pill-over {
   background: rgb(var(--cadax-orange) / 0.25);
   color: var(--ink-700);
 }
 
+/* Goal circles area (ThisWeekCard) */
 .goal-visual {
   display: grid;
   gap: 16px;
@@ -946,6 +1019,7 @@ p {
   font-size: 0.8rem;
 }
 
+/* Goal dialog backdrop (App) */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
@@ -956,6 +1030,7 @@ p {
   padding: 24px;
 }
 
+/* Goal dialog container (App) */
 .dialog {
   width: min(420px, 100%);
   background: var(--surface);
@@ -1026,6 +1101,7 @@ p {
   color: var(--ink-900);
 }
 
+/* Goal dialog actions (App) */
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
@@ -1036,6 +1112,7 @@ p {
   background: linear-gradient(130deg, rgba(255, 255, 255, 0.95), rgba(230, 245, 255, 0.9));
 }
 
+/* Muscle map grid (LogWorkoutCard / MuscleMap) */
 .muscle-map-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1070,6 +1147,7 @@ p {
   display: block;
 }
 
+/* Muscle map view toggle (LogWorkoutCard) */
 .muscle-toggle {
   display: none;
   justify-content: center;
@@ -1077,11 +1155,13 @@ p {
   margin-top: 12px;
 }
 
+/* Muscle map wrapper (LogWorkoutCard) */
 .muscle-map {
   width: 100%;
   height: auto;
 }
 
+/* Muscle map SVG frame (LogWorkoutCard) */
 .muscle-svg-frame {
   width: 100%;
   aspect-ratio: 64 / 100;
@@ -1112,6 +1192,7 @@ p {
   fill: rgba(17, 20, 37, 0.08);
 }
 
+/* Muscle map regions (MuscleMapSvg) */
 .muscle-region {
   pointer-events: all;
 }
@@ -1185,6 +1266,7 @@ p {
 }
 
 
+/* Responsive adjustments (multiple components) */
 @media (max-width: 900px) {
   .hero {
     align-items: flex-start;

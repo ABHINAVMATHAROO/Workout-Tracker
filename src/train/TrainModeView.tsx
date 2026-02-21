@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import TrainInputCard from './components/TrainInputCard'
 import TrainPlanCard from './components/TrainPlanCard'
 import TrainCoachCard from './components/TrainCoachCard'
+import TrainMuscleSelectCard from './components/TrainMuscleSelectCard'
 import { createCoachWeb } from './coachWeb'
 import { generateWorkout } from './generateWorkout'
 import type { GeneratedTrainWorkout, Intensity, MuscleGroup } from './types'
@@ -18,6 +19,9 @@ const getPromptForIndex = (workout: GeneratedTrainWorkout, index: number) => {
 export default function TrainModeView() {
   const [muscleGroup, setMuscleGroup] = useState<MuscleGroup>('Chest')
   const [intensity, setIntensity] = useState<Intensity>('Beginner')
+  const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
+  const [hasSelectedFromMap, setHasSelectedFromMap] = useState(false)
+  const [isFocusExpanded, setIsFocusExpanded] = useState(true)
   const [workout, setWorkout] = useState<GeneratedTrainWorkout | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [coachStarted, setCoachStarted] = useState(false)
@@ -44,19 +48,28 @@ export default function TrainModeView() {
   }
 
   const handleGenerate = () => {
+    setHasSelectedFromMap(true)
+    setIsFocusExpanded(false)
     applyWorkout(muscleGroup, intensity)
   }
 
   const handleSelectMuscleGroup = (group: MuscleGroup) => {
     setMuscleGroup(group)
-    if (!workout) return
+    if (!hasSelectedFromMap) return
     applyWorkout(group, intensity)
   }
 
   const handleSelectIntensity = (nextIntensity: Intensity) => {
     setIntensity(nextIntensity)
-    if (!workout) return
+    if (!hasSelectedFromMap) return
     applyWorkout(muscleGroup, nextIntensity)
+  }
+
+  const handleSelectMuscleFromMap = (group: MuscleGroup) => {
+    setMuscleGroup(group)
+    setHasSelectedFromMap(true)
+    setIsFocusExpanded(false)
+    applyWorkout(group, intensity)
   }
 
   const handleStartCoach = () => {
@@ -116,21 +129,41 @@ export default function TrainModeView() {
 
   return (
     <>
+      <TrainMuscleSelectCard
+        selectedMuscle={hasSelectedFromMap ? muscleGroup : null}
+        isExpanded={isFocusExpanded}
+        intensity={intensity}
+        view={muscleView}
+        onSelectMuscle={handleSelectMuscleFromMap}
+        onExpand={() => setIsFocusExpanded(true)}
+        onFlip={() => setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))}
+        onSelectIntensity={handleSelectIntensity}
+      />
+
+      {hasSelectedFromMap ? (
+        <>
+          <TrainPlanCard workout={workout} activeIndex={activeIndex} />
+          <TrainCoachCard
+            canStart={!coachStarted}
+            canAdvance={coachStarted && workout !== null && workout.plan.mainExercises.length > 0}
+            onStartCoach={handleStartCoach}
+            onNextPrompt={handleNextPrompt}
+            onStopCoach={handleStopCoach}
+            status={coachStatus}
+          />
+        </>
+      ) : (
+        <section className="card">
+          <p className="muted">Tap a muscle region above to load your training plan.</p>
+        </section>
+      )}
+
       <TrainInputCard
         muscleGroup={muscleGroup}
         intensity={intensity}
         onSelectMuscleGroup={handleSelectMuscleGroup}
         onSelectIntensity={handleSelectIntensity}
         onGenerate={handleGenerate}
-      />
-      <TrainPlanCard workout={workout} activeIndex={activeIndex} />
-      <TrainCoachCard
-        canStart={!coachStarted}
-        canAdvance={coachStarted && workout !== null && workout.plan.mainExercises.length > 0}
-        onStartCoach={handleStartCoach}
-        onNextPrompt={handleNextPrompt}
-        onStopCoach={handleStopCoach}
-        status={coachStatus}
       />
     </>
   )

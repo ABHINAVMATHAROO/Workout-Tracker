@@ -1,0 +1,175 @@
+{
+  "muscle": "Forearms",
+  "regions": [
+    {
+      "area": "Flexors",
+      "focus": "Inner forearm; responsible for closing the hand and wrist flexion."
+    },
+    {
+      "area": "Extensors",
+      "focus": "Outer forearm; responsible for opening the hand and wrist extension."
+    },
+    {
+      "area": "Brachioradialis",
+      "focus": "Top of the forearm near the elbow; adds significant thickness."
+    }
+  ],
+  "warmup": [
+    "Wrist Circles: 20 reps",
+    "Finger Pulses (Opening/Closing hands fast): 30 reps",
+    "Prayer Stretch: 20s"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Developing basic grip endurance and wrist stability.",
+      "main_exercises": [
+        {
+          "exercise": "Farmer's Walk",
+          "equipment": "Heavy Dumbbells",
+          "reps": "30-45 seconds",
+          "sets": 3,
+          "activated_region": ["All Regions (Grip Strength)"]
+        },
+        {
+          "exercise": "Palms-Up DB Wrist Curls",
+          "equipment": "Dumbbells + Bench",
+          "reps": "15-20",
+          "sets": 3,
+          "activated_region": ["Flexors"]
+        },
+        {
+          "exercise": "Palms-Down DB Wrist Curls",
+          "equipment": "Dumbbells + Bench",
+          "reps": "15-20",
+          "sets": 3,
+          "activated_region": ["Extensors"]
+        },
+        {
+          "exercise": "Dead Hang",
+          "equipment": "Pull-up Bar",
+          "reps": "Max time",
+          "sets": 3,
+          "activated_region": ["All Regions"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "DB Hammer Curls",
+          "equipment": "Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Brachioradialis"]
+        },
+        {
+          "exercise": "Towel Hang",
+          "equipment": "Pull-up Bar + Towel",
+          "reps": "Max time",
+          "sets": 3,
+          "activated_region": ["Flexors", "Grip Strength"]
+        }
+      ]
+    },
+    "intermediate": {
+      "focus": "Adding weighted wrist movement and focused brachioradialis work.",
+      "main_exercises": [
+        {
+          "exercise": "Reverse Barbell Curls",
+          "equipment": "Barbell or EZ-Bar",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Brachioradialis", "Extensors"]
+        },
+        {
+          "exercise": "Wrist Roller",
+          "equipment": "Wrist Roller Device",
+          "reps": "3-5 cycles (Up/Down)",
+          "sets": 3,
+          "activated_region": ["Flexors", "Extensors"]
+        },
+        {
+          "exercise": "Behind-the-Back Barbell Wrist Curls",
+          "equipment": "Barbell",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Flexors"]
+        },
+        {
+          "exercise": "Plate Pinches",
+          "equipment": "Two Weight Plates",
+          "reps": "30-45 seconds",
+          "sets": 3,
+          "activated_region": ["Flexors (Pinch Grip)"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Cable Wrist Curls",
+          "equipment": "Cable Machine",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Flexors"]
+        },
+        {
+          "exercise": "Single Arm DB Suitcase Carry",
+          "equipment": "Dumbbell",
+          "reps": "30s per side",
+          "sets": 3,
+          "activated_region": ["Grip Strength", "Core"]
+        }
+      ]
+    },
+    "hard": {
+      "focus": "Advanced grip training and maximum forearm hypertrophy.",
+      "main_exercises": [
+        {
+          "exercise": "Weighted Towel Pull-ups",
+          "equipment": "Towel + Pull-up Bar + Belt",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["All Regions (Crush Grip)"]
+        },
+        {
+          "exercise": "Zottman Curls",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 4,
+          "activated_region": ["Brachioradialis", "Flexors"]
+        },
+        {
+          "exercise": "Fat Grip Barbell Rows",
+          "equipment": "Barbell + Fat Grips",
+          "reps": "8",
+          "sets": 3,
+          "activated_region": ["All Regions"]
+        },
+        {
+          "exercise": "Lever Bar Rotations",
+          "equipment": "Dumbbell (weighted on one side only)",
+          "reps": "12 per side",
+          "sets": 3,
+          "activated_region": ["Pronators/Supinators"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Hand Grippers",
+          "equipment": "Tension Grippers",
+          "reps": "Failure",
+          "sets": 5,
+          "activated_region": ["Flexors"]
+        },
+        {
+          "exercise": "Reverse Grip Cable Curls (Fat Grip)",
+          "equipment": "Cable Machine + Fat Grip",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Brachioradialis"]
+        }
+      ]
+    }
+  },
+  "post_workout_stretch": [
+    "Wrist Extensor Stretch (Back of hand pressed down): 30s per side",
+    "Wrist Flexor Stretch (Palm pressed back): 30s per side"
+  ]
+}

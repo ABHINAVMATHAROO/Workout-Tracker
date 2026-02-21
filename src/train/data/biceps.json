@@ -1,0 +1,175 @@
+{
+  "muscle": "Biceps Brachii",
+  "regions": [
+    {
+      "area": "Long Head",
+      "focus": "Outer bicep; responsible for the 'peak' when flexed."
+    },
+    {
+      "area": "Short Head",
+      "focus": "Inner bicep; provides thickness when seen from the front."
+    },
+    {
+      "area": "Brachialis",
+      "focus": "Muscle underneath the bicep; pushes the bicep up for more width."
+    }
+  ],
+  "warmup": [
+    "Passive Hang: 30 seconds",
+    "Wrist Circles: 20 reps",
+    "Light DB Curls: 15 reps (high speed, low weight)"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Isolation and strict form using dumbbells.",
+      "main_exercises": [
+        {
+          "exercise": "Standing Alternating DB Curls",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Long Head", "Short Head"]
+        },
+        {
+          "exercise": "Hammer Curls",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Brachialis", "Forearms"]
+        },
+        {
+          "exercise": "Concentration Curls",
+          "equipment": "Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Short Head (Peak)"]
+        },
+        {
+          "exercise": "Seated Inner-Bicep Curls",
+          "equipment": "Dumbbells + Bench",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Short Head"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Cross-Body Hammer Curls",
+          "equipment": "Dumbbells",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Brachialis"]
+        },
+        {
+          "exercise": "Zottman Curls",
+          "equipment": "Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Biceps", "Forearms"]
+        }
+      ]
+    },
+    "intermediate": {
+      "focus": "Introducing barbell volume and focused preacher support.",
+      "main_exercises": [
+        {
+          "exercise": "Barbell Curls",
+          "equipment": "Barbell",
+          "reps": "8-10",
+          "sets": 4,
+          "activated_region": ["All Regions"]
+        },
+        {
+          "exercise": "EZ-Bar Preacher Curls",
+          "equipment": "EZ-Bar + Preacher Bench",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Short Head"]
+        },
+        {
+          "exercise": "Cable Rope Curls",
+          "equipment": "Cable Machine",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["Brachialis", "Short Head"]
+        },
+        {
+          "exercise": "Incline DB Curls",
+          "equipment": "Dumbbells + Bench",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Long Head (Stretch focus)"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "High Cable Curls",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Short Head (Peak)"]
+        },
+        {
+          "exercise": "Reverse Grip Barbell Curls",
+          "equipment": "Barbell",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Brachialis", "Forearms"]
+        }
+      ]
+    },
+    "hard": {
+      "focus": "High intensity, cheat reps, and advanced machine isolation.",
+      "main_exercises": [
+        {
+          "exercise": "Weighted Chin-ups",
+          "equipment": "Pull-up Bar + Belt",
+          "reps": "6-8",
+          "sets": 3,
+          "activated_region": ["All Regions"]
+        },
+        {
+          "exercise": "Spider Curls",
+          "equipment": "Barbell + Incline Bench",
+          "reps": "10",
+          "sets": 4,
+          "activated_region": ["Short Head"]
+        },
+        {
+          "exercise": "Bayesian Cable Curls",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Long Head (Deep Stretch)"]
+        },
+        {
+          "exercise": "Machine Bicep Curls",
+          "equipment": "Bicep Machine",
+          "reps": "8-12 (to failure)",
+          "sets": 4,
+          "activated_region": ["All Regions"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Drag Curls",
+          "equipment": "Barbell",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Long Head"]
+        },
+        {
+          "exercise": "21s (Barbell Curls)",
+          "equipment": "Barbell",
+          "reps": "21 (7/7/7)",
+          "sets": 3,
+          "activated_region": ["All Regions"]
+        }
+      ]
+    }
+  },
+  "post_workout_stretch": [
+    "Wall Bicep Stretch: 30s per side",
+    "Behind-the-back Hand Interlock: 30s"
+  ]
+}

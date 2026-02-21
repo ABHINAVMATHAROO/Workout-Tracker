@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
 import {
   collection,
@@ -17,11 +17,8 @@ import { calculateStreaks } from './streakCalculator'
 import AuthScreen from './AuthScreen'
 import { type HyperspeedOptions } from './hyperspeed/background'
 import StreakCard from './components/StreakCard'
-import SelectDayCard from './components/SelectDayCard'
-import LogWorkoutCard from './components/LogWorkoutCard'
-import WorkoutDetailsCard from './components/WorkoutDetailsCard'
-import ThisWeekCard from './components/ThisWeekCard'
-import WorkoutHistoryCard from './components/WorkoutHistoryCard'
+import FloatingModeNav from './components/FloatingModeNav'
+import LogModeView from './components/LogModeView'
 
 const MUSCLE_CATEGORIES = {
   Push: ['Chest', 'Triceps', 'Shoulder'],
@@ -156,6 +153,8 @@ const signInWithGoogle = async (setAuthStatus: (status: AuthStatus) => void) => 
   await signInWithPopup(auth, googleProvider)
 }
 
+const TrainModeView = lazy(() => import('./train/TrainModeView'))
+
 export default function App() {
   const today = useMemo(() => {
     const now = new Date()
@@ -164,6 +163,7 @@ export default function App() {
   }, [])
 
   const [goalDays, setGoalDays] = useState(4)
+  const [appMode, setAppMode] = useState<'log' | 'train'>('log')
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading')
   const [user, setUser] = useState<User | null>(null)
@@ -486,69 +486,61 @@ export default function App() {
         />
       </header>
 
-      <SelectDayCard
-        weekDates={weekDates}
-        today={today}
-        selectedDate={selectedDate}
-        daysWorked={daysWorked}
-        workoutDateSet={workoutDateSet}
-        formatWeekday={formatWeekday}
-        formatLocalIsoDate={formatLocalIsoDate}
-        onSelectDate={setSelectedDate}
-        onPrevWeek={() => setWeekOffset((prev) => prev - 1)}
-        onNextWeek={() => setWeekOffset((prev) => prev + 1)}
-        canGoNext={weekStart.getTime() < currentWeekStart.getTime()}
-      />
-
-      <LogWorkoutCard
-        showAllMuscleHighlights={showAllMuscleHighlights}
-        selectedDate={selectedDate}
-        parseIsoDate={parseIsoDate}
-        formatShortDate={formatShortDate}
-        onToggleHighlights={() => setShowAllMuscleHighlights((prev) => !prev)}
-      >
-        <MuscleMap
-          weeklyCounts={highlightCounts}
-          selectedGroups={showAllMuscleHighlights ? [] : dayMuscles}
-          view={muscleView}
-          onToggle={toggleDayMuscle}
-          onFlip={() =>
-            setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))
+      {appMode === 'log' ? (
+        <LogModeView
+          weekDates={weekDates}
+          today={today}
+          selectedDate={selectedDate}
+          daysWorked={daysWorked}
+          workoutDateSet={workoutDateSet}
+          formatWeekday={formatWeekday}
+          formatLocalIsoDate={formatLocalIsoDate}
+          onSelectDate={setSelectedDate}
+          onPrevWeek={() => setWeekOffset((prev) => prev - 1)}
+          onNextWeek={() => setWeekOffset((prev) => prev + 1)}
+          canGoNext={weekStart.getTime() < currentWeekStart.getTime()}
+          showAllMuscleHighlights={showAllMuscleHighlights}
+          parseIsoDate={parseIsoDate}
+          formatShortDate={formatShortDate}
+          onToggleHighlights={() => setShowAllMuscleHighlights((prev) => !prev)}
+          muscleMap={
+            <MuscleMap
+              weeklyCounts={highlightCounts}
+              selectedGroups={showAllMuscleHighlights ? [] : dayMuscles}
+              view={muscleView}
+              onToggle={toggleDayMuscle}
+              onFlip={() =>
+                setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))
+              }
+            />
           }
+          muscleCategories={MUSCLE_CATEGORIES}
+          dayMuscles={dayMuscles}
+          weeklyMuscleCounts={weeklyMuscleCounts}
+          weeklyWorkedGroups={weeklyWorkedGroups}
+          onToggleDayMuscle={toggleDayMuscle}
+          daysToGo={daysToGo}
+          daysOverGoal={daysOverGoal}
+          goalDays={goalDays}
+          goalBoxCount={goalBoxCount}
+          onEditGoal={() => setShowGoalDialog(true)}
+          historyWeeks={historyWeeks}
+          historyMax={historyMax}
         />
-      </LogWorkoutCard>
-
-      <WorkoutDetailsCard
-        muscleCategories={MUSCLE_CATEGORIES}
-        showAllMuscleHighlights={showAllMuscleHighlights}
-        selectedDate={selectedDate}
-        dayMuscles={dayMuscles}
-        weeklyMuscleCounts={weeklyMuscleCounts}
-        weeklyWorkedGroups={weeklyWorkedGroups}
-        parseIsoDate={parseIsoDate}
-        formatShortDate={formatShortDate}
-        onToggleHighlights={() => setShowAllMuscleHighlights((prev) => !prev)}
-        onToggleDayMuscle={toggleDayMuscle}
-      />
-
-      <ThisWeekCard
-        daysWorked={daysWorked}
-        daysToGo={daysToGo}
-        daysOverGoal={daysOverGoal}
-        goalDays={goalDays}
-        goalBoxCount={goalBoxCount}
-        onEditGoal={() => setShowGoalDialog(true)}
-      />
-
-      <WorkoutHistoryCard
-        historyWeeks={historyWeeks}
-        historyMax={historyMax}
-        goalDays={goalDays}
-        formatShortDate={formatShortDate}
-        formatLocalIsoDate={formatLocalIsoDate}
-      />
+      ) : (
+        <Suspense
+          fallback={
+            <section className="card">
+              <p className="muted">Loading train mode...</p>
+            </section>
+          }
+        >
+          <TrainModeView />
+        </Suspense>
+      )}
     </div>
-    {showGoalDialog ? (
+    <FloatingModeNav mode={appMode} onChangeMode={setAppMode} />
+    {appMode === 'log' && showGoalDialog ? (
       <div className="dialog-backdrop" role="presentation" onClick={() => setShowGoalDialog(false)}>
         <div
           className="dialog"

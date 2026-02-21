@@ -1,0 +1,179 @@
+{
+  "muscle": "Core (Abs, Obliques, and Deep Stabilizers)",
+  "regions": [
+    {
+      "area": "Upper & Lower Abs",
+      "anatomical_name": "Rectus Abdominis",
+      "focus": "The 'six-pack' look; spinal flexion and leg lifting."
+    },
+    {
+      "area": "Obliques",
+      "anatomical_name": "Internal & External Obliques",
+      "focus": "Sides of the waist; rotation and lateral stability."
+    },
+    {
+      "area": "Deep Core",
+      "anatomical_name": "Transverse Abdominis",
+      "focus": "The 'weight belt' muscle; bracing and flat stomach appearance."
+    }
+  ],
+  "warmup": [
+    "Cat-Cow Stretch: 10 reps (spinal mobility)",
+    "Bird-Dog: 10 reps per side (cross-body activation)",
+    "Dead Bug (unweighted): 12 reps"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Establishing stability and learning to brace the spine.",
+      "main_exercises": [
+        {
+          "exercise": "Plank",
+          "equipment": "Bodyweight",
+          "reps": "30-60 seconds",
+          "sets": 3,
+          "activated_region": ["Deep Core", "Transverse Abdominis"]
+        },
+        {
+          "exercise": "Dead Bug",
+          "equipment": "Bodyweight/Mat",
+          "reps": "12 per side",
+          "sets": 3,
+          "activated_region": ["Lower Abs", "Deep Core"]
+        },
+        {
+          "exercise": "Reverse Crunches",
+          "equipment": "Bodyweight",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Lower Abs"]
+        },
+        {
+          "exercise": "Heel Touches",
+          "equipment": "Bodyweight",
+          "reps": "20 total",
+          "sets": 3,
+          "activated_region": ["Obliques"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Standard Crunch",
+          "equipment": "Bodyweight",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Upper Abs"]
+        },
+        {
+          "exercise": "Glute Bridge",
+          "equipment": "Bodyweight",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Lower Back", "Glutes"]
+        }
+      ]
+    },
+    "intermediate": {
+      "focus": "Introducing dynamic movement and resistance.",
+      "main_exercises": [
+        {
+          "exercise": "Hanging Knee Raises",
+          "equipment": "Pull-up Bar",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["Lower Abs"]
+        },
+        {
+          "exercise": "Russian Twists",
+          "equipment": "Medicine Ball or DB",
+          "reps": "20 total",
+          "sets": 3,
+          "activated_region": ["Obliques"]
+        },
+        {
+          "exercise": "Pallof Press",
+          "equipment": "Cable Machine or Band",
+          "reps": "12 per side",
+          "sets": 3,
+          "activated_region": ["Deep Core (Anti-Rotation)"]
+        },
+        {
+          "exercise": "V-Ups",
+          "equipment": "Bodyweight",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Upper & Lower Abs"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Bicycle Crunches",
+          "equipment": "Bodyweight",
+          "reps": "20 total",
+          "sets": 3,
+          "activated_region": ["Obliques", "Abs"]
+        },
+        {
+          "exercise": "Cable Crunches",
+          "equipment": "Cable Machine",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Upper Abs"]
+        }
+      ]
+    },
+    "hard": {
+      "focus": "High-intensity stability and explosive rotational power.",
+      "main_exercises": [
+        {
+          "exercise": "Hanging Leg Raises (Straight Leg)",
+          "equipment": "Pull-up Bar",
+          "reps": "10-12",
+          "sets": 4,
+          "activated_region": ["Total Abs", "Hip Flexors"]
+        },
+        {
+          "exercise": "Ab Wheel Rollouts",
+          "equipment": "Ab Roller",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Deep Core", "Total Abs"]
+        },
+        {
+          "exercise": "Cable Woodchoppers",
+          "equipment": "Cable Machine",
+          "reps": "12 per side",
+          "sets": 3,
+          "activated_region": ["Obliques", "Rotational Power"]
+        },
+        {
+          "exercise": "L-Sit Hold",
+          "equipment": "Parallettes or Dip Bars",
+          "reps": "Max time",
+          "sets": 3,
+          "activated_region": ["Total Core", "Deep Stabilizers"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Dragon Flags",
+          "equipment": "Weight Bench",
+          "reps": "5-8",
+          "sets": 3,
+          "activated_region": ["Total Core (Extreme Flexion)"]
+        },
+        {
+          "exercise": "Toes to Bar",
+          "equipment": "Pull-up Bar",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Total Abs"]
+        }
+      ]
+    }
+  },
+  "post_workout_stretch": [
+    "Cobra Stretch (Abs): 45s",
+    "Child's Pose (Lower Back release): 45s",
+    "Seated Torso Twist: 30s per side"
+  ]
+}

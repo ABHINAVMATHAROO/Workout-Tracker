@@ -1,0 +1,49 @@
+{
+  "routine": "Pull Day",
+  "muscles": ["Back", "Biceps"],
+  "structure": "4 Back Exercises + 2 Biceps Exercises",
+  "warmup": [
+    "Cat-Cow Stretch: 10 reps",
+    "Scapular Squeezes: 15 reps",
+    "Light DB Curls: 15 reps"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Developing the pull pattern and grip.",
+      "main_exercises": [
+        { "exercise": "Single Arm DB Row", "equipment": "Dumbbell", "reps": "10-12", "sets": 3, "target": "Back (Lats/Mid)" },
+        { "exercise": "DB Shrugs", "equipment": "Dumbbells", "reps": "12-15", "sets": 3, "target": "Back (Upper/Traps)" },
+        { "exercise": "Superman", "equipment": "Mat", "reps": "12-15", "sets": 3, "target": "Back (Lower)" },
+        { "exercise": "Inverted Rows", "equipment": "Low Bar", "reps": "Max", "sets": 3, "target": "Back (Mid/Lats)" },
+        { "exercise": "Standing DB Curls", "equipment": "Dumbbells", "reps": "12", "sets": 3, "target": "Biceps (All Heads)" },
+        { "exercise": "DB Hammer Curls", "equipment": "Dumbbells", "reps": "10-12", "sets": 3, "target": "Biceps (Brachialis)" }
+      ],
+      "alternatives": ["DB Reverse Fly", "Bird-Dog", "Concentration Curls"]
+    },
+    "intermediate": {
+      "focus": "Vertical pulling and bicep peak development.",
+      "main_exercises": [
+        { "exercise": "Lat Pulldowns", "equipment": "Cable Machine", "reps": "10-12", "sets": 4, "target": "Back (Lats)" },
+        { "exercise": "Seated Cable Rows", "equipment": "Cable Machine", "reps": "10", "sets": 3, "target": "Back (Mid/Rhomboids)" },
+        { "exercise": "Pull-ups", "equipment": "Pull-up Bar", "reps": "Max", "sets": 3, "target": "Back (Lats/Upper)" },
+        { "exercise": "Face Pulls", "equipment": "Cable Rope", "reps": "15", "sets": 3, "target": "Back (Upper/Rear Delts)" },
+        { "exercise": "EZ-Bar Preacher Curls", "equipment": "EZ-Bar", "reps": "10-12", "sets": 3, "target": "Biceps (Short Head/Peak)" },
+        { "exercise": "Incline DB Curls", "equipment": "Dumbbells", "reps": "10", "sets": 3, "target": "Biceps (Long Head)" }
+      ],
+      "alternatives": ["Straight Arm Pulldown", "Hyper-extensions", "Cable Rope Curls"]
+    },
+    "hard": {
+      "focus": "Maximum pulling power and weighted intensity.",
+      "main_exercises": [
+        { "exercise": "Conventional Deadlift", "equipment": "Barbell", "reps": "5", "sets": 5, "target": "Back (All/Lower)" },
+        { "exercise": "Bent-Over Barbell Rows", "equipment": "Barbell", "reps": "8", "sets": 4, "target": "Back (Mid/Lats)" },
+        { "exercise": "Weighted Pull-ups", "equipment": "Pull-up Bar + Belt", "reps": "6-8", "sets": 3, "target": "Back (Lats/Upper)" },
+        { "exercise": "T-Bar Row", "equipment": "Landmine", "reps": "8-10", "sets": 4, "target": "Back (Mid/Upper)" },
+        { "exercise": "Weighted Chin-ups", "equipment": "Pull-up Bar + Belt", "reps": "6-8", "sets": 3, "target": "Biceps (All Heads)" },
+        { "exercise": "Spider Curls", "equipment": "Barbell + Bench", "reps": "10", "sets": 4, "target": "Biceps (Short Head)" }
+      ],
+      "alternatives": ["Rack Pulls", "Meadows Row", "Bayesian Cable Curls"]
+    }
+  },
+  "post_workout_stretch": ["Child's Pose", "Wall Bicep Stretch"]
+}

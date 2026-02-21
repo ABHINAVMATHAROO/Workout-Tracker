@@ -1,0 +1,179 @@
+{
+  "muscle": "Back (Posterior Chain)",
+  "regions": [
+    {
+      "area": "Lats (Latissimus Dorsi)",
+      "anatomical_name": "Lats",
+      "focus": "Vertical pulling; creates back width."
+    },
+    {
+      "area": "Upper & Mid Back",
+      "anatomical_name": "Trapezius and Rhomboids",
+      "focus": "Horizontal pulling/shrugging; creates back thickness."
+    },
+    {
+      "area": "Lower Back",
+      "anatomical_name": "Erector Spinae",
+      "focus": "Stability and extension; supports the spine."
+    }
+  ],
+  "warmup": [
+    "Cat-Cow Stretch: 10 reps (spinal mobility)",
+    "Scapular Squeezes: 15 reps (shoulder blade activation)",
+    "Arm Circles: 20 reps (shoulder joint lubrication)"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Building horizontal pulling strength and mind-muscle connection with dumbbells.",
+      "main_exercises": [
+        {
+          "exercise": "Single Arm DB Row",
+          "equipment": "Dumbbell + Bench",
+          "reps": "10-12 per side",
+          "sets": 3,
+          "activated_region": ["Lats", "Mid Back"]
+        },
+        {
+          "exercise": "DB Shrugs",
+          "equipment": "Dumbbells",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["Upper Back (Traps)"]
+        },
+        {
+          "exercise": "Superman",
+          "equipment": "Bodyweight/Mat",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["Lower Back"]
+        },
+        {
+          "exercise": "Inverted Rows",
+          "equipment": "Low Bar/Smith Machine",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["Mid Back", "Lats"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "DB Reverse Fly",
+          "equipment": "Light Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Upper Back", "Rear Delts"]
+        },
+        {
+          "exercise": "Bird-Dog",
+          "equipment": "Bodyweight/Mat",
+          "reps": "10 per side",
+          "sets": 3,
+          "activated_region": ["Lower Back", "Core"]
+        }
+      ]
+    },
+    "intermediate": {
+      "focus": "Introducing vertical pulling and cable resistance for constant tension.",
+      "main_exercises": [
+        {
+          "exercise": "Lat Pulldowns",
+          "equipment": "Cable Machine",
+          "reps": "10-12",
+          "sets": 4,
+          "activated_region": ["Lats"]
+        },
+        {
+          "exercise": "Seated Cable Rows",
+          "equipment": "Cable Machine",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Mid Back", "Rhomboids"]
+        },
+        {
+          "exercise": "Pull-ups (or Assisted)",
+          "equipment": "Pull-up Bar",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["Lats", "Upper Back"]
+        },
+        {
+          "exercise": "Face Pulls",
+          "equipment": "Cable Machine + Rope",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Upper Back", "Rear Delts"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Straight Arm Pulldowns",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Lats"]
+        },
+        {
+          "exercise": "Hyper-extensions",
+          "equipment": "Roman Chair/Bench",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Lower Back"]
+        }
+      ]
+    },
+    "hard": {
+      "focus": "Heavy compound movements and explosive power for maximum thickness.",
+      "main_exercises": [
+        {
+          "exercise": "Conventional Deadlift",
+          "equipment": "Barbell + Plates",
+          "reps": "5",
+          "sets": 5,
+          "activated_region": ["Lower Back", "All Regions"]
+        },
+        {
+          "exercise": "Bent-Over Barbell Rows",
+          "equipment": "Barbell",
+          "reps": "8",
+          "sets": 4,
+          "activated_region": ["Mid Back", "Lats"]
+        },
+        {
+          "exercise": "Weighted Pull-ups",
+          "equipment": "Pull-up Bar + Dip Belt",
+          "reps": "6-8",
+          "sets": 3,
+          "activated_region": ["Lats", "Upper Back"]
+        },
+        {
+          "exercise": "T-Bar Row",
+          "equipment": "Landmine/Barbell Corner",
+          "reps": "8-10",
+          "sets": 4,
+          "activated_region": ["Mid Back", "Upper Back"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Rack Pulls",
+          "equipment": "Barbell + Rack",
+          "reps": "5-8",
+          "sets": 3,
+          "activated_region": ["Upper Back", "Lower Back"]
+        },
+        {
+          "exercise": "Meadows Row",
+          "equipment": "Barbell + Landmine",
+          "reps": "10 per side",
+          "sets": 3,
+          "activated_region": ["Lower Lats", "Mid Back"]
+        }
+      ]
+    }
+  },
+  "post_workout_stretch": [
+    "Child's Pose: Hold for 45s (decompresses spine and lats)",
+    "Lat Stretch (Standing): Hold onto a vertical post and lean back for 30s per side",
+    "Forward Fold: Reach for toes for 30s to release the erectors"
+  ]
+}

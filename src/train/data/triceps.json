@@ -1,0 +1,175 @@
+{
+  "muscle": "Triceps Brachii",
+  "regions": [
+    {
+      "area": "Long Head",
+      "focus": "Inner back of the arm; biggest part of the tricep."
+    },
+    {
+      "area": "Lateral Head",
+      "focus": "Outer side of the arm; creates the 'horseshoe' look."
+    },
+    {
+      "area": "Medial Head",
+      "focus": "Lower tricep near the elbow; provides stability."
+    }
+  ],
+  "warmup": [
+    "Push-ups (on knees): 15 reps",
+    "Arm Over-Head Stretch: 20s per side",
+    "Plank to Downward Dog: 10 reps"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Developing extension strength with basic movements.",
+      "main_exercises": [
+        {
+          "exercise": "Overhead Two-Arm DB Extension",
+          "equipment": "Dumbbell",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Long Head"]
+        },
+        {
+          "exercise": "Tricep Kickbacks",
+          "equipment": "Dumbbells",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["Lateral Head"]
+        },
+        {
+          "exercise": "Bench Dips",
+          "equipment": "Flat Bench",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["Lateral & Medial Head"]
+        },
+        {
+          "exercise": "DB Floor Press (Narrow Grip)",
+          "equipment": "Dumbbells",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["All Heads"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Single Arm Overhead DB Ext",
+          "equipment": "Dumbbell",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Long Head"]
+        },
+        {
+          "exercise": "Diamond Push-ups",
+          "equipment": "Bodyweight",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["All Heads"]
+        }
+      ]
+    },
+    "intermediate": {
+      "focus": "Constant tension with cables and compound barbell pressing.",
+      "main_exercises": [
+        {
+          "exercise": "Cable Rope Pushdowns",
+          "equipment": "Cable Machine",
+          "reps": "12-15",
+          "sets": 4,
+          "activated_region": ["Lateral Head"]
+        },
+        {
+          "exercise": "Skull Crushers",
+          "equipment": "EZ-Bar + Bench",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["All Heads"]
+        },
+        {
+          "exercise": "Close-Grip Barbell Bench",
+          "equipment": "Barbell + Bench",
+          "reps": "8-10",
+          "sets": 3,
+          "activated_region": ["All Heads"]
+        },
+        {
+          "exercise": "Straight Bar Cable Pushdowns",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Medial & Lateral Head"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Dips",
+          "equipment": "Parallel Bars",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["All Heads"]
+        },
+        {
+          "exercise": "Cable Overhead Extensions",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Long Head"]
+        }
+      ]
+    },
+    "hard": {
+      "focus": "Heavily weighted compounds and total failure isolation.",
+      "main_exercises": [
+        {
+          "exercise": "Weighted Dips",
+          "equipment": "Dip Belt + Plates",
+          "reps": "6-8",
+          "sets": 4,
+          "activated_region": ["All Heads"]
+        },
+        {
+          "exercise": "JM Press",
+          "equipment": "Barbell + Rack",
+          "reps": "8-10",
+          "sets": 3,
+          "activated_region": ["Lateral & Medial Head"]
+        },
+        {
+          "exercise": "Incline Skull Crushers",
+          "equipment": "EZ-Bar + Incline Bench",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Long Head (Deep Stretch)"]
+        },
+        {
+          "exercise": "Cross-Body Cable Extensions",
+          "equipment": "Dual Cables",
+          "reps": "15",
+          "sets": 4,
+          "activated_region": ["Lateral Head"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Reverse Grip Cable Pushdown",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Medial Head"]
+        },
+        {
+          "exercise": "Single Arm Cable Kickbacks (No Handle)",
+          "equipment": "Cable Machine",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Lateral Head"]
+        }
+      ]
+    }
+  },
+  "post_workout_stretch": [
+    "Overhead Tricep Stretch: 30s per side",
+    "Cross-Body Tricep Pull: 30s per side"
+  ]
+}

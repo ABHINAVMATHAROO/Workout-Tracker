@@ -1,0 +1,49 @@
+{
+  "routine": "Push Day",
+  "muscles": ["Chest", "Triceps"],
+  "structure": "4 Chest Exercises + 2 Triceps Exercises",
+  "warmup": [
+    "Arm Circles: 20 reps",
+    "Wall Push-ups: 15 reps",
+    "Band Pull-Aparts: 15 reps"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Building horizontal and vertical pushing mechanics.",
+      "main_exercises": [
+        { "exercise": "Standard Push-ups", "equipment": "Bodyweight", "reps": "Max", "sets": 3, "target": "Chest (Mid/Lower)" },
+        { "exercise": "Flat DB Bench Press", "equipment": "Dumbbells", "reps": "10-12", "sets": 3, "target": "Chest (Mid/Lower)" },
+        { "exercise": "Incline DB Bench Press", "equipment": "Dumbbells + Bench", "reps": "10-12", "sets": 3, "target": "Chest (Upper)" },
+        { "exercise": "Light DB Flyes", "equipment": "Dumbbells", "reps": "12", "sets": 3, "target": "Chest (Inner/Outer)" },
+        { "exercise": "Overhead DB Extension", "equipment": "Dumbbell", "reps": "12", "sets": 3, "target": "Triceps (Long Head)" },
+        { "exercise": "Bench Dips", "equipment": "Bench", "reps": "Max", "sets": 3, "target": "Triceps (Lateral/Medial)" }
+      ],
+      "alternatives": ["Floor Press", "Kneeling Push-ups", "DB Kickbacks"]
+    },
+    "intermediate": {
+      "focus": "Hypertrophy with barbell power and cable isolation.",
+      "main_exercises": [
+        { "exercise": "Barbell Bench Press", "equipment": "Barbell", "reps": "8-10", "sets": 4, "target": "Chest (Mid/Upper)" },
+        { "exercise": "Incline DB Press", "equipment": "Dumbbells", "reps": "10", "sets": 3, "target": "Chest (Upper)" },
+        { "exercise": "Chest Dips", "equipment": "Parallel Bars", "reps": "8-10", "sets": 3, "target": "Chest (Lower/Mid)" },
+        { "exercise": "Standing Cable Flyes", "equipment": "Cable Machine", "reps": "12-15", "sets": 3, "target": "Chest (All/Inner)" },
+        { "exercise": "Cable Rope Pushdowns", "equipment": "Cable Machine", "reps": "12-15", "sets": 3, "target": "Triceps (Lateral Head)" },
+        { "exercise": "Skull Crushers", "equipment": "EZ-Bar", "reps": "10", "sets": 3, "target": "Triceps (All Heads)" }
+      ],
+      "alternatives": ["Weighted Push-ups", "DB Pullover", "Close-Grip Bench"]
+    },
+    "hard": {
+      "focus": "Maximum strength and heavy isolation.",
+      "main_exercises": [
+        { "exercise": "Paused Barbell Bench", "equipment": "Barbell", "reps": "5", "sets": 5, "target": "Chest (Mid/Lower)" },
+        { "exercise": "Incline Barbell Press", "equipment": "Barbell", "reps": "6-8", "sets": 4, "target": "Chest (Upper)" },
+        { "exercise": "Low-to-High Cable Flyes", "equipment": "Cable Machine", "reps": "12", "sets": 4, "target": "Chest (Upper/Inner)" },
+        { "exercise": "Weighted Dips", "equipment": "Dip Belt", "reps": "8", "sets": 3, "target": "Chest (Lower)" },
+        { "exercise": "Weighted Tricep Dips", "equipment": "Dip Belt", "reps": "8", "sets": 3, "target": "Triceps (All Heads)" },
+        { "exercise": "JM Press", "equipment": "Barbell", "reps": "8-10", "sets": 3, "target": "Triceps (Lateral/Medial)" }
+      ],
+      "alternatives": ["Landmine Press", "Decline DB Press", "Cross-Body Cable Extensions"]
+    }
+  },
+  "post_workout_stretch": ["Doorway Chest Stretch", "Overhead Tricep Stretch"]
+}

@@ -1,0 +1,176 @@
+{
+  "muscle": "Deltoids",
+  "regions": [
+    {
+      "area": "Anterior (Front)",
+      "focus": "Front of the shoulder; used in pressing."
+    },
+    {
+      "area": "Lateral (Side)",
+      "focus": "The 'cap' of the shoulder; creates width."
+    },
+    {
+      "area": "Posterior (Rear)",
+      "focus": "Back of the shoulder; crucial for posture and 3D look."
+    }
+  ],
+  "warmup": [
+    "Shoulder Dislocates (with band or stick): 15 reps",
+    "Face Pulls (very light): 20 reps",
+    "Y-T-W Raises (bodyweight): 10 reps each"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Stability and building the three-dimensional frame.",
+      "main_exercises": [
+        {
+          "exercise": "Seated DB Overhead Press",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Front Delts", "Side Delts"]
+        },
+        {
+          "exercise": "Standing DB Lateral Raises",
+          "equipment": "Dumbbells",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["Side Delts"]
+        },
+        {
+          "exercise": "DB Front Raises",
+          "equipment": "Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Front Delts"]
+        },
+        {
+          "exercise": "Rear Delt DB Flyes",
+          "equipment": "Dumbbells + Bench",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Rear Delts"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Arnold Press",
+          "equipment": "Dumbbells",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Front & Side Delts"]
+        },
+        {
+          "exercise": "DB Shrugs",
+          "equipment": "Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Upper Traps"]
+        }
+      ]
+    },
+    "intermediate": {
+      "focus": "Heavy barbell work and cable isolation.",
+      "main_exercises": [
+        {
+          "exercise": "Standing Barbell Military Press",
+          "equipment": "Barbell",
+          "reps": "8-10",
+          "sets": 4,
+          "activated_region": ["Front Delts", "Side Delts"]
+        },
+        {
+          "exercise": "Cable Lateral Raises",
+          "equipment": "Cable Machine",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["Side Delts"]
+        },
+        {
+          "exercise": "Cable Face Pulls",
+          "equipment": "Cable Machine + Rope",
+          "reps": "15",
+          "sets": 4,
+          "activated_region": ["Rear Delts", "Traps"]
+        },
+        {
+          "exercise": "Upright Rows (EZ-Bar)",
+          "equipment": "EZ-Bar",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Side Delts", "Traps"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Landmine Press",
+          "equipment": "Barbell",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Front Delts"]
+        },
+        {
+          "exercise": "Plate Front Raises",
+          "equipment": "Weight Plate",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Front Delts"]
+        }
+      ]
+    },
+    "hard": {
+      "focus": "Maximum load and explosive power.",
+      "main_exercises": [
+        {
+          "exercise": "Push Press",
+          "equipment": "Barbell + Rack",
+          "reps": "5-6",
+          "sets": 5,
+          "activated_region": ["Front Delts", "Side Delts", "Core"]
+        },
+        {
+          "exercise": "Dumbbell Viking Press",
+          "equipment": "Landmine or Dumbbells",
+          "reps": "8-10",
+          "sets": 4,
+          "activated_region": ["All Three Heads"]
+        },
+        {
+          "exercise": "Incline Rear Delt Rows",
+          "equipment": "Barbell + Incline Bench",
+          "reps": "10",
+          "sets": 4,
+          "activated_region": ["Rear Delts", "Mid Back"]
+        },
+        {
+          "exercise": "Handstand Push-ups",
+          "equipment": "Wall / Bodyweight",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["Front Delts", "Side Delts"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Single-Arm Cable Rear Delt Fly",
+          "equipment": "Cable Machine",
+          "reps": "15",
+          "sets": 3,
+          "activated_region": ["Rear Delts"]
+        },
+        {
+          "exercise": "High-Pull Barbell Rows",
+          "equipment": "Barbell",
+          "reps": "8",
+          "sets": 3,
+          "activated_region": ["Rear Delts", "Traps"]
+        }
+      ]
+    }
+  },
+  "post_workout_stretch": [
+    "Cross-Body Shoulder Stretch: 30s per side",
+    "Eagle Pose Arms: 30s per side",
+    "Cactus Stretch (against wall): 30s"
+  ]
+}

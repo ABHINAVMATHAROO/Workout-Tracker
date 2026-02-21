@@ -1,0 +1,178 @@
+{
+  "muscle": "Chest (Pectorals)",
+  "regions": [
+    {
+      "area": "Upper Chest",
+      "anatomical_name": "Clavicular Head",
+      "focus": "Incline movements"
+    },
+    {
+      "area": "Mid/Lower Chest",
+      "anatomical_name": "Sternocostal Head",
+      "focus": "Flat or decline movements"
+    },
+    {
+      "area": "Inner/Outer Chest",
+      "anatomical_name": "Pectoralis Major (Adduction)",
+      "focus": "Fly movements and full contraction"
+    }
+  ],
+  "warmup": [
+    "Arm Circles: 20 reps forward/backward",
+    "Wall Push-ups: 15 reps (slow tempo)",
+    "Band Pull-Aparts: 15 reps"
+  ],
+  "plans": {
+    "beginner": {
+      "focus": "Mastering form and mind-muscle connection using gravity and light weights.",
+      "main_exercises": [
+        {
+          "exercise": "Standard Push-ups",
+          "equipment": "Bodyweight",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["Mid Chest", "Lower Chest"]
+        },
+        {
+          "exercise": "Flat DB Bench Press",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Mid Chest", "Lower Chest"]
+        },
+        {
+          "exercise": "Incline DB Bench Press",
+          "equipment": "Dumbbells + Bench",
+          "reps": "10-12",
+          "sets": 3,
+          "activated_region": ["Upper Chest"]
+        },
+        {
+          "exercise": "Light DB Flyes",
+          "equipment": "Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Inner Chest", "Outer Chest"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Floor Press",
+          "equipment": "Dumbbells",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Mid Chest"]
+        },
+        {
+          "exercise": "Kneeling Push-ups",
+          "equipment": "Bodyweight",
+          "reps": "Max",
+          "sets": 3,
+          "activated_region": ["Mid Chest", "Lower Chest"]
+        }
+      ]
+    },
+    "intermediate": {
+      "focus": "Hypertrophy (muscle growth) through increased load and cable tension.",
+      "main_exercises": [
+        {
+          "exercise": "Barbell Bench Press",
+          "equipment": "Barbell + Rack",
+          "reps": "8-10",
+          "sets": 4,
+          "activated_region": ["Mid Chest", "Upper Chest"]
+        },
+        {
+          "exercise": "Incline DB Press",
+          "equipment": "Dumbbells + Bench",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Upper Chest"]
+        },
+        {
+          "exercise": "Chest Dips",
+          "equipment": "Parallel Bars",
+          "reps": "8-10",
+          "sets": 3,
+          "activated_region": ["Lower Chest", "Mid Chest"]
+        },
+        {
+          "exercise": "Standing Cable Flyes",
+          "equipment": "Cable Machine",
+          "reps": "12-15",
+          "sets": 3,
+          "activated_region": ["All Regions", "Inner Chest Focus"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Weighted Push-ups",
+          "equipment": "Weight Plate/Backpack",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Mid Chest", "Lower Chest"]
+        },
+        {
+          "exercise": "DB Pullover",
+          "equipment": "Dumbbell + Bench",
+          "reps": "12",
+          "sets": 3,
+          "activated_region": ["Upper Chest"]
+        }
+      ]
+    },
+    "hard": {
+      "focus": "Maximal strength, explosive power, and deep isolation.",
+      "main_exercises": [
+        {
+          "exercise": "Paused Barbell Bench",
+          "equipment": "Barbell + Rack",
+          "reps": "5",
+          "sets": 5,
+          "activated_region": ["Mid Chest", "Lower Chest"]
+        },
+        {
+          "exercise": "Incline Barbell Press",
+          "equipment": "Barbell + Rack",
+          "reps": "6-8",
+          "sets": 4,
+          "activated_region": ["Upper Chest"]
+        },
+        {
+          "exercise": "Low-to-High Cable Flyes",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 4,
+          "activated_region": ["Upper Chest", "Inner Chest"]
+        },
+        {
+          "exercise": "Weighted Dips",
+          "equipment": "Dip Belt + Plates",
+          "reps": "8",
+          "sets": 3,
+          "activated_region": ["Lower Chest"]
+        }
+      ],
+      "alternatives": [
+        {
+          "exercise": "Landmine Press",
+          "equipment": "Barbell",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Upper Chest", "Inner Chest"]
+        },
+        {
+          "exercise": "Decline DB Press",
+          "equipment": "Dumbbells + Bench",
+          "reps": "10",
+          "sets": 3,
+          "activated_region": ["Lower Chest"]
+        }
+      ]
+    }
+  },
+  "post_workout_stretch": [
+    "Doorway Stretch (30s per side)",
+    "Cross-Body Arm Stretch (30s per side)"
+  ]
+}

@@ -27,7 +27,9 @@ export default function TrainMuscleSelectCard({
   onSelectIntensity,
 }: TrainMuscleSelectCardProps) {
   const selectedIndex = INTENSITY_VALUES.indexOf(intensity)
-  const progress = `${(selectedIndex / (INTENSITY_VALUES.length - 1)) * 100}%`
+  const STEP_POSITIONS = ['16.666%', '50%', '83.333%'] as const
+  const thumbPosition = STEP_POSITIONS[selectedIndex] ?? STEP_POSITIONS[0]
+  const fillWidth = thumbPosition
   const intensityColor =
     selectedIndex === 0
       ? 'rgb(var(--cadax-green-light) / 0.95)'
@@ -40,7 +42,7 @@ export default function TrainMuscleSelectCard({
 
   return (
     <section
-      className={`card ${isCollapsed ? 'train-focus-card-collapsed train-focus-card-clickable' : ''}`}
+      className={`card train-focus-card ${isCollapsed ? 'train-focus-card-collapsed train-focus-card-clickable' : 'train-focus-card-expanded'}`}
       onClick={isCollapsed ? onExpand : undefined}
       role={isCollapsed ? 'button' : undefined}
       tabIndex={isCollapsed ? 0 : undefined}
@@ -80,22 +82,30 @@ export default function TrainMuscleSelectCard({
         onClick={(event) => event.stopPropagation()}
       >
         <p className="label train-label">Intensity</p>
-        <input
-          className="train-intensity-slider"
-          type="range"
-          min={0}
-          max={2}
-          step={1}
-          value={selectedIndex}
+        <div
+          className="train-intensity-slider-shell"
           style={
             {
-              '--intensity-progress': progress,
+              '--intensity-progress': fillWidth,
+              '--intensity-thumb-pos': thumbPosition,
               '--intensity-color': intensityColor,
             } as CSSProperties
           }
-          onChange={(event) => onSelectIntensity(INTENSITY_VALUES[Number(event.target.value)] ?? 'Beginner')}
-          aria-label="Select intensity"
-        />
+        >
+          <div className="train-intensity-rail" aria-hidden="true" />
+          <div className="train-intensity-fill" aria-hidden="true" />
+          <div className="train-intensity-thumb" aria-hidden="true" />
+          <input
+            className="train-intensity-slider"
+            type="range"
+            min={0}
+            max={2}
+            step={1}
+            value={selectedIndex}
+            onChange={(event) => onSelectIntensity(INTENSITY_VALUES[Number(event.target.value)] ?? 'Beginner')}
+            aria-label="Select intensity"
+          />
+        </div>
         <div className="train-intensity-scale">
           {INTENSITY_LABELS.map((level, index) => (
             <span

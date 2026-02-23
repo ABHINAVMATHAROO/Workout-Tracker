@@ -1,0 +1,16 @@
+{
+  "modes": {
+    "encourage": {
+      "periodic": [],
+      "freeform": []
+    },
+    "roast": {
+      "periodic": [],
+      "freeform": [
+        { "id": "roast-free-001", "line": "You came here to improve right. Come on prove it now.", "file": "freeform/roast-free-001.mp3" },
+        { "id": "roast-free-002", "line": "Don't you go easy now. Lock in and finish strong.", "file": "freeform/roast-free-002.mp3" },
+        { "id": "roast-free-003", "line": "No slacking boy. Move the weights like you mean it.", "file": "freeform/roast-free-003.mp3" }
+      ]
+    }
+  }
+}

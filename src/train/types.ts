@@ -44,3 +44,14 @@ export type GeneratedTrainWorkout = {
   intensity: Intensity
   plan: TrainWorkoutPlan
 }
+
+export type CoachMode = 'encourage' | 'roast'
+
+export type CoachRuntimeState = 'idle' | 'starting' | 'running' | 'paused' | 'error'
+
+export type CoachSettings = {
+  mode: CoachMode
+  intervalSeconds: number
+  voice: string
+  enabled: boolean
+}

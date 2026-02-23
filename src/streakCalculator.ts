@@ -6,6 +6,7 @@ type WeekSummary = {
   daysWorked: number
   hasWorkout: boolean
   meetsGoal: boolean
+  isCurrentWeek: boolean
 }
 
 const pad = (value: number) => String(value).padStart(2, '0')
@@ -38,7 +39,12 @@ const computeCurrentStreak = (
 ) => {
   let count = 0
   for (let index = weeks.length - 1; index >= 0; index -= 1) {
-    if (!predicate(weeks[index])) {
+    const week = weeks[index]
+    if (!predicate(week)) {
+      // Do not break streak on an in-progress week that can still be completed.
+      if (week.isCurrentWeek) {
+        continue
+      }
       break
     }
     count += 1
@@ -105,6 +111,7 @@ export const calculateStreaks = (
       daysWorked,
       hasWorkout: daysWorked > 0,
       meetsGoal: daysWorked >= goalDays,
+      isCurrentWeek: cursor.getTime() === currentWeekStart.getTime(),
     })
   }
 

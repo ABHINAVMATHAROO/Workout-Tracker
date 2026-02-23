@@ -535,7 +535,7 @@ export default function App() {
             </section>
           }
         >
-          <TrainModeView />
+          <TrainModeView userId={user?.uid ?? null} />
         </Suspense>
       )}
     </div>

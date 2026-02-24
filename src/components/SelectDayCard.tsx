@@ -116,10 +116,15 @@ export default function SelectDayCard({
   }
 
   const handleBarPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    event.currentTarget.setPointerCapture(event.pointerId)
+    event.preventDefault()
     dragStartY.current = event.clientY
   }
 
   const handleBarPointerUp = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
     if (dragStartY.current === null) {
       return
     }

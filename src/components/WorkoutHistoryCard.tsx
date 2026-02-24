@@ -22,38 +22,38 @@ export default function WorkoutHistoryCard({
   formatLocalIsoDate,
 }: WorkoutHistoryCardProps) {
   return (
-    <section className="card history-card">
+    <section className="card consistency-card">
       <div className="section-head section-head-inline">
         <div className="section-title">
-          <h2 className="section-title-nowrap">Workout history</h2>
+          <h2 className="section-title-nowrap">Consistency</h2>
         </div>
       </div>
       <div
-        className="history-chart"
+        className="consistency-chart"
         style={{ '--target-line': `${(goalDays / historyMax) * 100}%` } as CSSProperties}
       >
-        <div className="history-bars">
-          <div className="history-target" />
+        <div className="consistency-bars">
+          <div className="consistency-target" />
           {historyWeeks.map((week) => {
             const barHeight = (week.count / historyMax) * 100
             return (
-              <div className="history-bar" key={formatLocalIsoDate(week.start)}>
-                <div className="history-bar-track">
+              <div className="consistency-bar" key={formatLocalIsoDate(week.start)}>
+                <div className="consistency-bar-track">
                   <div
-                    className={`history-bar-fill ${week.isCurrent ? 'is-current' : ''}`}
+                    className={`consistency-bar-fill ${week.isCurrent ? 'is-current' : ''}`}
                     style={{ '--bar-height': `${barHeight}%` } as CSSProperties}
                   />
                 </div>
-                <span className="history-bar-label">{formatShortDate(week.start)}</span>
+                <span className="consistency-bar-label">{formatShortDate(week.start)}</span>
               </div>
             )
           })}
         </div>
-        <div className="history-axis">
-          <span className="label history-axis-top">{historyMax}</span>
-          <span className="history-axis-mid" aria-hidden="true">
+        <div className="consistency-axis">
+          <span className="label consistency-axis-top">{historyMax}</span>
+          <span className="consistency-axis-mid" aria-hidden="true">
             <img
-              className="history-axis-target"
+              className="consistency-axis-target"
               src={`${import.meta.env.BASE_URL}target.svg`}
               alt=""
             />

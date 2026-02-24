@@ -28,7 +28,7 @@ const MAX_RECENT_CLIP_IDS = 6
 const normalizeCoachSettings = (value: unknown): CoachSettings => {
   const parsed = (value ?? {}) as Partial<CoachSettings>
   return {
-    mode: parsed.mode === 'roast' ? 'roast' : 'encourage',
+    mode: parsed.mode === 'encourage' ? 'encourage' : 'roast',
     intervalSeconds:
       typeof parsed.intervalSeconds === 'number' && Number.isFinite(parsed.intervalSeconds)
         ? Math.max(20, Math.min(300, Math.round(parsed.intervalSeconds)))

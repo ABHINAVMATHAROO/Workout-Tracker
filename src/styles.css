@@ -20,6 +20,8 @@
   --accent: rgb(var(--cadax-green-light));
   --accent-2: rgb(var(--cadax-blue-light));
   --shadow: 0 20px 40px rgba(17, 20, 37, 0.14);
+  --calendar-circle-size-mobile: 34px;
+  --calendar-circle-size-desktop: 42px;
 }
 
 * {
@@ -412,6 +414,11 @@ p {
   animation: rise 600ms ease both;
 }
 
+.week-card {
+  position: relative;
+  padding-bottom: 28px;
+}
+
 .card:nth-of-type(1) {
   animation-delay: 80ms;
 }
@@ -532,6 +539,39 @@ p {
 /* SelectDayCard grid wrapper + desktop nav (SelectDayCard) */
 .week-grid-wrap {
   position: relative;
+  display: grid;
+  gap: 10px;
+}
+
+.month-grid-wrap {
+  display: grid;
+  gap: 10px;
+  transform: translateY(var(--month-drag-offset, 0px));
+  transition: transform 220ms cubic-bezier(0.22, 0.72, 0.2, 1);
+  will-change: transform;
+  touch-action: pan-x;
+}
+
+.month-grid-wrap.is-dragging {
+  transition: none;
+}
+
+.month-weekdays {
+  gap: 8px;
+}
+
+.month-weekdays .day-name {
+  width: auto;
+}
+
+.week-circles-grid {
+  gap: 14px;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .week-nav-btn {
@@ -586,6 +626,27 @@ p {
   .week-nav-btn {
     display: none;
   }
+}
+
+.month-head-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.month-nav-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-700);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
 }
 
 /* SelectDayCard day button (SelectDayCard) */
@@ -694,13 +755,109 @@ p {
   box-shadow: none;
 }
 
-/* Workout history card (WorkoutHistoryCard) */
-.history-card {
+.month-day-circle {
+  width: min(100%, var(--calendar-circle-size-mobile));
+  max-width: var(--calendar-circle-size-mobile);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: var(--ink-900);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+  justify-self: center;
+}
+
+.month-day-circle:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(17, 20, 37, 0.12);
+}
+
+.month-day-circle.has-workout {
+  background: rgb(var(--cadax-green-light) / 0.5);
+  border-color: rgb(var(--cadax-green-light) / 0.2);
+  box-shadow:
+    0 0 0 1px rgb(var(--cadax-green-light) / 0.78),
+    0 0 18px rgb(var(--cadax-green-light) / 0.58);
+}
+
+.month-day-circle.today {
+  background: rgb(var(--cadax-green-light) / 0.5);
+  border-color: rgb(var(--cadax-green-light) / 0.2);
+}
+
+.month-day-circle.selected {
+  background: rgb(var(--cadax-blue-light) / 0.2);
+  border-color: rgb(var(--cadax-blue-light) / 0.2);
+  box-shadow:
+    0 0 0 1px rgb(var(--cadax-blue-light) / 0.9),
+    0 0 18px rgb(var(--cadax-blue-light) / 0.62);
+}
+
+.month-day-circle.outside {
+  opacity: 0.38;
+}
+
+.month-day-circle:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.month-day-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(58, 70, 104, 0.58);
+}
+
+.week-day-circle.past .month-day-label {
+  color: rgba(58, 70, 104, 0.55);
+}
+
+@media (min-width: 700px) {
+  .month-day-circle {
+    width: min(100%, var(--calendar-circle-size-desktop));
+    max-width: var(--calendar-circle-size-desktop);
+  }
+}
+
+.calendar-handle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.calendar-handle-bar {
+  width: 42px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgb(58 70 104 / 0.28);
+  display: block;
+  margin: 0 auto;
+}
+
+.calendar-handle.is-open .calendar-handle-bar {
+  background: rgb(58 70 104 / 0.45);
+}
+
+/* Consistency card (WorkoutHistoryCard) */
+.consistency-card {
   margin-bottom: 24px;
 }
 
-/* Workout history chart layout (WorkoutHistoryCard) */
-.history-chart {
+/* Consistency chart layout (WorkoutHistoryCard) */
+.consistency-chart {
   display: grid;
   grid-template-columns: 1fr 28px;
   gap: 0;
@@ -710,33 +867,33 @@ p {
   appearance: none;
 }
 
-/* Workout history axis (WorkoutHistoryCard) */
-.history-axis {
+/* Consistency axis (WorkoutHistoryCard) */
+.consistency-axis {
   position: relative;
   height: 180px;
   color: var(--ink-500);
   font-size: 0.7rem;
 }
 
-.history-axis-top,
-.history-axis-mid {
+.consistency-axis-top,
+.consistency-axis-mid {
   position: absolute;
   left: 50%;
   right: auto;
 }
 
-.history-axis-top {
+.consistency-axis-top {
   top: 0;
   transform: translate(-50%, -50%);
 }
 
-.history-axis-mid {
+.consistency-axis-mid {
   bottom: var(--target-line);
   transform: translate(-50%, 50%);
 }
 
-/* Workout history target icon (WorkoutHistoryCard) */
-.history-axis-target {
+/* Consistency target icon (WorkoutHistoryCard) */
+.consistency-axis-target {
   width: 28px;
   height: 28px;
   display: block;
@@ -744,8 +901,8 @@ p {
 }
 
 
-/* Workout history bars row (WorkoutHistoryCard) */
-.history-bars {
+/* Consistency bars row (WorkoutHistoryCard) */
+.consistency-bars {
   position: relative;
   height: 180px;
   display: grid;
@@ -755,8 +912,8 @@ p {
   padding-bottom: 6px;
 }
 
-/* Workout history target line (WorkoutHistoryCard) */
-.history-target {
+/* Consistency target line (WorkoutHistoryCard) */
+.consistency-target {
   position: absolute;
   left: 0;
   right: 0;
@@ -765,15 +922,15 @@ p {
   pointer-events: none;
 }
 
-/* Workout history bar item (WorkoutHistoryCard) */
-.history-bar {
+/* Consistency bar item (WorkoutHistoryCard) */
+.consistency-bar {
   display: grid;
   gap: 8px;
   align-items: end;
   justify-items: center;
 }
 
-.history-bar-track {
+.consistency-bar-track {
   width: 100%;
   height: 160px;
   background: rgba(10, 16, 32, 0.08);
@@ -783,8 +940,8 @@ p {
   overflow: hidden;
 }
 
-/* Workout history bar fill (WorkoutHistoryCard) */
-.history-bar-fill {
+/* Consistency bar fill (WorkoutHistoryCard) */
+.consistency-bar-fill {
   width: 100%;
   height: var(--bar-height);
   background: var(--accent-2);
@@ -792,11 +949,11 @@ p {
   transition: height 200ms ease, background 200ms ease;
 }
 
-.history-bar-fill.is-current {
+.consistency-bar-fill.is-current {
   background: rgb(var(--cadax-green-light));
 }
 
-.history-bar-label {
+.consistency-bar-label {
   font-size: 0.7rem;
   color: var(--ink-500);
   text-align: center;
@@ -822,6 +979,16 @@ p {
 
 .section-title-nowrap {
   white-space: nowrap;
+}
+
+.section-title-with-year {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.section-title-year {
+  margin: 0;
 }
 
 /* Muted helper text (global) */
@@ -1088,79 +1255,136 @@ p {
   color: var(--ink-900);
 }
 
-/* ThisWeekCard done pill (ThisWeekCard) */
+/* Progress card done pill (ThisWeekCard) */
 .pill-done {
   background: rgb(var(--cadax-green-light) / 0.25);
   color: var(--ink-700);
 }
 
-/* ThisWeekCard remaining pill (ThisWeekCard) */
+/* Progress card remaining pill (ThisWeekCard) */
 .pill-remaining {
   background: rgba(170, 178, 200, 0.35);
   color: var(--ink-700);
 }
 
-/* ThisWeekCard over pill (ThisWeekCard) */
+/* Progress card over pill (ThisWeekCard) */
 .pill-over {
   background: rgb(var(--cadax-orange) / 0.25);
   color: var(--ink-700);
 }
 
-/* Goal circles area (ThisWeekCard) */
-.goal-visual {
-  display: grid;
-  gap: 16px;
+.progress-gauge-wrap {
+  position: relative;
+  width: min(100%, 360px);
+  margin: 0 auto;
 }
 
-.goal-circles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-}
-
-.goal-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 0;
-}
-
-.goal-circle.is-target {
-  border: none;
-  overflow: visible;
-}
-
-.goal-circle.filled {
-  background: rgb(var(--cadax-green-light) / 0.35);
-  border-color: rgb(var(--cadax-green-light) / 0.7);
-}
-
-.goal-circle.extra {
-  background: rgba(255, 179, 0, 0.25);
-  border-color: rgba(255, 179, 0, 0.6);
-}
-
-.goal-target {
-  width: 220%;
-  height: 220%;
-  object-fit: contain;
-  transform: translate(1px, -1px);
+.progress-gauge {
+  width: 100%;
+  height: auto;
   display: block;
+  margin-top: -24px;
+  margin-bottom: -18px;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.goal-target.met {
-  filter: hue-rotate(115deg) saturate(1.2);
+.progress-gauge * {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.goal-edit {
+.progress-gauge-track {
+  fill: none;
+  stroke: url(#progress-gauge-track-gradient);
+  stroke-width: 10.5;
+  stroke-linecap: round;
+  filter:
+    drop-shadow(0 2px 4px rgb(10 16 32 / 0.2))
+    drop-shadow(0 -1px 1px rgb(255 255 255 / 0.18));
+}
+
+.progress-gauge-track-gloss {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.24);
+  stroke-width: 4.2;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+.progress-gauge-fill {
+  fill: none;
+  stroke: url(#progress-gauge-fill-green);
+  stroke-width: 10.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 320ms ease, filter 220ms ease;
+  filter:
+    drop-shadow(0 1px 2px rgb(10 16 32 / 0.2))
+    drop-shadow(0 0 8px rgb(var(--cadax-green-light) / 0.5))
+    drop-shadow(0 0 16px rgb(var(--cadax-green-light) / 0.35));
+}
+
+.progress-gauge-fill.goal-met {
+  stroke: url(#progress-gauge-fill-orange);
+  filter:
+    drop-shadow(0 1px 2px rgb(10 16 32 / 0.2))
+    drop-shadow(0 0 8px rgb(var(--cadax-orange) / 0.5))
+    drop-shadow(0 0 16px rgb(var(--cadax-orange) / 0.35));
+}
+
+.progress-gauge-cap-halo {
+  fill: rgb(var(--cadax-green-light) / 0.26);
+  filter: drop-shadow(0 0 8px rgb(var(--cadax-green-light) / 0.42));
+}
+
+.progress-gauge-cap-halo.goal-met {
+  fill: rgb(var(--cadax-orange) / 0.26);
+  filter: drop-shadow(0 0 8px rgb(var(--cadax-orange) / 0.42));
+}
+
+.progress-gauge-cap {
+  fill: #f4fbff;
+  stroke: rgb(var(--cadax-green-light) / 0.92);
+  stroke-width: 1.9;
+  filter:
+    drop-shadow(0 1px 2px rgb(10 16 32 / 0.25))
+    drop-shadow(0 0 4px rgb(var(--cadax-green-light) / 0.5));
+}
+
+.progress-gauge-cap.goal-met {
+  stroke: rgb(var(--cadax-orange) / 0.92);
+  filter:
+    drop-shadow(0 1px 2px rgb(10 16 32 / 0.25))
+    drop-shadow(0 0 4px rgb(var(--cadax-orange) / 0.5));
+}
+
+.progress-gauge-content {
+  position: absolute;
+  left: 50%;
+  top: 96px;
+  transform: translateX(-50%);
+  width: min(78%, 260px);
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.progress-gauge-percent {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 0.95;
+  color: var(--ink-900);
+}
+
+.progress-gauge-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.progress-target-btn {
   border: 1px solid rgb(var(--cadax-blue-light) / 0.45);
   background: transparent;
   color: var(--ink-700);
@@ -1172,6 +1396,12 @@ p {
   font-weight: 600;
   font-size: 0.8rem;
   cursor: pointer;
+  margin-top: 12px;
+}
+
+.progress-card .section-head {
+  margin-bottom: 8px;
+  height: auto;
 }
 
 .goal-slider-footer .ghost {
@@ -1202,7 +1432,7 @@ p {
   padding: 20px;
   box-shadow: 0 24px 60px rgba(10, 16, 32, 0.28);
   display: grid;
-  gap: 8px;
+  gap: 14px;
 }
 
 .dialog h3 {
@@ -1211,7 +1441,7 @@ p {
 
 .goal-slider {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .goal-slider-footer {
@@ -1419,6 +1649,44 @@ p {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 18px;
+}
+
+.train-coach-mode-toggle {
+  display: inline-flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.train-coach-mode-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid rgb(var(--cadax-blue-light) / 0.45);
+  background: transparent;
+  color: var(--ink-700);
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease, border-color 150ms ease;
+}
+
+.train-coach-mode-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(17, 20, 37, 0.12);
+}
+
+.train-coach-mode-btn.is-active {
+  background: rgb(var(--cadax-blue-light) / 0.2);
+  border-color: rgb(var(--cadax-blue-light) / 0.65);
+  color: var(--ink-900);
+}
+
+.train-coach-mode-btn.is-active.roast {
+  background: rgb(var(--cadax-orange) / 0.25);
+  border-color: rgb(var(--cadax-orange) / 0.65);
+  color: var(--ink-900);
 }
 
 .train-plan-list {
@@ -1924,5 +2192,6 @@ p {
     text-align: center;
   }
 }
+
 
 

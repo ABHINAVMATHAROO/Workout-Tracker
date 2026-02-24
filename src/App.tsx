@@ -172,9 +172,7 @@ export default function App() {
   const [showAllMuscleHighlights, setShowAllMuscleHighlights] = useState(false)
   const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
   const [showGoalDialog, setShowGoalDialog] = useState(false)
-  const [weekOffset, setWeekOffset] = useState(0)
-  const weekStart = useMemo(() => startOfWeekMonday(addDays(today, weekOffset * 7)), [today, weekOffset])
-  const currentWeekStart = useMemo(() => startOfWeekMonday(today), [today])
+  const weekStart = useMemo(() => startOfWeekMonday(today), [today])
   const weekDates = useMemo(
     () => Array.from({ length: 7 }, (_, idx) => addDays(weekStart, idx)),
     [weekStart]
@@ -188,13 +186,19 @@ export default function App() {
     )
   }, [weekStart, workouts])
 
-  const workoutDateSet = useMemo(() => {
+  const workoutsThisWeekSet = useMemo(() => {
     const set = new Set<string>()
     workoutsThisWeek.forEach((workout) => set.add(workout.date))
     return set
   }, [workoutsThisWeek])
 
-  const daysWorked = workoutDateSet.size
+  const workoutDateSet = useMemo(() => {
+    const set = new Set<string>()
+    workouts.forEach((workout) => set.add(workout.date))
+    return set
+  }, [workouts])
+
+  const daysWorked = workoutsThisWeekSet.size
   const daysToGo = Math.max(0, goalDays - daysWorked)
   const daysOverGoal = Math.max(0, daysWorked - goalDays)
   const goalBoxCount = Math.max(7, goalDays)
@@ -496,9 +500,6 @@ export default function App() {
           formatWeekday={formatWeekday}
           formatLocalIsoDate={formatLocalIsoDate}
           onSelectDate={setSelectedDate}
-          onPrevWeek={() => setWeekOffset((prev) => prev - 1)}
-          onNextWeek={() => setWeekOffset((prev) => prev + 1)}
-          canGoNext={weekStart.getTime() < currentWeekStart.getTime()}
           showAllMuscleHighlights={showAllMuscleHighlights}
           parseIsoDate={parseIsoDate}
           formatShortDate={formatShortDate}
@@ -559,12 +560,12 @@ export default function App() {
               value={goalDays}
               onChange={(event) => setGoalDays(Number(event.target.value))}
             />
-            <span className="goal-slider-value">{goalDays} days</span>
-          </div>
-          <div className="dialog-actions">
-            <button type="button" className="ghost" onClick={() => setShowGoalDialog(false)}>
-              Save and close
-            </button>
+            <div className="goal-slider-footer">
+              <span className="goal-slider-value">{goalDays} days</span>
+              <button type="button" className="ghost" onClick={() => setShowGoalDialog(false)}>
+                Save and close
+              </button>
+            </div>
           </div>
         </div>
       </div>

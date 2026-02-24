@@ -20,9 +20,6 @@ type LogModeViewProps = {
   formatWeekday: (date: Date) => string
   formatLocalIsoDate: (date: Date) => string
   onSelectDate: (iso: string) => void
-  onPrevWeek: () => void
-  onNextWeek: () => void
-  canGoNext: boolean
   showAllMuscleHighlights: boolean
   parseIsoDate: (iso: string) => Date
   formatShortDate: (date: Date) => string
@@ -51,9 +48,6 @@ export default function LogModeView({
   formatWeekday,
   formatLocalIsoDate,
   onSelectDate,
-  onPrevWeek,
-  onNextWeek,
-  canGoNext,
   showAllMuscleHighlights,
   parseIsoDate,
   formatShortDate,
@@ -83,9 +77,6 @@ export default function LogModeView({
         formatWeekday={formatWeekday}
         formatLocalIsoDate={formatLocalIsoDate}
         onSelectDate={onSelectDate}
-        onPrevWeek={onPrevWeek}
-        onNextWeek={onNextWeek}
-        canGoNext={canGoNext}
       />
 
       <LogWorkoutCard

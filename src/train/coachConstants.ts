@@ -1,7 +1,7 @@
 import type { CoachMode, CoachSettings } from './types'
 
 export const DEFAULT_COACH_SETTINGS: CoachSettings = {
-  mode: 'encourage',
+  mode: 'roast',
   intervalSeconds: 75,
   voice: '84Fal4DSXWfp7nJ8emqQ',
   enabled: false,

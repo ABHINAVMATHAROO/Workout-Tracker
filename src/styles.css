@@ -995,6 +995,29 @@ p {
   margin: 0;
 }
 
+.log-workout-head .section-title {
+  min-width: 0;
+  flex: 1;
+  height: auto;
+}
+
+.log-workout-head .chip-grid {
+  flex: 0 0 auto;
+}
+
+.log-workout-head {
+  height: auto;
+  align-items: center;
+}
+
+.log-workout-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+  line-height: 1.2;
+}
+
 /* Muted helper text (global) */
 .muted {
   color: var(--ink-500);

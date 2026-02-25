@@ -82,6 +82,7 @@ export default function LogModeView({
       <LogWorkoutCard
         showAllMuscleHighlights={showAllMuscleHighlights}
         selectedDate={selectedDate}
+        dayMuscles={dayMuscles}
         parseIsoDate={parseIsoDate}
         formatShortDate={formatShortDate}
         onToggleHighlights={onToggleHighlights}

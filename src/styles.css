@@ -1517,10 +1517,10 @@ p {
 }
 
 .map-panel {
-  background: var(--surface);
-  border-radius: 18px;
-  padding: 16px;
-  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  border: none;
 }
 
 .map-title-row {

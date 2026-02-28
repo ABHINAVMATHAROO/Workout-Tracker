@@ -1454,8 +1454,9 @@ p {
   position: fixed;
   inset: 0;
   background: rgba(10, 16, 32, 0.35);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 20;
   padding: 24px;
 }
@@ -2063,6 +2064,11 @@ p {
 .train-set-row-spacer {
   display: block;
   min-height: 1px;
+}
+
+.train-set-add-row .train-set-add {
+  grid-column: 2;
+  justify-self: start;
 }
 
 .train-set-remove svg,

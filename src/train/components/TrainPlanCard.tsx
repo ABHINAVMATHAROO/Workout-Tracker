@@ -290,14 +290,12 @@ export default function TrainPlanCard({
                               </div>
                             )
                           })}
-                          <div className="train-set-add-row">
-                            <span className="train-set-add-label">Add set</span>
-                            <span className="train-set-row-spacer" aria-hidden="true" />
-                            <span className="train-set-row-spacer" aria-hidden="true" />
-                            <button
-                              type="button"
-                              className="train-set-add"
-                              onClick={() => onAddSet(exerciseIndex)}
+                        <div className="train-set-add-row">
+                          <span className="train-set-add-label">Add</span>
+                          <button
+                            type="button"
+                            className="train-set-add"
+                            onClick={() => onAddSet(exerciseIndex)}
                               aria-label="Add set"
                             >
                               <svg

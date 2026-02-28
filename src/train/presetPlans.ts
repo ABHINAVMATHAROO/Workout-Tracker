@@ -1,4 +1,4 @@
-import type { GeneratedTrainWorkout, Intensity, MuscleGroup, PlanExerciseItem, PlanRegion } from './types'
+import type { GeneratedTrainWorkout, Intensity, LoadType, LoadUnit, MuscleGroup, PlanExerciseItem, PlanRegion } from './types'
 
 type RawStandardExercise = {
   exercise: string
@@ -7,6 +7,11 @@ type RawStandardExercise = {
   sets: number
   activated_region?: string[]
   target?: string
+  default_load?: {
+    type?: LoadType
+    value?: number
+    unit?: LoadUnit
+  }
 }
 
 type RawPlanBlock = {
@@ -40,13 +45,56 @@ const mapRegion = (region: { area: string; anatomical_name: string; focus: strin
   focus: region.focus,
 })
 
-const normalizeExercise = (exercise: RawStandardExercise): PlanExerciseItem => ({
-  exercise: exercise.exercise,
-  equipment: exercise.equipment ?? 'Unknown',
-  reps: exercise.reps ?? '-',
-  sets: typeof exercise.sets === 'number' ? exercise.sets : 0,
-  activatedRegion: exercise.activated_region ?? (exercise.target ? [exercise.target] : []),
-})
+const toRepsPreset = (reps: string) => {
+  const normalized = reps.toLowerCase()
+  if (normalized.includes('max')) return 'Max' as const
+  if (normalized.includes('15')) return '15-20' as const
+  if (normalized.includes('12')) return '12-15' as const
+  if (normalized.includes('10')) return '10-12' as const
+  if (normalized.includes('8')) return '8-10' as const
+  if (normalized.includes('6')) return '6-8' as const
+  return '5' as const
+}
+
+const inferLoadType = (equipment: string): LoadType => {
+  const eq = equipment.toLowerCase()
+  if (eq.includes('dumbbell') || eq.includes('dumbbells') || eq.includes(' db')) return 'dumbbell'
+  if (eq.includes('bodyweight') || eq.includes('mat') || eq === 'bench') return 'bodyweight'
+  if ((eq.includes('pull-up bar') || eq.includes('parallel bars')) && !eq.includes('belt')) return 'bodyweight'
+  return 'machine'
+}
+
+const inferDefaultLoadByType = (loadType: LoadType, sets: number) => {
+  if (loadType === 'bodyweight') return 0
+  if (loadType === 'dumbbell') return sets >= 4 ? 35 : 25
+  return sets >= 4 ? 95 : 65
+}
+
+const normalizeExercise = (exercise: RawStandardExercise): PlanExerciseItem => {
+  const sets = typeof exercise.sets === 'number' ? exercise.sets : 0
+  const loadType = exercise.default_load?.type ?? inferLoadType(exercise.equipment ?? '')
+  const load = typeof exercise.default_load?.value === 'number'
+    ? exercise.default_load.value
+    : inferDefaultLoadByType(loadType, sets)
+  const loadUnit = exercise.default_load?.unit === 'lb' ? 'lb' : 'kg'
+
+  return {
+    exercise: exercise.exercise,
+    equipment: exercise.equipment ?? 'Unknown',
+    reps: exercise.reps ?? '-',
+    sets,
+    activatedRegion: exercise.activated_region ?? (exercise.target ? [exercise.target] : []),
+    load,
+    loadUnit,
+    loadType,
+    setDetails: Array.from({ length: sets }, () => ({
+      repsPreset: toRepsPreset(exercise.reps ?? '-'),
+      load,
+      loadUnit,
+      loadType,
+    })),
+  }
+}
 
 const normalizeAlternative = (item: RawStandardExercise | string): PlanExerciseItem =>
   typeof item === 'string'
@@ -56,6 +104,10 @@ const normalizeAlternative = (item: RawStandardExercise | string): PlanExerciseI
         reps: '-',
         sets: 0,
         activatedRegion: [],
+        load: 0,
+        loadUnit: 'kg',
+        loadType: 'machine',
+        setDetails: [],
       }
     : normalizeExercise(item)
 
@@ -72,6 +124,7 @@ const normalizeTemplate = (
   return {
     muscleGroup,
     intensity,
+    planVariant: 'preset',
     plan: {
       muscle: raw.muscle ?? raw.routine ?? muscleGroup,
       regions: (raw.regions ?? []).map(mapRegion),

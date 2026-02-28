@@ -31,28 +31,59 @@
           "equipment": "Bodyweight",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["Mid Chest", "Lower Chest"]
+          "activated_region": [
+            "Mid Chest",
+            "Lower Chest"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Flat DB Bench Press",
           "equipment": "Dumbbells",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Mid Chest", "Lower Chest"]
+          "activated_region": [
+            "Mid Chest",
+            "Lower Chest"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Incline DB Bench Press",
           "equipment": "Dumbbells + Bench",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Upper Chest"]
+          "activated_region": [
+            "Upper Chest"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Light DB Flyes",
           "equipment": "Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Inner Chest", "Outer Chest"]
+          "activated_region": [
+            "Inner Chest",
+            "Outer Chest"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -61,14 +92,29 @@
           "equipment": "Dumbbells",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Mid Chest"]
+          "activated_region": [
+            "Mid Chest"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Kneeling Push-ups",
           "equipment": "Bodyweight",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["Mid Chest", "Lower Chest"]
+          "activated_region": [
+            "Mid Chest",
+            "Lower Chest"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -80,28 +126,59 @@
           "equipment": "Barbell + Rack",
           "reps": "8-10",
           "sets": 4,
-          "activated_region": ["Mid Chest", "Upper Chest"]
+          "activated_region": [
+            "Mid Chest",
+            "Upper Chest"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Incline DB Press",
           "equipment": "Dumbbells + Bench",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Upper Chest"]
+          "activated_region": [
+            "Upper Chest"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 12.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Chest Dips",
           "equipment": "Parallel Bars",
           "reps": "8-10",
           "sets": 3,
-          "activated_region": ["Lower Chest", "Mid Chest"]
+          "activated_region": [
+            "Lower Chest",
+            "Mid Chest"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Standing Cable Flyes",
           "equipment": "Cable Machine",
           "reps": "12-15",
           "sets": 3,
-          "activated_region": ["All Regions", "Inner Chest Focus"]
+          "activated_region": [
+            "All Regions",
+            "Inner Chest Focus"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -110,14 +187,29 @@
           "equipment": "Weight Plate/Backpack",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Mid Chest", "Lower Chest"]
+          "activated_region": [
+            "Mid Chest",
+            "Lower Chest"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "DB Pullover",
           "equipment": "Dumbbell + Bench",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Upper Chest"]
+          "activated_region": [
+            "Upper Chest"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 12.5,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -129,28 +221,58 @@
           "equipment": "Barbell + Rack",
           "reps": "5",
           "sets": 5,
-          "activated_region": ["Mid Chest", "Lower Chest"]
+          "activated_region": [
+            "Mid Chest",
+            "Lower Chest"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 57.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Incline Barbell Press",
           "equipment": "Barbell + Rack",
           "reps": "6-8",
           "sets": 4,
-          "activated_region": ["Upper Chest"]
+          "activated_region": [
+            "Upper Chest"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Low-to-High Cable Flyes",
           "equipment": "Cable Machine",
           "reps": "12",
           "sets": 4,
-          "activated_region": ["Upper Chest", "Inner Chest"]
+          "activated_region": [
+            "Upper Chest",
+            "Inner Chest"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Weighted Dips",
           "equipment": "Dip Belt + Plates",
           "reps": "8",
           "sets": 3,
-          "activated_region": ["Lower Chest"]
+          "activated_region": [
+            "Lower Chest"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -159,14 +281,29 @@
           "equipment": "Barbell",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Upper Chest", "Inner Chest"]
+          "activated_region": [
+            "Upper Chest",
+            "Inner Chest"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Decline DB Press",
           "equipment": "Dumbbells + Bench",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Lower Chest"]
+          "activated_region": [
+            "Lower Chest"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 17.5,
+            "unit": "kg"
+          }
         }
       ]
     }

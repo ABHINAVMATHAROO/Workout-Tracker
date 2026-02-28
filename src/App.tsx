@@ -154,6 +154,7 @@ const signInWithGoogle = async (setAuthStatus: (status: AuthStatus) => void) => 
 }
 
 const TrainModeView = lazy(() => import('./train/TrainModeView'))
+const CoachModeView = lazy(() => import('./train/CoachModeView'))
 
 export default function App() {
   const today = useMemo(() => {
@@ -163,7 +164,7 @@ export default function App() {
   }, [])
 
   const [goalDays, setGoalDays] = useState(4)
-  const [appMode, setAppMode] = useState<'log' | 'train'>('log')
+  const [appMode, setAppMode] = useState<'log' | 'train' | 'coach'>('log')
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading')
   const [user, setUser] = useState<User | null>(null)
@@ -528,7 +529,7 @@ export default function App() {
           historyWeeks={historyWeeks}
           historyMax={historyMax}
         />
-      ) : (
+      ) : appMode === 'train' ? (
         <Suspense
           fallback={
             <section className="card">
@@ -536,7 +537,17 @@ export default function App() {
             </section>
           }
         >
-          <TrainModeView userId={user?.uid ?? null} />
+          <TrainModeView userId={user?.uid ?? null} userName={user?.displayName ?? null} />
+        </Suspense>
+      ) : (
+        <Suspense
+          fallback={
+            <section className="card">
+              <p className="muted">Loading coach mode...</p>
+            </section>
+          }
+        >
+          <CoachModeView userId={user?.uid ?? null} />
         </Suspense>
       )}
     </div>

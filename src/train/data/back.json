@@ -31,28 +31,58 @@
           "equipment": "Dumbbell + Bench",
           "reps": "10-12 per side",
           "sets": 3,
-          "activated_region": ["Lats", "Mid Back"]
+          "activated_region": [
+            "Lats",
+            "Mid Back"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "DB Shrugs",
           "equipment": "Dumbbells",
           "reps": "12-15",
           "sets": 3,
-          "activated_region": ["Upper Back (Traps)"]
+          "activated_region": [
+            "Upper Back (Traps)"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Superman",
           "equipment": "Bodyweight/Mat",
           "reps": "12-15",
           "sets": 3,
-          "activated_region": ["Lower Back"]
+          "activated_region": [
+            "Lower Back"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Inverted Rows",
           "equipment": "Low Bar/Smith Machine",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["Mid Back", "Lats"]
+          "activated_region": [
+            "Mid Back",
+            "Lats"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 22.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -61,14 +91,30 @@
           "equipment": "Light Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Upper Back", "Rear Delts"]
+          "activated_region": [
+            "Upper Back",
+            "Rear Delts"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Bird-Dog",
           "equipment": "Bodyweight/Mat",
           "reps": "10 per side",
           "sets": 3,
-          "activated_region": ["Lower Back", "Core"]
+          "activated_region": [
+            "Lower Back",
+            "Core"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -80,28 +126,59 @@
           "equipment": "Cable Machine",
           "reps": "10-12",
           "sets": 4,
-          "activated_region": ["Lats"]
+          "activated_region": [
+            "Lats"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Seated Cable Rows",
           "equipment": "Cable Machine",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Mid Back", "Rhomboids"]
+          "activated_region": [
+            "Mid Back",
+            "Rhomboids"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Pull-ups (or Assisted)",
           "equipment": "Pull-up Bar",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["Lats", "Upper Back"]
+          "activated_region": [
+            "Lats",
+            "Upper Back"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Face Pulls",
           "equipment": "Cable Machine + Rope",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Upper Back", "Rear Delts"]
+          "activated_region": [
+            "Upper Back",
+            "Rear Delts"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -110,14 +187,28 @@
           "equipment": "Cable Machine",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Lats"]
+          "activated_region": [
+            "Lats"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Hyper-extensions",
           "equipment": "Roman Chair/Bench",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Lower Back"]
+          "activated_region": [
+            "Lower Back"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -129,28 +220,60 @@
           "equipment": "Barbell + Plates",
           "reps": "5",
           "sets": 5,
-          "activated_region": ["Lower Back", "All Regions"]
+          "activated_region": [
+            "Lower Back",
+            "All Regions"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 57.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Bent-Over Barbell Rows",
           "equipment": "Barbell",
           "reps": "8",
           "sets": 4,
-          "activated_region": ["Mid Back", "Lats"]
+          "activated_region": [
+            "Mid Back",
+            "Lats"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Weighted Pull-ups",
           "equipment": "Pull-up Bar + Dip Belt",
           "reps": "6-8",
           "sets": 3,
-          "activated_region": ["Lats", "Upper Back"]
+          "activated_region": [
+            "Lats",
+            "Upper Back"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "T-Bar Row",
           "equipment": "Landmine/Barbell Corner",
           "reps": "8-10",
           "sets": 4,
-          "activated_region": ["Mid Back", "Upper Back"]
+          "activated_region": [
+            "Mid Back",
+            "Upper Back"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -159,14 +282,30 @@
           "equipment": "Barbell + Rack",
           "reps": "5-8",
           "sets": 3,
-          "activated_region": ["Upper Back", "Lower Back"]
+          "activated_region": [
+            "Upper Back",
+            "Lower Back"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Meadows Row",
           "equipment": "Barbell + Landmine",
           "reps": "10 per side",
           "sets": 3,
-          "activated_region": ["Lower Lats", "Mid Back"]
+          "activated_region": [
+            "Lower Lats",
+            "Mid Back"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ]
     }

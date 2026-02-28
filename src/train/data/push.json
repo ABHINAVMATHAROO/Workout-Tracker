@@ -1,6 +1,9 @@
 {
   "routine": "Push Day",
-  "muscles": ["Chest", "Triceps"],
+  "muscles": [
+    "Chest",
+    "Triceps"
+  ],
   "structure": "4 Chest Exercises + 2 Triceps Exercises",
   "warmup": [
     "Arm Circles: 20 reps",
@@ -11,39 +14,252 @@
     "beginner": {
       "focus": "Building horizontal and vertical pushing mechanics.",
       "main_exercises": [
-        { "exercise": "Standard Push-ups", "equipment": "Bodyweight", "reps": "Max", "sets": 3, "target": "Chest (Mid/Lower)" },
-        { "exercise": "Flat DB Bench Press", "equipment": "Dumbbells", "reps": "10-12", "sets": 3, "target": "Chest (Mid/Lower)" },
-        { "exercise": "Incline DB Bench Press", "equipment": "Dumbbells + Bench", "reps": "10-12", "sets": 3, "target": "Chest (Upper)" },
-        { "exercise": "Light DB Flyes", "equipment": "Dumbbells", "reps": "12", "sets": 3, "target": "Chest (Inner/Outer)" },
-        { "exercise": "Overhead DB Extension", "equipment": "Dumbbell", "reps": "12", "sets": 3, "target": "Triceps (Long Head)" },
-        { "exercise": "Bench Dips", "equipment": "Bench", "reps": "Max", "sets": 3, "target": "Triceps (Lateral/Medial)" }
+        {
+          "exercise": "Standard Push-ups",
+          "equipment": "Bodyweight",
+          "reps": "Max",
+          "sets": 3,
+          "target": "Chest (Mid/Lower)",
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Flat DB Bench Press",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 3,
+          "target": "Chest (Mid/Lower)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Incline DB Bench Press",
+          "equipment": "Dumbbells + Bench",
+          "reps": "10-12",
+          "sets": 3,
+          "target": "Chest (Upper)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Light DB Flyes",
+          "equipment": "Dumbbells",
+          "reps": "12",
+          "sets": 3,
+          "target": "Chest (Inner/Outer)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Overhead DB Extension",
+          "equipment": "Dumbbell",
+          "reps": "12",
+          "sets": 3,
+          "target": "Triceps (Long Head)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Bench Dips",
+          "equipment": "Bench",
+          "reps": "Max",
+          "sets": 3,
+          "target": "Triceps (Lateral/Medial)",
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
+        }
       ],
-      "alternatives": ["Floor Press", "Kneeling Push-ups", "DB Kickbacks"]
+      "alternatives": [
+        "Floor Press",
+        "Kneeling Push-ups",
+        "DB Kickbacks"
+      ]
     },
     "intermediate": {
       "focus": "Hypertrophy with barbell power and cable isolation.",
       "main_exercises": [
-        { "exercise": "Barbell Bench Press", "equipment": "Barbell", "reps": "8-10", "sets": 4, "target": "Chest (Mid/Upper)" },
-        { "exercise": "Incline DB Press", "equipment": "Dumbbells", "reps": "10", "sets": 3, "target": "Chest (Upper)" },
-        { "exercise": "Chest Dips", "equipment": "Parallel Bars", "reps": "8-10", "sets": 3, "target": "Chest (Lower/Mid)" },
-        { "exercise": "Standing Cable Flyes", "equipment": "Cable Machine", "reps": "12-15", "sets": 3, "target": "Chest (All/Inner)" },
-        { "exercise": "Cable Rope Pushdowns", "equipment": "Cable Machine", "reps": "12-15", "sets": 3, "target": "Triceps (Lateral Head)" },
-        { "exercise": "Skull Crushers", "equipment": "EZ-Bar", "reps": "10", "sets": 3, "target": "Triceps (All Heads)" }
+        {
+          "exercise": "Barbell Bench Press",
+          "equipment": "Barbell",
+          "reps": "8-10",
+          "sets": 4,
+          "target": "Chest (Mid/Upper)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Incline DB Press",
+          "equipment": "Dumbbells",
+          "reps": "10",
+          "sets": 3,
+          "target": "Chest (Upper)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 12.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Chest Dips",
+          "equipment": "Parallel Bars",
+          "reps": "8-10",
+          "sets": 3,
+          "target": "Chest (Lower/Mid)",
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Standing Cable Flyes",
+          "equipment": "Cable Machine",
+          "reps": "12-15",
+          "sets": 3,
+          "target": "Chest (All/Inner)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Cable Rope Pushdowns",
+          "equipment": "Cable Machine",
+          "reps": "12-15",
+          "sets": 3,
+          "target": "Triceps (Lateral Head)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Skull Crushers",
+          "equipment": "EZ-Bar",
+          "reps": "10",
+          "sets": 3,
+          "target": "Triceps (All Heads)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        }
       ],
-      "alternatives": ["Weighted Push-ups", "DB Pullover", "Close-Grip Bench"]
+      "alternatives": [
+        "Weighted Push-ups",
+        "DB Pullover",
+        "Close-Grip Bench"
+      ]
     },
     "hard": {
       "focus": "Maximum strength and heavy isolation.",
       "main_exercises": [
-        { "exercise": "Paused Barbell Bench", "equipment": "Barbell", "reps": "5", "sets": 5, "target": "Chest (Mid/Lower)" },
-        { "exercise": "Incline Barbell Press", "equipment": "Barbell", "reps": "6-8", "sets": 4, "target": "Chest (Upper)" },
-        { "exercise": "Low-to-High Cable Flyes", "equipment": "Cable Machine", "reps": "12", "sets": 4, "target": "Chest (Upper/Inner)" },
-        { "exercise": "Weighted Dips", "equipment": "Dip Belt", "reps": "8", "sets": 3, "target": "Chest (Lower)" },
-        { "exercise": "Weighted Tricep Dips", "equipment": "Dip Belt", "reps": "8", "sets": 3, "target": "Triceps (All Heads)" },
-        { "exercise": "JM Press", "equipment": "Barbell", "reps": "8-10", "sets": 3, "target": "Triceps (Lateral/Medial)" }
+        {
+          "exercise": "Paused Barbell Bench",
+          "equipment": "Barbell",
+          "reps": "5",
+          "sets": 5,
+          "target": "Chest (Mid/Lower)",
+          "default_load": {
+            "type": "machine",
+            "value": 57.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Incline Barbell Press",
+          "equipment": "Barbell",
+          "reps": "6-8",
+          "sets": 4,
+          "target": "Chest (Upper)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Low-to-High Cable Flyes",
+          "equipment": "Cable Machine",
+          "reps": "12",
+          "sets": 4,
+          "target": "Chest (Upper/Inner)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Weighted Dips",
+          "equipment": "Dip Belt",
+          "reps": "8",
+          "sets": 3,
+          "target": "Chest (Lower)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Weighted Tricep Dips",
+          "equipment": "Dip Belt",
+          "reps": "8",
+          "sets": 3,
+          "target": "Triceps (All Heads)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "JM Press",
+          "equipment": "Barbell",
+          "reps": "8-10",
+          "sets": 3,
+          "target": "Triceps (Lateral/Medial)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        }
       ],
-      "alternatives": ["Landmine Press", "Decline DB Press", "Cross-Body Cable Extensions"]
+      "alternatives": [
+        "Landmine Press",
+        "Decline DB Press",
+        "Cross-Body Cable Extensions"
+      ]
     }
   },
-  "post_workout_stretch": ["Doorway Chest Stretch", "Overhead Tricep Stretch"]
+  "post_workout_stretch": [
+    "Doorway Chest Stretch",
+    "Overhead Tricep Stretch"
+  ]
 }

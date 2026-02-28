@@ -28,28 +28,57 @@
           "equipment": "Dumbbells",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Front Delts", "Side Delts"]
+          "activated_region": [
+            "Front Delts",
+            "Side Delts"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Standing DB Lateral Raises",
           "equipment": "Dumbbells",
           "reps": "12-15",
           "sets": 3,
-          "activated_region": ["Side Delts"]
+          "activated_region": [
+            "Side Delts"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "DB Front Raises",
           "equipment": "Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Front Delts"]
+          "activated_region": [
+            "Front Delts"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Rear Delt DB Flyes",
           "equipment": "Dumbbells + Bench",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Rear Delts"]
+          "activated_region": [
+            "Rear Delts"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -58,14 +87,28 @@
           "equipment": "Dumbbells",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Front & Side Delts"]
+          "activated_region": [
+            "Front & Side Delts"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "DB Shrugs",
           "equipment": "Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Upper Traps"]
+          "activated_region": [
+            "Upper Traps"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -77,28 +120,59 @@
           "equipment": "Barbell",
           "reps": "8-10",
           "sets": 4,
-          "activated_region": ["Front Delts", "Side Delts"]
+          "activated_region": [
+            "Front Delts",
+            "Side Delts"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Cable Lateral Raises",
           "equipment": "Cable Machine",
           "reps": "12-15",
           "sets": 3,
-          "activated_region": ["Side Delts"]
+          "activated_region": [
+            "Side Delts"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Cable Face Pulls",
           "equipment": "Cable Machine + Rope",
           "reps": "15",
           "sets": 4,
-          "activated_region": ["Rear Delts", "Traps"]
+          "activated_region": [
+            "Rear Delts",
+            "Traps"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Upright Rows (EZ-Bar)",
           "equipment": "EZ-Bar",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Side Delts", "Traps"]
+          "activated_region": [
+            "Side Delts",
+            "Traps"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -107,14 +181,28 @@
           "equipment": "Barbell",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Front Delts"]
+          "activated_region": [
+            "Front Delts"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Plate Front Raises",
           "equipment": "Weight Plate",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Front Delts"]
+          "activated_region": [
+            "Front Delts"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -126,28 +214,60 @@
           "equipment": "Barbell + Rack",
           "reps": "5-6",
           "sets": 5,
-          "activated_region": ["Front Delts", "Side Delts", "Core"]
+          "activated_region": [
+            "Front Delts",
+            "Side Delts",
+            "Core"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 57.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Dumbbell Viking Press",
           "equipment": "Landmine or Dumbbells",
           "reps": "8-10",
           "sets": 4,
-          "activated_region": ["All Three Heads"]
+          "activated_region": [
+            "All Three Heads"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 17.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Incline Rear Delt Rows",
           "equipment": "Barbell + Incline Bench",
           "reps": "10",
           "sets": 4,
-          "activated_region": ["Rear Delts", "Mid Back"]
+          "activated_region": [
+            "Rear Delts",
+            "Mid Back"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Handstand Push-ups",
           "equipment": "Wall / Bodyweight",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["Front Delts", "Side Delts"]
+          "activated_region": [
+            "Front Delts",
+            "Side Delts"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -156,14 +276,29 @@
           "equipment": "Cable Machine",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Rear Delts"]
+          "activated_region": [
+            "Rear Delts"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "High-Pull Barbell Rows",
           "equipment": "Barbell",
           "reps": "8",
           "sets": 3,
-          "activated_region": ["Rear Delts", "Traps"]
+          "activated_region": [
+            "Rear Delts",
+            "Traps"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ]
     }

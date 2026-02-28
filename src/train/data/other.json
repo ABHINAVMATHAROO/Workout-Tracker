@@ -1,6 +1,10 @@
 {
   "routine": "Shoulders, Forearms, and Core",
-  "muscles": ["Deltoids", "Forearms", "Abdominals/Obliques"],
+  "muscles": [
+    "Deltoids",
+    "Forearms",
+    "Abdominals/Obliques"
+  ],
   "structure": "3 Shoulder Exercises + 2 Forearm Exercises + 2 Core Exercises",
   "warmup": [
     "Shoulder Dislocates (with band or stick): 15 reps",
@@ -11,41 +15,284 @@
     "beginner": {
       "focus": "Stability and fundamental motor patterns using dumbbells and bodyweight.",
       "main_exercises": [
-        { "exercise": "Seated DB Overhead Press", "equipment": "Dumbbells", "reps": "10-12", "sets": 3, "target": "Shoulders (Front/Side)" },
-        { "exercise": "Standing DB Lateral Raises", "equipment": "Dumbbells", "reps": "15", "sets": 3, "target": "Shoulders (Side)" },
-        { "exercise": "Rear Delt DB Flyes", "equipment": "Dumbbells", "reps": "15", "sets": 3, "target": "Shoulders (Rear)" },
-        { "exercise": "Farmer's Walk", "equipment": "Heavy Dumbbells", "reps": "30-45s", "sets": 3, "target": "Forearms (Grip/All)" },
-        { "exercise": "Palms-Up DB Wrist Curls", "equipment": "Dumbbells + Bench", "reps": "15-20", "sets": 3, "target": "Forearms (Flexors)" },
-        { "exercise": "Plank", "equipment": "Bodyweight", "reps": "30-60s", "sets": 3, "target": "Core (Transverse Abdominis)" },
-        { "exercise": "Dead Bug", "equipment": "Bodyweight", "reps": "10 per side", "sets": 3, "target": "Core (Lower Abs/Stability)" }
+        {
+          "exercise": "Seated DB Overhead Press",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 3,
+          "target": "Shoulders (Front/Side)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Standing DB Lateral Raises",
+          "equipment": "Dumbbells",
+          "reps": "15",
+          "sets": 3,
+          "target": "Shoulders (Side)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Rear Delt DB Flyes",
+          "equipment": "Dumbbells",
+          "reps": "15",
+          "sets": 3,
+          "target": "Shoulders (Rear)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Farmer's Walk",
+          "equipment": "Heavy Dumbbells",
+          "reps": "30-45s",
+          "sets": 3,
+          "target": "Forearms (Grip/All)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Palms-Up DB Wrist Curls",
+          "equipment": "Dumbbells + Bench",
+          "reps": "15-20",
+          "sets": 3,
+          "target": "Forearms (Flexors)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Plank",
+          "equipment": "Bodyweight",
+          "reps": "30-60s",
+          "sets": 3,
+          "target": "Core (Transverse Abdominis)",
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Dead Bug",
+          "equipment": "Bodyweight",
+          "reps": "10 per side",
+          "sets": 3,
+          "target": "Core (Lower Abs/Stability)",
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
+        }
       ],
-      "alternatives": ["Arnold Press", "Dead Hang", "Bird-Dog"]
+      "alternatives": [
+        "Arnold Press",
+        "Dead Hang",
+        "Bird-Dog"
+      ]
     },
     "intermediate": {
       "focus": "Increased resistance with barbell pressing and cable tension.",
       "main_exercises": [
-        { "exercise": "Standing Barbell Military Press", "equipment": "Barbell", "reps": "8-10", "sets": 4, "target": "Shoulders (Front/Side)" },
-        { "exercise": "Cable Lateral Raises", "equipment": "Cable Machine", "reps": "12-15", "sets": 3, "target": "Shoulders (Side)" },
-        { "exercise": "Cable Face Pulls", "equipment": "Cable Machine + Rope", "reps": "15", "sets": 3, "target": "Shoulders (Rear/Traps)" },
-        { "exercise": "Reverse Barbell Curls", "equipment": "Barbell", "reps": "10-12", "sets": 3, "target": "Forearms (Brachioradialis)" },
-        { "exercise": "Wrist Roller", "equipment": "Wrist Roller", "reps": "3-5 cycles", "sets": 3, "target": "Forearms (Flexors/Extensors)" },
-        { "exercise": "Hanging Knee Raises", "equipment": "Pull-up Bar", "reps": "12-15", "sets": 3, "target": "Core (Lower Abs)" },
-        { "exercise": "Russian Twists", "equipment": "Medicine Ball/Dumbbell", "reps": "20 total", "sets": 3, "target": "Core (Obliques)" }
+        {
+          "exercise": "Standing Barbell Military Press",
+          "equipment": "Barbell",
+          "reps": "8-10",
+          "sets": 4,
+          "target": "Shoulders (Front/Side)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Cable Lateral Raises",
+          "equipment": "Cable Machine",
+          "reps": "12-15",
+          "sets": 3,
+          "target": "Shoulders (Side)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Cable Face Pulls",
+          "equipment": "Cable Machine + Rope",
+          "reps": "15",
+          "sets": 3,
+          "target": "Shoulders (Rear/Traps)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Reverse Barbell Curls",
+          "equipment": "Barbell",
+          "reps": "10-12",
+          "sets": 3,
+          "target": "Forearms (Brachioradialis)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Wrist Roller",
+          "equipment": "Wrist Roller",
+          "reps": "3-5 cycles",
+          "sets": 3,
+          "target": "Forearms (Flexors/Extensors)",
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Hanging Knee Raises",
+          "equipment": "Pull-up Bar",
+          "reps": "12-15",
+          "sets": 3,
+          "target": "Core (Lower Abs)",
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Russian Twists",
+          "equipment": "Medicine Ball/Dumbbell",
+          "reps": "20 total",
+          "sets": 3,
+          "target": "Core (Obliques)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 12.5,
+            "unit": "kg"
+          }
+        }
       ],
-      "alternatives": ["Upright Rows", "Plate Pinches", "Bicycle Crunches"]
+      "alternatives": [
+        "Upright Rows",
+        "Plate Pinches",
+        "Bicycle Crunches"
+      ]
     },
     "hard": {
       "focus": "High-intensity power movements and advanced gymnastic-style core work.",
       "main_exercises": [
-        { "exercise": "Push Press", "equipment": "Barbell + Rack", "reps": "5-6", "sets": 5, "target": "Shoulders (Power/Front)" },
-        { "exercise": "Handstand Push-ups", "equipment": "Wall", "reps": "Max", "sets": 3, "target": "Shoulders (Front/Side)" },
-        { "exercise": "Incline Rear Delt Rows", "equipment": "Barbell + Bench", "reps": "10", "sets": 4, "target": "Shoulders (Rear)" },
-        { "exercise": "Weighted Towel Pull-ups", "equipment": "Towel + Dip Belt", "reps": "Max", "sets": 3, "target": "Forearms (Crush Grip)" },
-        { "exercise": "Zottman Curls", "equipment": "Dumbbells", "reps": "10-12", "sets": 4, "target": "Forearms (Brachioradialis/Flexors)" },
-        { "exercise": "Hanging Leg Raises", "equipment": "Pull-up Bar", "reps": "10-12", "sets": 4, "target": "Core (Abs/L-Sit Strength)" },
-        { "exercise": "Ab Wheel Rollouts", "equipment": "Ab Roller", "reps": "10-12", "sets": 3, "target": "Core (Total Abdominals)" }
+        {
+          "exercise": "Push Press",
+          "equipment": "Barbell + Rack",
+          "reps": "5-6",
+          "sets": 5,
+          "target": "Shoulders (Power/Front)",
+          "default_load": {
+            "type": "machine",
+            "value": 57.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Handstand Push-ups",
+          "equipment": "Wall",
+          "reps": "Max",
+          "sets": 3,
+          "target": "Shoulders (Front/Side)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Incline Rear Delt Rows",
+          "equipment": "Barbell + Bench",
+          "reps": "10",
+          "sets": 4,
+          "target": "Shoulders (Rear)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Weighted Towel Pull-ups",
+          "equipment": "Towel + Dip Belt",
+          "reps": "Max",
+          "sets": 3,
+          "target": "Forearms (Crush Grip)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Zottman Curls",
+          "equipment": "Dumbbells",
+          "reps": "10-12",
+          "sets": 4,
+          "target": "Forearms (Brachioradialis/Flexors)",
+          "default_load": {
+            "type": "dumbbell",
+            "value": 17.5,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Hanging Leg Raises",
+          "equipment": "Pull-up Bar",
+          "reps": "10-12",
+          "sets": 4,
+          "target": "Core (Abs/L-Sit Strength)",
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
+        },
+        {
+          "exercise": "Ab Wheel Rollouts",
+          "equipment": "Ab Roller",
+          "reps": "10-12",
+          "sets": 3,
+          "target": "Core (Total Abdominals)",
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
+        }
       ],
-      "alternatives": ["Viking Press", "Fat Grip Barbell Rows", "Cable Woodchoppers"]
+      "alternatives": [
+        "Viking Press",
+        "Fat Grip Barbell Rows",
+        "Cable Woodchoppers"
+      ]
     }
   },
   "post_workout_stretch": [

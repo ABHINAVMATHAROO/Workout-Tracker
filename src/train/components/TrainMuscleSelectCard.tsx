@@ -6,32 +6,44 @@ type TrainMuscleSelectCardProps = {
   selectedMuscle: MuscleGroup | null
   isExpanded: boolean
   intensity: Intensity
+  hasMineOption: boolean
+  isMineSelected: boolean
+  mineLabel: string
   view: 'front' | 'back'
   onSelectMuscle: (group: MuscleGroup) => void
   onExpand: () => void
   onFlip: () => void
   onSelectIntensity: (intensity: Intensity) => void
+  onSelectMine: () => void
 }
 
 const INTENSITY_VALUES: Intensity[] = ['Beginner', 'Intermediate', 'Pro']
-const INTENSITY_LABELS = ['Comfort', 'Evolve', 'Warrior'] as const
+const BASE_LABELS = ['Comfort', 'Evolve', 'Warrior'] as const
 
 export default function TrainMuscleSelectCard({
   selectedMuscle,
   isExpanded,
   intensity,
+  hasMineOption,
+  isMineSelected,
+  mineLabel,
   view,
   onSelectMuscle,
   onExpand,
   onFlip,
   onSelectIntensity,
+  onSelectMine,
 }: TrainMuscleSelectCardProps) {
-  const selectedIndex = INTENSITY_VALUES.indexOf(intensity)
-  const STEP_POSITIONS = ['16.666%', '50%', '83.333%'] as const
+  const labels = hasMineOption ? [...BASE_LABELS, mineLabel] : [...BASE_LABELS]
+  const steps = labels.length
+  const selectedIndex = isMineSelected ? labels.length - 1 : INTENSITY_VALUES.indexOf(intensity)
+  const STEP_POSITIONS = steps === 4 ? ['12.5%', '37.5%', '62.5%', '87.5%'] : ['16.666%', '50%', '83.333%']
   const thumbPosition = STEP_POSITIONS[selectedIndex] ?? STEP_POSITIONS[0]
   const fillWidth = thumbPosition
   const intensityColor =
-    selectedIndex === 0
+    isMineSelected
+      ? 'rgb(var(--cadax-orange) / 0.95)'
+      : selectedIndex === 0
       ? 'rgb(var(--cadax-green-light) / 0.95)'
       : selectedIndex === 1
         ? 'rgb(var(--cadax-blue-light) / 0.95)'
@@ -99,15 +111,25 @@ export default function TrainMuscleSelectCard({
             className="train-intensity-slider"
             type="range"
             min={0}
-            max={2}
+            max={labels.length - 1}
             step={1}
             value={selectedIndex}
-            onChange={(event) => onSelectIntensity(INTENSITY_VALUES[Number(event.target.value)] ?? 'Beginner')}
+            onChange={(event) => {
+              const index = Number(event.target.value)
+              if (hasMineOption && index === labels.length - 1) {
+                onSelectMine()
+                return
+              }
+              onSelectIntensity(INTENSITY_VALUES[index] ?? 'Beginner')
+            }}
             aria-label="Select intensity"
           />
         </div>
-        <div className="train-intensity-scale">
-          {INTENSITY_LABELS.map((level, index) => (
+        <div
+          className="train-intensity-scale"
+          style={{ '--intensity-step-count': String(labels.length) } as CSSProperties}
+        >
+          {labels.map((level, index) => (
             <span
               key={level}
               className={`train-intensity-label ${index === selectedIndex ? 'is-active' : ''}`}

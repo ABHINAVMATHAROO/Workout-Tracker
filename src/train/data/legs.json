@@ -32,28 +32,59 @@
           "equipment": "Dumbbell",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Quadriceps", "Glutes"]
+          "activated_region": [
+            "Quadriceps",
+            "Glutes"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "DB Romanian Deadlifts",
           "equipment": "Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Hamstrings", "Glutes"]
+          "activated_region": [
+            "Hamstrings",
+            "Glutes"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Reverse Lunges",
           "equipment": "Bodyweight or Dumbbells",
           "reps": "10 per side",
           "sets": 3,
-          "activated_region": ["Quadriceps", "Glutes"]
+          "activated_region": [
+            "Quadriceps",
+            "Glutes"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Standing Calf Raises",
           "equipment": "Bodyweight/Elevated Edge",
           "reps": "15-20",
           "sets": 3,
-          "activated_region": ["Calves"]
+          "activated_region": [
+            "Calves"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -62,14 +93,30 @@
           "equipment": "Dumbbells + Bench",
           "reps": "10 per side",
           "sets": 3,
-          "activated_region": ["Quadriceps", "Glutes"]
+          "activated_region": [
+            "Quadriceps",
+            "Glutes"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Glute Bridges (Weighted)",
           "equipment": "Dumbbell/Plate",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Glutes", "Hamstrings"]
+          "activated_region": [
+            "Glutes",
+            "Hamstrings"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -81,28 +128,58 @@
           "equipment": "Barbell + Rack",
           "reps": "8-10",
           "sets": 4,
-          "activated_region": ["All Regions", "Quads focus"]
+          "activated_region": [
+            "All Regions",
+            "Quads focus"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Leg Press",
           "equipment": "Leg Press Machine",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Quadriceps", "Glutes"]
+          "activated_region": [
+            "Quadriceps",
+            "Glutes"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Lying Leg Curls",
           "equipment": "Leg Curl Machine",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Hamstrings"]
+          "activated_region": [
+            "Hamstrings"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Seated Calf Raises",
           "equipment": "Calf Machine / Plate on knees",
           "reps": "15",
           "sets": 4,
-          "activated_region": ["Calves (Soleus)"]
+          "activated_region": [
+            "Calves (Soleus)"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -111,14 +188,29 @@
           "equipment": "Dumbbells + Bench",
           "reps": "8-10 per side",
           "sets": 3,
-          "activated_region": ["Quads", "Glutes"]
+          "activated_region": [
+            "Quads",
+            "Glutes"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 12.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Leg Extensions",
           "equipment": "Leg Extension Machine",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Quadriceps"]
+          "activated_region": [
+            "Quadriceps"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -130,28 +222,59 @@
           "equipment": "Barbell + Plates",
           "reps": "5",
           "sets": 5,
-          "activated_region": ["Glutes", "Hamstrings", "Lower Back"]
+          "activated_region": [
+            "Glutes",
+            "Hamstrings",
+            "Lower Back"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 57.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Front Squat",
           "equipment": "Barbell + Rack",
           "reps": "6-8",
           "sets": 4,
-          "activated_region": ["Quadriceps", "Core"]
+          "activated_region": [
+            "Quadriceps",
+            "Core"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Barbell Hip Thrusts",
           "equipment": "Barbell + Bench",
           "reps": "8-10",
           "sets": 4,
-          "activated_region": ["Glutes"]
+          "activated_region": [
+            "Glutes"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Hack Squat",
           "equipment": "Hack Squat Machine",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Quadriceps"]
+          "activated_region": [
+            "Quadriceps"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -160,14 +283,28 @@
           "equipment": "Partner or Floor Anchor",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["Hamstrings"]
+          "activated_region": [
+            "Hamstrings"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Donkey Calf Raises",
           "equipment": "Calf Machine",
           "reps": "15",
           "sets": 4,
-          "activated_region": ["Calves"]
+          "activated_region": [
+            "Calves"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ]
     }

@@ -28,28 +28,56 @@
           "equipment": "Heavy Dumbbells",
           "reps": "30-45 seconds",
           "sets": 3,
-          "activated_region": ["All Regions (Grip Strength)"]
+          "activated_region": [
+            "All Regions (Grip Strength)"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Palms-Up DB Wrist Curls",
           "equipment": "Dumbbells + Bench",
           "reps": "15-20",
           "sets": 3,
-          "activated_region": ["Flexors"]
+          "activated_region": [
+            "Flexors"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Palms-Down DB Wrist Curls",
           "equipment": "Dumbbells + Bench",
           "reps": "15-20",
           "sets": 3,
-          "activated_region": ["Extensors"]
+          "activated_region": [
+            "Extensors"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Dead Hang",
           "equipment": "Pull-up Bar",
           "reps": "Max time",
           "sets": 3,
-          "activated_region": ["All Regions"]
+          "activated_region": [
+            "All Regions"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -58,14 +86,29 @@
           "equipment": "Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Brachioradialis"]
+          "activated_region": [
+            "Brachioradialis"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Towel Hang",
           "equipment": "Pull-up Bar + Towel",
           "reps": "Max time",
           "sets": 3,
-          "activated_region": ["Flexors", "Grip Strength"]
+          "activated_region": [
+            "Flexors",
+            "Grip Strength"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -77,28 +120,58 @@
           "equipment": "Barbell or EZ-Bar",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Brachioradialis", "Extensors"]
+          "activated_region": [
+            "Brachioradialis",
+            "Extensors"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Wrist Roller",
           "equipment": "Wrist Roller Device",
           "reps": "3-5 cycles (Up/Down)",
           "sets": 3,
-          "activated_region": ["Flexors", "Extensors"]
+          "activated_region": [
+            "Flexors",
+            "Extensors"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Behind-the-Back Barbell Wrist Curls",
           "equipment": "Barbell",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Flexors"]
+          "activated_region": [
+            "Flexors"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Plate Pinches",
           "equipment": "Two Weight Plates",
           "reps": "30-45 seconds",
           "sets": 3,
-          "activated_region": ["Flexors (Pinch Grip)"]
+          "activated_region": [
+            "Flexors (Pinch Grip)"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -107,14 +180,29 @@
           "equipment": "Cable Machine",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Flexors"]
+          "activated_region": [
+            "Flexors"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Single Arm DB Suitcase Carry",
           "equipment": "Dumbbell",
           "reps": "30s per side",
           "sets": 3,
-          "activated_region": ["Grip Strength", "Core"]
+          "activated_region": [
+            "Grip Strength",
+            "Core"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 12.5,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -126,28 +214,57 @@
           "equipment": "Towel + Pull-up Bar + Belt",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["All Regions (Crush Grip)"]
+          "activated_region": [
+            "All Regions (Crush Grip)"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Zottman Curls",
           "equipment": "Dumbbells",
           "reps": "10-12",
           "sets": 4,
-          "activated_region": ["Brachioradialis", "Flexors"]
+          "activated_region": [
+            "Brachioradialis",
+            "Flexors"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 17.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Fat Grip Barbell Rows",
           "equipment": "Barbell + Fat Grips",
           "reps": "8",
           "sets": 3,
-          "activated_region": ["All Regions"]
+          "activated_region": [
+            "All Regions"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Lever Bar Rotations",
           "equipment": "Dumbbell (weighted on one side only)",
           "reps": "12 per side",
           "sets": 3,
-          "activated_region": ["Pronators/Supinators"]
+          "activated_region": [
+            "Pronators/Supinators"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 17.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -156,14 +273,28 @@
           "equipment": "Tension Grippers",
           "reps": "Failure",
           "sets": 5,
-          "activated_region": ["Flexors"]
+          "activated_region": [
+            "Flexors"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 57.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Reverse Grip Cable Curls (Fat Grip)",
           "equipment": "Cable Machine + Fat Grip",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Brachioradialis"]
+          "activated_region": [
+            "Brachioradialis"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ]
     }

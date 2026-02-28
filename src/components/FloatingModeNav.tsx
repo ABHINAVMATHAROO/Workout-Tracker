@@ -1,6 +1,6 @@
 type FloatingModeNavProps = {
-  mode: 'log' | 'train'
-  onChangeMode: (mode: 'log' | 'train') => void
+  mode: 'log' | 'train' | 'coach'
+  onChangeMode: (mode: 'log' | 'train' | 'coach') => void
 }
 
 export default function FloatingModeNav({ mode, onChangeMode }: FloatingModeNavProps) {

@@ -1,314 +1,305 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
-import TrainInputCard from './components/TrainInputCard'
 import TrainPlanCard from './components/TrainPlanCard'
-import TrainCoachCard from './components/TrainCoachCard'
 import TrainMuscleSelectCard from './components/TrainMuscleSelectCard'
-import { db } from '../firebase'
-import { DEFAULT_COACH_SETTINGS, getFallbackLine } from './coachConstants'
-import { createCoachAudio } from './coachAudio'
-import { selectCoachLine } from './coachManifest'
 import { generateWorkout } from './generateWorkout'
-import type {
-  CoachMode,
-  CoachRuntimeState,
-  CoachSettings,
-  GeneratedTrainWorkout,
-  Intensity,
-  MuscleGroup,
-} from './types'
+import { fromCustomRoutineToWorkout, fromPresetToCustomRoutine } from './routineMapper'
+import { getCustomRoutine, getUserLoadUnit, saveCustomRoutine } from './trainRoutineStore'
+import type { CustomTrainRoutine, GeneratedTrainWorkout, Intensity, LoadUnit, MuscleGroup, RepsPreset } from './types'
 
 type TrainModeViewProps = {
   userId: string | null
+  userName: string | null
 }
 
-const MAX_RECENT_LINES = 6
-const MAX_RECENT_CLIP_IDS = 6
-
-const normalizeCoachSettings = (value: unknown): CoachSettings => {
-  const parsed = (value ?? {}) as Partial<CoachSettings>
-  return {
-    mode: parsed.mode === 'encourage' ? 'encourage' : 'roast',
-    intervalSeconds:
-      typeof parsed.intervalSeconds === 'number' && Number.isFinite(parsed.intervalSeconds)
-        ? Math.max(20, Math.min(300, Math.round(parsed.intervalSeconds)))
-        : DEFAULT_COACH_SETTINGS.intervalSeconds,
-    voice: typeof parsed.voice === 'string' && parsed.voice.trim() ? parsed.voice : DEFAULT_COACH_SETTINGS.voice,
-    enabled: Boolean(parsed.enabled),
-  }
+const getFirstName = (name: string | null) => {
+  const trimmed = (name ?? '').trim()
+  if (!trimmed) return 'Mine'
+  return trimmed.split(/\s+/)[0] ?? 'Mine'
 }
 
-export default function TrainModeView({ userId }: TrainModeViewProps) {
+export default function TrainModeView({ userId: _userId, userName }: TrainModeViewProps) {
+  const userId = _userId
   const [muscleGroup, setMuscleGroup] = useState<MuscleGroup>('Chest')
   const [intensity, setIntensity] = useState<Intensity>('Beginner')
   const [muscleView, setMuscleView] = useState<'front' | 'back'>('front')
   const [hasSelectedFromMap, setHasSelectedFromMap] = useState(false)
   const [isFocusExpanded, setIsFocusExpanded] = useState(true)
   const [workout, setWorkout] = useState<GeneratedTrainWorkout | null>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [coachSettings, setCoachSettings] = useState<CoachSettings>(DEFAULT_COACH_SETTINGS)
-  const [runtimeState, setRuntimeState] = useState<CoachRuntimeState>('idle')
-  const [coachStatus, setCoachStatus] = useState('Start Coach for periodic motivation. Use Freeform Prompt for extra clips.')
-  const [, setRecentLines] = useState<string[]>([])
-  const [recentClipIds, setRecentClipIds] = useState<string[]>([])
+  const [customRoutine, setCustomRoutine] = useState<CustomTrainRoutine | null>(null)
+  const [isPresetSession, setIsPresetSession] = useState(false)
+  const [loadUnit, setLoadUnit] = useState<LoadUnit>('kg')
+  const [hasPendingSave, setHasPendingSave] = useState(false)
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
+  const [trainStatus, setTrainStatus] = useState('Tap a muscle region above to load your training plan.')
+  const loadRef = useRef(0)
+  const mineLabel = useMemo(() => getFirstName(userName), [userName])
 
-  const audio = useMemo(() => createCoachAudio(), [])
+  const applyPresetWorkout = useCallback((nextMuscleGroup: MuscleGroup, nextIntensity: Intensity) => {
+    const nextWorkout = generateWorkout({ muscleGroup: nextMuscleGroup, intensity: nextIntensity })
+    setWorkout(nextWorkout)
+    setTrainStatus(nextWorkout.plan.source === 'unavailable' ? 'Sorry, we are working on it.' : 'Workout loaded.')
+  }, [])
 
-  const timerRef = useRef<number | null>(null)
-  const runtimeRef = useRef(runtimeState)
-  const coachSettingsRef = useRef(coachSettings)
-  const workoutRef = useRef(workout)
-  const activeIndexRef = useRef(activeIndex)
-  const recentClipIdsRef = useRef(recentClipIds)
+  const applyWorkout = useCallback(async (nextMuscleGroup: MuscleGroup, nextIntensity: Intensity) => {
+    const requestId = ++loadRef.current
+    try {
+      if (userId) {
+        let savedRoutine: CustomTrainRoutine | null = null
+        try {
+          savedRoutine = await getCustomRoutine(userId, nextMuscleGroup)
+        } catch {
+          // Non-blocking: still show preset workout if custom routine read fails.
+          setTrainStatus('Could not load custom routine. Showing preset plan.')
+        }
+        if (requestId !== loadRef.current) return
+        if (savedRoutine) {
+          setCustomRoutine(savedRoutine)
+          setWorkout(fromCustomRoutineToWorkout(savedRoutine, nextIntensity))
+          setIsPresetSession(false)
+          setTrainStatus('Loaded your custom routine.')
+          return
+        }
+      }
 
-  useEffect(() => {
-    runtimeRef.current = runtimeState
-  }, [runtimeState])
-  useEffect(() => {
-    coachSettingsRef.current = coachSettings
-  }, [coachSettings])
-  useEffect(() => {
-    workoutRef.current = workout
-  }, [workout])
-  useEffect(() => {
-    activeIndexRef.current = activeIndex
-  }, [activeIndex])
-  useEffect(() => {
-    recentClipIdsRef.current = recentClipIds
-  }, [recentClipIds])
-
-  const saveCoachSettings = useCallback(
-    async (next: CoachSettings) => {
-      if (!userId) return
-      await setDoc(
-        doc(db, 'users', userId),
-        {
-          coachSettings: {
-            ...next,
-            updatedAt: serverTimestamp(),
-          },
-        },
-        { merge: true }
-      )
-    },
-    [userId]
-  )
+      setCustomRoutine(null)
+      setIsPresetSession(false)
+      applyPresetWorkout(nextMuscleGroup, nextIntensity)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to generate workout.'
+      setTrainStatus(message)
+    }
+  }, [applyPresetWorkout, userId])
 
   useEffect(() => {
-    if (!userId) return
+    if (!userId) {
+      setLoadUnit('kg')
+      return
+    }
+
     void (async () => {
       try {
-        const snap = await getDoc(doc(db, 'users', userId))
-        const loaded = normalizeCoachSettings(snap.data()?.coachSettings)
-        setCoachSettings(loaded)
+        const unit = await getUserLoadUnit(userId)
+        setLoadUnit(unit)
       } catch {
-        setCoachStatus('Could not load coach settings. Using defaults for this session.')
+        setLoadUnit('kg')
       }
     })()
   }, [userId])
 
-  const clearTimer = useCallback(() => {
-    if (timerRef.current !== null) {
-      window.clearTimeout(timerRef.current)
-      timerRef.current = null
-    }
-  }, [])
-
-  const appendRecentLine = useCallback((line: string) => {
-    setRecentLines((prev) => [line, ...prev].slice(0, MAX_RECENT_LINES))
-  }, [])
-
-  const appendRecentClipId = useCallback((clipId: string | undefined) => {
-    if (!clipId) return
-    setRecentClipIds((prev) => [clipId, ...prev].slice(0, MAX_RECENT_CLIP_IDS))
-  }, [])
-
-  const playCoachSelection = useCallback(
-    async (selection: { line: string; audioUrl?: string; clipId?: string }, fallbackSuffix?: string) => {
-      setCoachStatus(selection.line)
-      appendRecentLine(selection.line)
-      appendRecentClipId(selection.clipId)
-
-      if (!selection.audioUrl) return
-      try {
-        await audio.playUrl(selection.audioUrl)
-      } catch {
-        if (fallbackSuffix) {
-          setCoachStatus(`${selection.line} ${fallbackSuffix}`)
+  useEffect(() => {
+    if (!userId || !customRoutine || !hasPendingSave) return
+    setSaveState('saving')
+    const timer = window.setTimeout(() => {
+      void (async () => {
+        try {
+          await saveCustomRoutine(userId, customRoutine)
+          setHasPendingSave(false)
+          setSaveState('saved')
+          setTrainStatus('Saved custom routine.')
+        } catch {
+          setSaveState('error')
+          setTrainStatus('Could not save. Retrying on next edit.')
         }
-      }
+      })()
+    }, 500)
+
+    return () => window.clearTimeout(timer)
+  }, [customRoutine, hasPendingSave, userId])
+
+  const presetReference = useMemo(() => {
+    const baseIntensity = customRoutine?.baseIntensity ?? intensity
+    return generateWorkout({ muscleGroup, intensity: baseIntensity })
+  }, [customRoutine?.baseIntensity, intensity, muscleGroup])
+
+  const upsertCustomRoutine = useCallback(
+    (recipe: (value: CustomTrainRoutine) => CustomTrainRoutine) => {
+      if (!workout) return
+      const sourceRoutine =
+        !customRoutine || isPresetSession || workout.planVariant === 'preset'
+          ? fromPresetToCustomRoutine(
+              workout,
+              userId ?? '',
+              loadUnit,
+              muscleGroup,
+              customRoutine?.baseIntensity ?? intensity
+            )
+          : customRoutine
+      const nextRoutine = recipe(sourceRoutine)
+      setCustomRoutine(nextRoutine)
+      setWorkout(fromCustomRoutineToWorkout(nextRoutine, intensity))
+      setHasPendingSave(Boolean(userId))
+      setIsPresetSession(false)
+      setSaveState('saving')
+      setTrainStatus('Editing your custom routine...')
     },
-    [appendRecentClipId, appendRecentLine, audio]
+    [customRoutine, intensity, isPresetSession, loadUnit, muscleGroup, userId, workout]
   )
 
-  const scheduleNextTick = useCallback(
-    (delayMs: number) => {
-      clearTimer()
-      if (runtimeRef.current !== 'running') return
-      if (document.visibilityState !== 'visible') return
-      timerRef.current = window.setTimeout(() => {
-        void tickCoachLine()
-      }, delayMs)
+  const handleSetChange = useCallback(
+    (
+      exerciseIndex: number,
+      setIndex: number,
+      patch: { repsPreset?: RepsPreset; load?: number; loadUnit?: LoadUnit }
+    ) => {
+      upsertCustomRoutine((value) => ({
+        ...value,
+        mainExercises: value.mainExercises.map((exercise, currentExerciseIndex) => {
+          if (currentExerciseIndex !== exerciseIndex) return exercise
+          const setDetails = (exercise.setDetails ?? []).length > 0
+            ? (exercise.setDetails ?? [])
+            : Array.from({ length: exercise.sets }, () => ({
+                repsPreset: exercise.repsPreset,
+                load: exercise.load,
+                loadUnit: exercise.loadUnit,
+                loadType: exercise.loadType,
+              }))
+          return {
+            ...exercise,
+            setDetails: setDetails.map((setDetail, currentSetIndex) =>
+              currentSetIndex !== setIndex ? setDetail : { ...setDetail, ...patch }
+            ),
+          }
+        }),
+      }))
     },
-    [clearTimer]
+    [upsertCustomRoutine]
   )
 
-  const tickCoachLine = useCallback(async () => {
-    if (runtimeRef.current !== 'running') return
-    if (document.visibilityState !== 'visible') return
+  const handleAddSet = useCallback(
+    (exerciseIndex: number) => {
+      upsertCustomRoutine((value) => ({
+        ...value,
+        mainExercises: value.mainExercises.map((exercise, currentExerciseIndex) => {
+          if (currentExerciseIndex !== exerciseIndex) return exercise
+          const fallback = {
+            repsPreset: exercise.repsPreset,
+            load: exercise.load,
+            loadUnit: exercise.loadUnit,
+            loadType: exercise.loadType,
+          }
+          const setDetails = (exercise.setDetails ?? []).length > 0
+            ? (exercise.setDetails ?? [])
+            : Array.from({ length: exercise.sets }, () => fallback)
+          const nextSet = setDetails[setDetails.length - 1] ?? fallback
+          return {
+            ...exercise,
+            setDetails: [...setDetails, { ...nextSet }],
+          }
+        }),
+      }))
+    },
+    [upsertCustomRoutine]
+  )
 
-    const mode = coachSettingsRef.current.mode
-    const selection = await selectCoachLine({
-      mode,
-      intent: 'periodic',
-      excludedClipIds: recentClipIdsRef.current,
-    })
+  const handleRemoveSet = useCallback(
+    (exerciseIndex: number, setIndex: number) => {
+      upsertCustomRoutine((value) => ({
+        ...value,
+        mainExercises: value.mainExercises.map((exercise, currentExerciseIndex) => {
+          if (currentExerciseIndex !== exerciseIndex) return exercise
+          const setDetails = (exercise.setDetails ?? []).length > 0
+            ? (exercise.setDetails ?? [])
+            : Array.from({ length: exercise.sets }, () => ({
+                repsPreset: exercise.repsPreset,
+                load: exercise.load,
+                loadUnit: exercise.loadUnit,
+                loadType: exercise.loadType,
+              }))
+          if (setDetails.length <= 1) return exercise
+          return {
+            ...exercise,
+            setDetails: setDetails.filter((_, currentSetIndex) => currentSetIndex !== setIndex),
+          }
+        }),
+      }))
+    },
+    [upsertCustomRoutine]
+  )
 
-    if (selection) {
-      await playCoachSelection(selection, 'Audio clip failed; text remains visible.')
-    } else {
-      const fallbackLine = getFallbackLine(mode, Date.now())
-      setCoachStatus(fallbackLine)
-      appendRecentLine(fallbackLine)
-    }
+  const handleRemoveExercise = useCallback(
+    (exerciseIndex: number) => {
+      upsertCustomRoutine((value) => {
+        if (value.mainExercises.length <= 1) return value
+        return {
+          ...value,
+          mainExercises: value.mainExercises.filter((_, currentExerciseIndex) => currentExerciseIndex !== exerciseIndex),
+        }
+      })
+    },
+    [upsertCustomRoutine]
+  )
 
-    scheduleNextTick(coachSettingsRef.current.intervalSeconds * 1000)
-  }, [appendRecentLine, playCoachSelection, scheduleNextTick])
-
-  useEffect(() => {
-    const onVisibilityChange = () => {
-      if (document.visibilityState !== 'visible') {
-        clearTimer()
-        audio.stop()
-        return
-      }
-      if (runtimeRef.current === 'running') {
-        scheduleNextTick(600)
-      }
-    }
-    document.addEventListener('visibilitychange', onVisibilityChange)
-    return () => {
-      document.removeEventListener('visibilitychange', onVisibilityChange)
-    }
-  }, [audio, clearTimer, scheduleNextTick])
-
-  useEffect(() => {
-    return () => {
-      clearTimer()
-      audio.stop()
-    }
-  }, [audio, clearTimer])
-
-  const applyWorkout = useCallback((nextMuscleGroup: MuscleGroup, nextIntensity: Intensity) => {
-    try {
-      const nextWorkout = generateWorkout({ muscleGroup: nextMuscleGroup, intensity: nextIntensity })
-      setWorkout(nextWorkout)
-      setActiveIndex(0)
-      setCoachStatus(nextWorkout.plan.source === 'unavailable' ? 'Sorry, we are working on it.' : 'Workout loaded.')
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to generate workout.'
-      setCoachStatus(message)
-    }
-  }, [])
-
-  const handleGenerate = () => {
-    setHasSelectedFromMap(true)
-    setIsFocusExpanded(false)
-    applyWorkout(muscleGroup, intensity)
-  }
-
-  const handleSelectMuscleGroup = (group: MuscleGroup) => {
-    setMuscleGroup(group)
-    if (!hasSelectedFromMap) return
-    applyWorkout(group, intensity)
-  }
+  const handleReplaceExercise = useCallback(
+    (exerciseIndex: number, replacement: GeneratedTrainWorkout['plan']['mainExercises'][number]) => {
+      upsertCustomRoutine((value) => ({
+        ...value,
+        mainExercises: value.mainExercises.map((exercise, currentExerciseIndex) => {
+          if (currentExerciseIndex !== exerciseIndex) return exercise
+          const currentSetCount =
+            (exercise.setDetails ?? []).length > 0 ? (exercise.setDetails ?? []).length : Math.max(1, exercise.sets)
+          const fallbackReps: RepsPreset =
+            replacement.reps === '5' ||
+            replacement.reps === '6-8' ||
+            replacement.reps === '8-10' ||
+            replacement.reps === '10-12' ||
+            replacement.reps === '12-15' ||
+            replacement.reps === '15-20' ||
+            replacement.reps === 'Max'
+              ? replacement.reps
+              : '10-12'
+          const replacementSeed = replacement.setDetails[0] ?? {
+            repsPreset: fallbackReps,
+            load: replacement.load,
+            loadUnit: replacement.loadUnit,
+            loadType: replacement.loadType,
+          }
+          return {
+            ...exercise,
+            exercise: replacement.exercise,
+            equipment: replacement.equipment,
+            activatedRegion: replacement.activatedRegion,
+            repsPreset: replacementSeed.repsPreset,
+            load: replacementSeed.load,
+            loadUnit: replacementSeed.loadUnit,
+            loadType: replacementSeed.loadType ?? 'machine',
+            setDetails: Array.from({ length: currentSetCount }, () => ({
+              repsPreset: replacementSeed.repsPreset,
+              load: replacementSeed.load,
+              loadUnit: replacementSeed.loadUnit,
+              loadType: replacementSeed.loadType ?? 'machine',
+            })),
+          }
+        }),
+      }))
+    },
+    [upsertCustomRoutine]
+  )
 
   const handleSelectIntensity = (nextIntensity: Intensity) => {
     setIntensity(nextIntensity)
     if (!hasSelectedFromMap) return
-    applyWorkout(muscleGroup, nextIntensity)
+    if (customRoutine && !isPresetSession) {
+      setIsPresetSession(true)
+      applyPresetWorkout(muscleGroup, nextIntensity)
+      setTrainStatus('Showing preset plan.')
+      return
+    }
+    applyPresetWorkout(muscleGroup, nextIntensity)
+  }
+
+  const handleSelectMine = () => {
+    if (!customRoutine) return
+    setIsPresetSession(false)
+    setWorkout(fromCustomRoutineToWorkout(customRoutine, intensity))
+    setTrainStatus('Loaded your custom routine.')
   }
 
   const handleSelectMuscleFromMap = (group: MuscleGroup) => {
     setMuscleGroup(group)
     setHasSelectedFromMap(true)
     setIsFocusExpanded(false)
-    applyWorkout(group, intensity)
+    void applyWorkout(group, intensity)
   }
-
-  const updateCoachSettings = useCallback(
-    (patch: Partial<CoachSettings>) => {
-      setCoachSettings((prev) => {
-        const next = { ...prev, ...patch }
-        void saveCoachSettings(next)
-        return next
-      })
-    },
-    [saveCoachSettings]
-  )
-
-  const handleStartCoach = () => {
-    if (runtimeRef.current === 'running') return
-    setRuntimeState('starting')
-    setCoachStatus('Coach starting...')
-    updateCoachSettings({ enabled: true })
-    setRuntimeState('running')
-    runtimeRef.current = 'running'
-    clearTimer()
-    void tickCoachLine()
-  }
-
-  const handlePauseCoach = () => {
-    clearTimer()
-    audio.stop()
-    setRuntimeState('paused')
-    runtimeRef.current = 'paused'
-    updateCoachSettings({ enabled: false })
-    setCoachStatus('Coach paused.')
-  }
-
-  const handleResumeCoach = () => {
-    setRuntimeState('running')
-    runtimeRef.current = 'running'
-    updateCoachSettings({ enabled: true })
-    setCoachStatus('Coach resumed.')
-    scheduleNextTick(400)
-  }
-
-  const handleStopCoach = () => {
-    clearTimer()
-    audio.stop()
-    setRuntimeState('idle')
-    runtimeRef.current = 'idle'
-    updateCoachSettings({ enabled: false })
-    setCoachStatus('Coach stopped.')
-  }
-
-  const handleTriggerFreeform = () => {
-    void (async () => {
-      const selection = await selectCoachLine({
-        mode: coachSettingsRef.current.mode,
-        intent: 'freeform',
-        excludedClipIds: recentClipIdsRef.current,
-      })
-
-      if (selection) {
-        await playCoachSelection(selection, 'Audio clip failed; text remains visible.')
-        return
-      }
-
-      const fallback = getFallbackLine(coachSettingsRef.current.mode, Date.now())
-      setCoachStatus(fallback)
-      appendRecentLine(fallback)
-    })()
-  }
-
-  const handleSelectMode = (mode: CoachMode) => {
-    updateCoachSettings({ mode })
-    setCoachStatus(mode === 'roast' ? 'Roast mode active.' : 'Encourage mode active.')
-  }
-
-  const canTriggerFreeform = runtimeState === 'running' || runtimeState === 'paused'
 
   return (
     <>
@@ -316,42 +307,35 @@ export default function TrainModeView({ userId }: TrainModeViewProps) {
         selectedMuscle={hasSelectedFromMap ? muscleGroup : null}
         isExpanded={isFocusExpanded}
         intensity={intensity}
+        hasMineOption={Boolean(customRoutine)}
+        isMineSelected={Boolean(customRoutine) && !isPresetSession}
+        mineLabel={mineLabel}
         view={muscleView}
         onSelectMuscle={handleSelectMuscleFromMap}
         onExpand={() => setIsFocusExpanded(true)}
         onFlip={() => setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))}
         onSelectIntensity={handleSelectIntensity}
+        onSelectMine={handleSelectMine}
       />
 
       {hasSelectedFromMap ? (
-        <>
-          <TrainPlanCard workout={workout} activeIndex={activeIndex} />
-          <TrainCoachCard
-            mode={coachSettings.mode}
-            runtimeState={runtimeState}
-            canTriggerFreeform={canTriggerFreeform}
-            onSelectMode={handleSelectMode}
-            onStartCoach={handleStartCoach}
-            onPauseCoach={handlePauseCoach}
-            onResumeCoach={handleResumeCoach}
-            onStopCoach={handleStopCoach}
-            onTriggerFreeform={handleTriggerFreeform}
-            status={coachStatus}
-          />
-        </>
+        <TrainPlanCard
+          workout={workout}
+          saveState={saveState}
+          alternativeOptions={presetReference.plan.alternatives}
+          warmupOptions={presetReference.plan.warmup}
+          stretchOptions={presetReference.plan.postWorkoutStretch}
+          onChangeSet={handleSetChange}
+          onAddSet={handleAddSet}
+          onRemoveSet={handleRemoveSet}
+          onRemoveExercise={handleRemoveExercise}
+          onReplaceExercise={handleReplaceExercise}
+        />
       ) : (
         <section className="card">
-          <p className="muted">Tap a muscle region above to load your training plan.</p>
+          <p className="muted">{trainStatus}</p>
         </section>
       )}
-
-      <TrainInputCard
-        muscleGroup={muscleGroup}
-        intensity={intensity}
-        onSelectMuscleGroup={handleSelectMuscleGroup}
-        onSelectIntensity={handleSelectIntensity}
-        onGenerate={handleGenerate}
-      />
     </>
   )
 }

@@ -28,28 +28,58 @@
           "equipment": "Dumbbells",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Long Head", "Short Head"]
+          "activated_region": [
+            "Long Head",
+            "Short Head"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Hammer Curls",
           "equipment": "Dumbbells",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Brachialis", "Forearms"]
+          "activated_region": [
+            "Brachialis",
+            "Forearms"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Concentration Curls",
           "equipment": "Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Short Head (Peak)"]
+          "activated_region": [
+            "Short Head (Peak)"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Seated Inner-Bicep Curls",
           "equipment": "Dumbbells + Bench",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Short Head"]
+          "activated_region": [
+            "Short Head"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -58,14 +88,29 @@
           "equipment": "Dumbbells",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Brachialis"]
+          "activated_region": [
+            "Brachialis"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Zottman Curls",
           "equipment": "Dumbbells",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Biceps", "Forearms"]
+          "activated_region": [
+            "Biceps",
+            "Forearms"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -77,28 +122,57 @@
           "equipment": "Barbell",
           "reps": "8-10",
           "sets": 4,
-          "activated_region": ["All Regions"]
+          "activated_region": [
+            "All Regions"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "EZ-Bar Preacher Curls",
           "equipment": "EZ-Bar + Preacher Bench",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Short Head"]
+          "activated_region": [
+            "Short Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Cable Rope Curls",
           "equipment": "Cable Machine",
           "reps": "12-15",
           "sets": 3,
-          "activated_region": ["Brachialis", "Short Head"]
+          "activated_region": [
+            "Brachialis",
+            "Short Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Incline DB Curls",
           "equipment": "Dumbbells + Bench",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Long Head (Stretch focus)"]
+          "activated_region": [
+            "Long Head (Stretch focus)"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 12.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -107,14 +181,29 @@
           "equipment": "Cable Machine",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Short Head (Peak)"]
+          "activated_region": [
+            "Short Head (Peak)"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Reverse Grip Barbell Curls",
           "equipment": "Barbell",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Brachialis", "Forearms"]
+          "activated_region": [
+            "Brachialis",
+            "Forearms"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -126,28 +215,56 @@
           "equipment": "Pull-up Bar + Belt",
           "reps": "6-8",
           "sets": 3,
-          "activated_region": ["All Regions"]
+          "activated_region": [
+            "All Regions"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Spider Curls",
           "equipment": "Barbell + Incline Bench",
           "reps": "10",
           "sets": 4,
-          "activated_region": ["Short Head"]
+          "activated_region": [
+            "Short Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Bayesian Cable Curls",
           "equipment": "Cable Machine",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Long Head (Deep Stretch)"]
+          "activated_region": [
+            "Long Head (Deep Stretch)"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Machine Bicep Curls",
           "equipment": "Bicep Machine",
           "reps": "8-12 (to failure)",
           "sets": 4,
-          "activated_region": ["All Regions"]
+          "activated_region": [
+            "All Regions"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -156,14 +273,28 @@
           "equipment": "Barbell",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Long Head"]
+          "activated_region": [
+            "Long Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "21s (Barbell Curls)",
           "equipment": "Barbell",
           "reps": "21 (7/7/7)",
           "sets": 3,
-          "activated_region": ["All Regions"]
+          "activated_region": [
+            "All Regions"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ]
     }

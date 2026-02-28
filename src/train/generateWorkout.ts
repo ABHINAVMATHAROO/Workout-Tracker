@@ -15,6 +15,7 @@ export const generateWorkout = ({ muscleGroup, intensity }: GenerateWorkoutInput
   return {
     muscleGroup,
     intensity,
+    planVariant: 'preset',
     plan: {
       muscle: muscleGroup,
       regions: [],

@@ -28,28 +28,56 @@
           "equipment": "Dumbbell",
           "reps": "10-12",
           "sets": 3,
-          "activated_region": ["Long Head"]
+          "activated_region": [
+            "Long Head"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Tricep Kickbacks",
           "equipment": "Dumbbells",
           "reps": "12-15",
           "sets": 3,
-          "activated_region": ["Lateral Head"]
+          "activated_region": [
+            "Lateral Head"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Bench Dips",
           "equipment": "Flat Bench",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["Lateral & Medial Head"]
+          "activated_region": [
+            "Lateral & Medial Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 22.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "DB Floor Press (Narrow Grip)",
           "equipment": "Dumbbells",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["All Heads"]
+          "activated_region": [
+            "All Heads"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -58,14 +86,28 @@
           "equipment": "Dumbbell",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Long Head"]
+          "activated_region": [
+            "Long Head"
+          ],
+          "default_load": {
+            "type": "dumbbell",
+            "value": 10,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Diamond Push-ups",
           "equipment": "Bodyweight",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["All Heads"]
+          "activated_region": [
+            "All Heads"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -77,28 +119,56 @@
           "equipment": "Cable Machine",
           "reps": "12-15",
           "sets": 4,
-          "activated_region": ["Lateral Head"]
+          "activated_region": [
+            "Lateral Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Skull Crushers",
           "equipment": "EZ-Bar + Bench",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["All Heads"]
+          "activated_region": [
+            "All Heads"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Close-Grip Barbell Bench",
           "equipment": "Barbell + Bench",
           "reps": "8-10",
           "sets": 3,
-          "activated_region": ["All Heads"]
+          "activated_region": [
+            "All Heads"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Straight Bar Cable Pushdowns",
           "equipment": "Cable Machine",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Medial & Lateral Head"]
+          "activated_region": [
+            "Medial & Lateral Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -107,14 +177,28 @@
           "equipment": "Parallel Bars",
           "reps": "Max",
           "sets": 3,
-          "activated_region": ["All Heads"]
+          "activated_region": [
+            "All Heads"
+          ],
+          "default_load": {
+            "type": "bodyweight",
+            "value": 0,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Cable Overhead Extensions",
           "equipment": "Cable Machine",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Long Head"]
+          "activated_region": [
+            "Long Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 37.5,
+            "unit": "kg"
+          }
         }
       ]
     },
@@ -126,28 +210,56 @@
           "equipment": "Dip Belt + Plates",
           "reps": "6-8",
           "sets": 4,
-          "activated_region": ["All Heads"]
+          "activated_region": [
+            "All Heads"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "JM Press",
           "equipment": "Barbell + Rack",
           "reps": "8-10",
           "sets": 3,
-          "activated_region": ["Lateral & Medial Head"]
+          "activated_region": [
+            "Lateral & Medial Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Incline Skull Crushers",
           "equipment": "EZ-Bar + Incline Bench",
           "reps": "10",
           "sets": 3,
-          "activated_region": ["Long Head (Deep Stretch)"]
+          "activated_region": [
+            "Long Head (Deep Stretch)"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Cross-Body Cable Extensions",
           "equipment": "Dual Cables",
           "reps": "15",
           "sets": 4,
-          "activated_region": ["Lateral Head"]
+          "activated_region": [
+            "Lateral Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ],
       "alternatives": [
@@ -156,14 +268,28 @@
           "equipment": "Cable Machine",
           "reps": "12",
           "sets": 3,
-          "activated_region": ["Medial Head"]
+          "activated_region": [
+            "Medial Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         },
         {
           "exercise": "Single Arm Cable Kickbacks (No Handle)",
           "equipment": "Cable Machine",
           "reps": "15",
           "sets": 3,
-          "activated_region": ["Lateral Head"]
+          "activated_region": [
+            "Lateral Head"
+          ],
+          "default_load": {
+            "type": "machine",
+            "value": 50,
+            "unit": "kg"
+          }
         }
       ]
     }

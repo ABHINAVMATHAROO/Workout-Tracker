@@ -17,6 +17,8 @@ const FRONT_VIEWBOX = '0 0 725 1145'
 const BACK_VIEWBOX = '0 0 731 1135'
 const FRONT_SVG_URL = `${import.meta.env.BASE_URL}front.svg`
 const BACK_SVG_URL = `${import.meta.env.BASE_URL}back.svg`
+const FRONT_FOCUS_SVG_URL = `${import.meta.env.BASE_URL}front-white.svg`
+const BACK_FOCUS_SVG_URL = `${import.meta.env.BASE_URL}back-white.svg`
 
 const FRONT_BASE = { width: 725, height: 1145 }
 const BACK_BASE = { width: 731, height: 1135 }
@@ -240,6 +242,8 @@ export default function MuscleMapSvg({
       ? computeCornerFocusViewBox(BACK_BASE, backFocusCorners, backAspect, backWidthPx, backMaxXSpan)
       : BACK_VIEWBOX
     : BACK_VIEWBOX
+  const frontImageHref = compactFocus ? FRONT_FOCUS_SVG_URL : FRONT_SVG_URL
+  const backImageHref = compactFocus ? BACK_FOCUS_SVG_URL : BACK_SVG_URL
 
   useEffect(() => {
     if (!compactFocus) return
@@ -325,7 +329,7 @@ export default function MuscleMapSvg({
               </clipPath>
             </defs>
             <image
-              href={FRONT_SVG_URL}
+              href={frontImageHref}
               x="0"
               y="0"
               width="725"
@@ -336,7 +340,7 @@ export default function MuscleMapSvg({
             {focusGroup === 'Chest' ? (
               <g clipPath="url(#muscle-clip-chest-front)">
                 <image
-                  href={FRONT_SVG_URL}
+                  href={frontImageHref}
                   x="0"
                   y="0"
                   width="725"
@@ -414,7 +418,7 @@ export default function MuscleMapSvg({
         >
           <svg className="muscle-map" viewBox={backViewBox} aria-hidden="true">
             <image
-              href={BACK_SVG_URL}
+              href={backImageHref}
               x="0"
               y="0"
               width="731"

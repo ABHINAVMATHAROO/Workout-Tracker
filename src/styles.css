@@ -2663,13 +2663,13 @@ p {
 
 .train-focus-map-wrap .muscle-image-base,
 .train-focus-map-wrap .muscle-image-focus {
-  filter: invert(1) brightness(1.35) contrast(1.05) !important;
-  -webkit-filter: invert(1) brightness(1.35) contrast(1.05) !important;
+  filter: none !important;
+  -webkit-filter: none !important;
 }
 
 .train-focus-map-wrap .muscle-map image {
-  filter: invert(1) brightness(1.35) contrast(1.05) !important;
-  -webkit-filter: invert(1) brightness(1.35) contrast(1.05) !important;
+  filter: none !important;
+  -webkit-filter: none !important;
 }
 
 .train-focus-back,

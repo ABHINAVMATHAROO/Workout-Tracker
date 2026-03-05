@@ -2619,10 +2619,7 @@ p {
   position: fixed;
   inset: 0;
   z-index: 20;
-  background:
-    radial-gradient(circle at 12% 0%, rgb(var(--cadax-blue-light) / 0.12), transparent 38%),
-    radial-gradient(circle at 90% 8%, rgb(var(--cadax-green-light) / 0.16), transparent 36%),
-    linear-gradient(180deg, rgb(6 11 24 / 0.97), rgb(10 16 32 / 0.98));
+  background: var(--cadax-bg);
 }
 
 .train-focus-stage {
@@ -2666,7 +2663,13 @@ p {
 
 .train-focus-map-wrap .muscle-image-base,
 .train-focus-map-wrap .muscle-image-focus {
-  filter: invert(1) brightness(1.35) contrast(1.05);
+  filter: invert(1) brightness(1.35) contrast(1.05) !important;
+  -webkit-filter: invert(1) brightness(1.35) contrast(1.05) !important;
+}
+
+.train-focus-map-wrap .muscle-map image {
+  filter: invert(1) brightness(1.35) contrast(1.05) !important;
+  -webkit-filter: invert(1) brightness(1.35) contrast(1.05) !important;
 }
 
 .train-focus-back,

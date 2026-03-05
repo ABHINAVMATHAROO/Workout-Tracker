@@ -416,7 +416,12 @@ p {
 
 .week-card {
   position: relative;
-  padding-bottom: 28px;
+  padding-bottom: clamp(10px, calc(28px + var(--calendar-shell-drag-offset, 0px)), 148px);
+  transition: padding-bottom 220ms cubic-bezier(0.22, 0.72, 0.2, 1);
+}
+
+.week-card.is-dragging {
+  transition: none;
 }
 
 .card:nth-of-type(1) {
@@ -842,7 +847,7 @@ p {
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 34px;
+  height: 28px;
   border: 0;
   background: transparent;
   padding: 0;
@@ -1611,6 +1616,14 @@ p {
   pointer-events: none;
 }
 
+.muscle-image-base {
+  transition: opacity 180ms ease;
+}
+
+.muscle-image-focus {
+  pointer-events: none;
+}
+
 .body-base {
   fill: rgba(17, 20, 37, 0.08);
 }
@@ -1665,6 +1678,35 @@ p {
 .muscle-region.worked-selected circle {
   fill: rgb(var(--cadax-green-light) / 0.28);
   stroke: transparent;
+}
+
+.muscle-region.is-focused rect,
+.muscle-region.is-focused path,
+.muscle-region.is-focused polygon,
+.muscle-region.is-focused ellipse,
+.muscle-region.is-focused circle {
+  fill: rgb(var(--cadax-green-light) / 0.34);
+}
+
+.muscle-area-region {
+  pointer-events: none;
+}
+
+.muscle-area-region path {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1.25;
+  transition: fill 180ms ease, stroke 180ms ease, opacity 180ms ease;
+}
+
+.muscle-svg-frame.has-area-focus .muscle-area-region:not(.is-active) path {
+  opacity: 0;
+}
+
+.muscle-area-region.is-active path {
+  fill: rgb(var(--cadax-orange) / 0.52);
+  stroke: transparent;
+  opacity: 1;
 }
 
 .muscle-count {
@@ -2045,12 +2087,21 @@ p {
 }
 
 .train-set-add-row {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
   display: grid;
   grid-template-columns: 68px minmax(0, 1fr) minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
   justify-self: start;
   min-height: 34px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
 .train-set-add-label {
@@ -2376,6 +2427,32 @@ p {
   padding-bottom: 22px;
 }
 
+.train-focus-map-shell {
+  margin-top: 6px;
+}
+
+.train-focus-map-shell.is-collapsed .muscle-map-grid {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.train-focus-map-shell.is-collapsed .muscle-map-grid[data-view='front'] .map-panel:nth-of-type(2),
+.train-focus-map-shell.is-collapsed .muscle-map-grid[data-view='back'] .map-panel:nth-of-type(1) {
+  display: none;
+}
+
+.train-focus-map-shell.is-collapsed .map-title-row {
+  display: none;
+}
+
+.train-focus-map-shell.is-collapsed .muscle-svg-frame {
+  margin: 0;
+}
+
+.train-focus-map-shell.is-collapsed .muscle-svg-frame-compact {
+  aspect-ratio: 2.2 / 1;
+}
+
 .train-focus-card-clickable {
   cursor: pointer;
 }
@@ -2535,6 +2612,256 @@ p {
 .train-intensity-label.is-active {
   color: var(--ink-900);
   font-weight: 700;
+}
+
+.train-focus-mode {
+  --train-focus-map-y: 0px;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background:
+    radial-gradient(circle at 12% 0%, rgb(var(--cadax-blue-light) / 0.12), transparent 38%),
+    radial-gradient(circle at 90% 8%, rgb(var(--cadax-green-light) / 0.16), transparent 36%),
+    linear-gradient(180deg, rgb(6 11 24 / 0.97), rgb(10 16 32 / 0.98));
+}
+
+.train-focus-stage {
+  position: absolute;
+  inset: 0;
+  padding: max(12px, env(safe-area-inset-top)) 12px 0;
+}
+
+.train-focus-map-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: var(--train-focus-top);
+  bottom: 0;
+  padding: 0;
+}
+
+.train-focus-map-wrap .muscle-map-grid {
+  height: 100%;
+  grid-template-columns: 1fr;
+}
+
+.train-focus-map-wrap .muscle-map-grid[data-view='front'] .map-panel:nth-of-type(2),
+.train-focus-map-wrap .muscle-map-grid[data-view='back'] .map-panel:nth-of-type(1) {
+  display: none;
+}
+
+.train-focus-map-wrap .map-title-row {
+  display: none;
+}
+
+.train-focus-map-wrap .muscle-svg-frame {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.train-focus-map-wrap .muscle-map {
+  transform: translateY(var(--train-focus-map-y, 0px));
+}
+
+.train-focus-map-wrap .muscle-image-base,
+.train-focus-map-wrap .muscle-image-focus {
+  filter: invert(1) brightness(1.35) contrast(1.05);
+}
+
+.train-focus-back,
+.train-focus-flip {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top));
+  min-width: 36px;
+  height: 36px;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 999px;
+  color: #f6fbff;
+  background: rgb(10 16 32 / 0.44);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.train-focus-back {
+  left: 12px;
+  width: 36px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.train-focus-flip {
+  right: 12px;
+  padding: 0 12px;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.train-focus-muscle-label {
+  position: absolute;
+  left: 50%;
+  top: max(14px, env(safe-area-inset-top));
+  transform: translateX(-50%);
+  border-radius: 999px;
+  border: 1px solid rgb(var(--cadax-blue-light) / 0.4);
+  padding: 8px 14px;
+  background: rgb(10 16 32 / 0.46);
+  color: #eaf4ff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  max-width: 62vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.train-focus-framing-debug {
+  position: absolute;
+  left: 50%;
+  top: calc(max(14px, env(safe-area-inset-top)) + 42px);
+  transform: translateX(-50%);
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  padding: 4px 10px;
+  background: rgb(10 16 32 / 0.44);
+  color: #f6fbff;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.train-plan-drawer {
+  position: absolute;
+  left: 50%;
+  right: auto;
+  width: min(100vw, 980px);
+  transform: translateX(-50%);
+  bottom: 0;
+  height: var(--train-drawer-height, 62dvh);
+  border-radius: 24px 24px 0 0;
+  border: 1px solid rgb(var(--cadax-blue-light) / 0.28);
+  border-bottom: 0;
+  background: rgb(248 251 255 / 0.96);
+  box-shadow:
+    0 -20px 50px rgb(0 0 0 / 0.25),
+    inset 0 1px 0 rgb(255 255 255 / 0.9);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.train-plan-drawer-handle {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.train-plan-drawer-handle span {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgb(58 70 104 / 0.36);
+}
+
+.train-plan-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 0 14px 8px;
+}
+
+.train-plan-drawer-title {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.train-plan-drawer-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.train-plan-drawer-intensity {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.train-plan-drawer-intensity > span {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  font-weight: 700;
+}
+
+.train-plan-drawer-intensity select {
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgb(var(--cadax-blue-light) / 0.35);
+  background: rgb(var(--cadax-blue-light) / 0.08);
+  color: var(--ink-900);
+  padding: 0 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.train-plan-drawer-chip {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid rgb(var(--cadax-blue-light) / 0.35);
+  background: rgb(var(--cadax-blue-light) / 0.08);
+  color: var(--ink-900);
+  border-radius: 999px;
+  height: 30px;
+  padding: 0 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.train-plan-drawer-chip.is-active {
+  background: rgb(var(--cadax-blue-light) / 0.24);
+  border-color: rgb(var(--cadax-blue-light) / 0.75);
+}
+
+.train-plan-drawer-chip.mine.is-active {
+  background: rgb(var(--cadax-orange) / 0.22);
+  border-color: rgb(var(--cadax-orange) / 0.74);
+}
+
+.train-plan-drawer-scroll {
+  overflow-y: auto;
+  padding: 0 14px calc(110px + env(safe-area-inset-bottom));
+}
+
+.train-plan-drawer-scroll .card {
+  margin: 0;
 }
 
 @keyframes rise {

@@ -1,9 +1,14 @@
-import { useEffect, useRef, type MouseEvent } from 'react'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
+import { getFocusCorners, getFocusMaxXSpan, type FocusCorners } from './focusFraming'
 
 type MuscleMapSvgProps = {
   workedGroups: Set<string>
   selectedGroups: Set<string>
   view: 'front' | 'back'
+  focusGroup?: string | null
+  activeAreas?: string[]
+  compactFocus?: boolean
+  showFocusCornerPoints?: boolean
   onToggle: (group: string) => void
   onFlip: () => void
 }
@@ -13,6 +18,72 @@ const BACK_VIEWBOX = '0 0 731 1135'
 const FRONT_SVG_URL = `${import.meta.env.BASE_URL}front.svg`
 const BACK_SVG_URL = `${import.meta.env.BASE_URL}back.svg`
 
+const FRONT_BASE = { width: 725, height: 1145 }
+const BACK_BASE = { width: 731, height: 1135 }
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
+
+const computeCornerFocusViewBox = (
+  base: { width: number; height: number },
+  corners: FocusCorners,
+  viewportAspect: number,
+  viewportWidthPx: number,
+  maxXSpan: number | null
+) => {
+  const safeAspect = viewportAspect > 0 ? viewportAspect : base.width / base.height
+  const topLeftX = clamp(corners.topLeft.x, 0, base.width)
+  const topLeftY = clamp(corners.topLeft.y, 0, base.height)
+  const topRightX = clamp(corners.topRight.x, 0, base.width)
+  const topRightY = clamp(corners.topRight.y, 0, base.height)
+  const bottomLeftX = clamp(corners.bottomLeft.x, 0, base.width)
+  const bottomLeftY = clamp(corners.bottomLeft.y, 0, base.height)
+  const bottomRightX = clamp(corners.bottomRight.x, 0, base.width)
+  const bottomRightY = clamp(corners.bottomRight.y, 0, base.height)
+
+  const left = Math.min(topLeftX, bottomLeftX)
+  const right = Math.max(topRightX, bottomRightX)
+  const top = Math.min(topLeftY, topRightY)
+  const bottom = Math.max(bottomLeftY, bottomRightY)
+  const pad = clamp(corners.pad ?? 1.08, 1, 2)
+
+  const topSpanSvg = Math.max(1, Math.abs(topRightX - topLeftX))
+  const boxWidth = Math.max(1, Math.abs(right - left))
+  const boxHeight = Math.max(1, Math.abs(bottom - top))
+
+  const paddedLeft = left - ((pad - 1) * boxWidth) / 2
+  const paddedRight = right + ((pad - 1) * boxWidth) / 2
+  const paddedTop = top
+  const paddedBottom = bottom + (pad - 1) * boxHeight
+
+  let width = Math.max(1, paddedRight - paddedLeft)
+  let height = Math.max(1, paddedBottom - paddedTop)
+
+  const targetAspect = width / height
+  if (safeAspect > targetAspect) {
+    width = height * safeAspect
+  } else {
+    // Keep top anchored; grow only downward.
+    height = width / safeAspect
+  }
+
+  if (maxXSpan && viewportWidthPx > 0) {
+    const projectedTopSpanPx = (topSpanSvg / width) * viewportWidthPx
+    if (projectedTopSpanPx > maxXSpan) {
+      width = (topSpanSvg * viewportWidthPx) / maxXSpan
+      height = width / safeAspect
+    }
+  }
+
+  const paddedCenterX = (paddedLeft + paddedRight) / 2
+  let x = paddedCenterX - width / 2
+  if (width <= base.width) {
+    x = clamp(x, 0, base.width - width)
+  }
+  const y = paddedTop
+
+  return `${x} ${y} ${width} ${height}`
+}
+
+
 const CORE_PATH =
   'M13.3623 15.6714C9.00451 15.0775 2.97322 14.3196 2.97322 14.3196C2.97322 14.3196 1.29219 19.9428 0.862305 24.3196C0.314453 29.8975 0.317957 33.313 1.36235 38.8196C2.11296 42.7771 2.63432 46.1809 4.36225 49.8196C6.18109 53.6497 7.88475 56.7423 10.8018 59.8196C13.4309 62.593 18.3623 67.3196 18.3623 67.3196C18.3623 67.3196 12.9302 73.1232 10.8018 77.6451C9.04047 81.3872 8.24861 83.8284 7.86225 87.8196C7.42213 92.3661 8.35061 95.9401 9.49705 98.8196C10.9106 102.37 16.8623 104.82 16.8623 104.82C16.8623 104.82 13.1703 107.96 12.1066 111.568C11.0265 115.231 11.3623 119.82 11.3623 121.32C11.3623 122.82 12.1383 130.367 12.8623 132.32L14.7161 137.32V147.32C14.7161 147.32 14.9394 157.246 15.8623 164.32C16.8537 171.919 17.6545 176.065 19.8623 183.32C23.3623 194.82 33.8623 221.32 33.8623 221.32C33.8623 221.32 37.9565 222.834 41.8623 223.82C50.0476 225.886 55.431 225.892 63.8623 226.32C74.5489 226.862 82.1911 227.111 92.8623 226.32C102.097 225.635 118.862 222.82 118.862 222.82C118.862 222.82 119.439 211.223 120.362 203.82C121.217 196.969 122.017 193.091 123.362 186.32C124.738 179.398 125.824 175.575 127.862 168.82C130.074 161.488 131.346 157.358 134.362 150.32C135.862 146.82 136.362 143.32 136.362 143.32C136.362 143.32 139.359 141.32 141.862 136.82C143.819 133.302 143.814 130.807 144.362 126.82C145.054 121.79 145.373 118.795 144.362 113.82C143.748 110.794 142.966 109.203 141.862 106.32C141.486 105.338 140.862 103.82 140.862 103.82C140.862 103.82 144.79 97.1012 145.862 92.3196C146.754 88.3422 145.424 86.3569 144.862 82.3196C144.428 79.1984 142.598 77.2183 141.362 74.3196C139.782 70.6142 136.059 67.3196 136.059 67.3196C136.059 67.3196 138.78 64.5311 140.862 62.3196C144.376 58.5879 146.882 56.8048 149.362 52.3196C151.933 47.6713 152.649 43.7773 153.362 39.3196C154.247 33.7851 153.862 26.8196 152.862 22.3196C152.244 19.5391 151.362 15.6714 151.362 15.6714C151.362 15.6714 141.175 16.1016 136.059 16.3196C127.136 16.6998 116.73 16.7379 107.862 15.6714C98.3372 14.5258 97.8677 15.2575 89.3623 10.8196C83.8945 7.96663 78.3623 0.81958 78.3623 0.81958C78.3623 0.81958 72.6683 8.2549 67.8623 11.1049C61.3248 14.9816 58.3732 14.5078 50.8623 15.6714C45.5512 16.4942 39.0084 16.8632 33.6352 16.9761C26.739 17.121 20.1967 16.6028 13.3623 15.6714Z'
 const CORE_TRANSFORM = 'translate(285 322) scale(1)'
@@ -20,6 +91,15 @@ const CORE_TRANSFORM = 'translate(285 322) scale(1)'
 const CHEST_PATH =
   'M140.788 34.9329C140.788 34.9329 139.874 33.5186 139.288 32.9329C137.14 30.785 132.788 27.9329 132.788 27.9329C132.788 27.9329 129.622 25.6232 127.288 24.4329C123.553 22.528 121.625 21.1214 117.788 19.4329C112.701 17.1946 109.69 16.2393 104.288 14.9329C99.6703 13.816 97.002 13.5248 92.2881 12.9329C87.8152 12.3712 85.296 11.9463 80.7881 11.9329C77.4629 11.9229 72.2881 12.4329 72.2881 12.4329C72.2881 12.4329 66.1417 13.4274 62.2881 14.4329C57.0897 15.7891 54.574 17.9732 49.2881 18.9329C44.4812 19.8056 41.6729 19.3567 36.7881 19.4329C33.6643 19.4816 29.3311 19.0965 27.7881 18.4329C26.245 17.7692 26.6286 17.945 25.2881 16.9329C22.8539 15.095 21.6312 13.8855 19.2881 11.9329C16.9449 9.98024 15.7207 8.77284 13.2881 6.93286C11.3871 5.49502 10.446 4.44492 8.28809 3.43286C6.44239 2.56725 1.28809 0.932861 1.28809 0.932861C1.28809 0.932861 6.68978 8.43628 9.28809 12.4329C14.0538 19.7632 16.6529 23.7292 20.7881 31.4329C23.8033 37.05 25.7913 40.3059 28.7881 45.9329C34.0481 55.8092 36.7949 61.4834 42.7881 70.9329C46.8493 77.3362 48.5241 81.5337 53.2881 87.4329C56.4158 91.3059 58.4773 93.2296 62.2881 96.4329C67.1084 100.485 70.411 102.172 76.2881 104.433C84.2277 107.487 89.2881 107.933 96.2881 107.933C103.288 107.933 116.379 108.872 120.788 107.933C125.197 106.994 127.791 106.517 131.788 104.433C134.285 103.131 135.803 102.431 137.788 100.433C139.164 99.0477 140.788 95.9329 140.788 95.9329M140.788 34.9329L146.288 29.9329C146.288 29.9329 151.015 26.3469 154.288 24.4329C158.738 21.8303 166.288 18.9329 166.288 18.9329C166.288 18.9329 175.347 16.1384 181.288 14.9329C186.511 13.8731 189.489 13.507 194.788 12.9329C201.206 12.2374 204.25 11.9603 210.288 12.4329C217.657 13.0096 221.882 14.9821 228.788 16.4329C234.411 17.6142 237.55 18.6328 243.288 18.9329C245.823 19.0654 247.262 19.1874 249.788 18.9329C252.57 18.6525 254.118 18.2605 256.788 17.4329C259.459 16.6052 262.126 15.0482 267.788 10.9329C269.589 9.62391 276.788 4.93286 276.788 4.93286C276.788 4.93286 261.468 30.6179 252.288 47.4329C246.261 58.4722 243.948 65.0925 236.788 75.4329C232.048 82.2777 229.618 86.4888 223.788 92.4329C219.916 96.3808 218.026 99.0818 213.288 101.933C209.156 104.419 206.463 105.249 201.788 106.433C196.646 107.735 193.583 107.616 188.288 107.933C182.051 108.307 178.53 108.224 172.288 107.933C166.019 107.64 162.327 108.141 156.288 106.433C151.995 105.218 149.299 104.685 145.788 101.933C143.504 100.142 140.788 95.9329 140.788 95.9329M140.788 34.9329V95.9329'
 const CHEST_TRANSFORM = 'translate(177 194) scale(1.32)'
+const CHEST_AREA_UPPER_PATH =
+  'M188.354 49.4378C188.354 49.4378 186.125 45.2122 185.354 44.4378C182.523 41.5984 181.497 40.4936 178.854 38.4378C176.225 36.3932 174.928 35.5113 171.854 33.9378C166.933 31.4196 164.41 29.67 159.354 27.4378C152.651 24.479 148.193 23.3924 140.854 21.4378C134.673 19.7918 131.189 18.816 124.854 17.9378C119.231 17.1585 116.027 17.0971 110.354 16.9378C106.45 16.8282 104.244 16.5968 100.354 16.9378C95.5955 17.3549 93.028 18.3202 88.3535 19.3012C82.0824 20.6172 78.6387 21.6907 72.3535 22.9378C65.3634 24.3247 61.4646 25.4715 54.3535 25.9378C47.2424 26.4041 40.5104 25.9433 36.976 24.589C33.4416 23.2346 31.8897 21.5612 28.8535 19.3012C25.7723 17.0077 23.9269 15.2418 20.8535 12.9378C18.0369 10.8264 16.2014 9.71972 13.3535 7.93781C8.91188 5.15868 0.353516 0.437805 0.353516 0.437805C0.353516 0.437805 10.3535 10.4378 14.8535 18.9378C16.2253 21.5289 17.4603 23.8119 18.6347 25.9378C18.6347 25.9378 24.7948 33.0399 29.3535 36.9378C36.2285 42.8162 40.7215 45.4765 48.8535 49.4378C57.569 53.6833 63.0599 54.6787 72.3535 57.4378C81.4335 60.1335 86.5913 61.4565 95.8535 63.4378C107.845 66.0029 114.732 66.5846 126.854 68.4378C137.581 70.0779 143.518 71.8327 154.354 72.4378C161.177 72.8189 165.106 73.5199 171.854 72.4378C178.625 71.352 188.531 66.9378 188.531 66.9378M188.354 49.4378C188.354 49.4378 190.791 46.6952 192.354 44.9378C193.916 43.1804 196.354 40.4378 196.354 40.4378C196.354 40.4378 202.041 35.4681 206.354 32.9378C212.217 29.4974 222.854 25.9378 222.854 25.9378C222.854 25.9378 234.694 22.0315 242.522 20.4378C249.404 19.0368 252.872 18.1968 259.854 17.4378C268.31 16.5184 272.898 16.8131 280.854 17.4378C290.563 18.2003 296.254 20.52 305.354 22.4378C312.763 23.9995 317.293 24.8533 324.854 25.25C328.194 25.4252 331.526 25.5864 334.854 25.25C338.519 24.8794 342.854 23.4378 344.354 22.9378C345.854 22.4378 356.354 15.9378 356.354 15.9378L370.854 5.93781C370.854 5.93781 365.684 14.537 358.972 25.9378C358.972 25.9378 352.474 32.9436 347.854 36.9378C341.5 42.4301 337.771 45.4981 330.354 49.4378C322.118 53.8125 316.773 54.7162 307.854 57.4378C298.794 60.2021 293.619 61.4697 284.354 63.4378C271.981 66.066 264.87 66.617 252.354 68.4378C240.849 70.1114 234.466 71.8796 222.854 72.4378C216.417 72.7472 212.734 73.3397 206.354 72.4378C199.141 71.4183 188.531 66.9378 188.531 66.9378M188.354 49.4378L188.531 66.9378'
+const CHEST_AREA_MID_PATH =
+  'M170.868 94.84C170.868 94.84 156.919 99.5084 147.649 100.84C135.666 102.561 128.688 102.112 116.649 100.84C102.081 99.301 93.857 97.3544 80.149 92.1885C69.5508 88.1947 64.1615 84.6336 54.149 79.34C49.4609 76.8615 42.2266 72.84 42.2266 72.84C41.7177 72.0329 41.1935 71.2014 40.649 70.34C32.7523 57.8484 29.8786 50.311 22.649 37.84L0.430176 0.340027C0.430176 0.340027 6.59023 7.44211 11.149 11.34C18.0239 17.2184 22.5169 19.8788 30.649 23.84C39.3644 28.0855 44.8554 29.0809 54.149 31.84C63.229 34.5357 68.3868 35.8588 77.649 37.84C89.6404 40.4051 96.5271 40.9868 108.649 42.84C119.377 44.4801 125.313 46.2349 136.149 46.84C142.972 47.2211 146.901 47.9221 153.649 46.84C160.42 45.7542 170.326 41.34 170.326 41.34M170.868 94.84C170.868 94.84 182.692 99.4776 190.649 100.84C201.427 102.685 207.745 101.655 218.649 100.84C236.112 99.5355 246.164 98.099 262.649 92.1885C273.641 88.2474 279.595 85.2798 289.649 79.34C293.701 76.946 296.536 74.8945 300.405 72.215C308.108 60.5366 310.906 53.1512 318.149 39.84C324.435 28.2886 333.504 12.6746 340.767 0.340027C340.767 0.340027 334.27 7.34579 329.649 11.34C323.295 16.8323 319.566 19.9003 312.149 23.84C303.913 28.2147 298.569 29.1184 289.649 31.84C280.59 34.6043 275.414 35.8719 266.149 37.84C253.777 40.4682 246.666 41.0192 234.149 42.84C222.644 44.5136 216.261 46.2818 204.649 46.84C198.213 47.1494 194.529 47.7419 188.149 46.84C180.937 45.8205 170.326 41.34 170.326 41.34M170.868 94.84L170.326 41.34'
+const CHEST_AREA_LOWER_PATH =
+  'M129.151 31.6212C129.151 31.6212 133.335 36.6685 136.345 39.0361C140.971 42.6748 143.189 42.9306 148.845 44.5361C156.802 46.7946 162.396 47.0978 170.656 47.4845C178.88 47.8696 184.127 47.0302 192.345 46.5361C199.322 46.1166 202.57 46.258 209.345 44.5361C215.505 42.9706 218.901 41.8231 224.345 38.5361C230.588 34.7671 233.411 32.2134 238.512 26.9943C246.193 19.1366 249.396 13.5697 255.641 4.52122C256.47 3.32013 257.86 1.53608 258.602 0.411072C254.732 3.09057 251.897 5.14206 247.845 7.53608C237.792 13.4759 231.837 16.4435 220.845 20.3846C204.361 26.2951 194.309 27.7316 176.845 29.0361C165.941 29.8506 159.623 30.8815 148.845 29.0361C140.888 27.6737 129.064 23.0361 129.064 23.0361M129.151 31.6212C129.151 31.6212 125.659 35.2049 123.845 37.0361C121.23 39.677 119.635 40.8151 116.345 42.5361C111.078 45.2909 106.655 45.2951 100.845 46.5361C95.0357 47.7771 79.3452 47.5361 69.8452 47.0361C60.3452 46.5361 53.7528 46.2219 44.1655 42.8577C36.3427 40.1127 31.6964 38.3924 25.3452 33.0361C20.3241 28.8015 17.9817 25.5045 13.8606 20.3846C8.2223 13.3797 4.91557 8.16053 0.422852 1.03608C0.422852 1.03608 7.6571 5.05752 12.3452 7.53608C22.3578 12.8296 27.747 16.3907 38.3452 20.3846C52.0532 25.5504 60.2772 27.497 74.8452 29.0361C86.8845 30.308 93.8619 30.7574 105.845 29.0361C115.115 27.7045 129.064 23.0361 129.064 23.0361M129.151 31.6212L129.064 23.0361'
+const CHEST_AREA_UPPER_TRANSFORM = 'translate(175 194) scale(0.99)'
+const CHEST_AREA_MID_TRANSFORM = 'translate(193 219) scale(0.99)'
+const CHEST_AREA_LOWER_TRANSFORM = 'translate(235 290) scale(0.99)'
 
 const BICEPS_PATH_LEFT =
   'M10.6523 13.6732C7.24959 16.0988 1.15234 20.6732 1.15234 20.6732C1.15234 20.6732 4.02264 21.3583 4.65234 21.6732C5.65234 22.1732 5.71494 22.1968 6.65234 22.6732C8.63706 23.6819 8.91459 24.2815 10.6523 25.6732C13.0331 27.5798 14.2045 28.8535 16.6523 30.6732C18.9124 32.3532 20.1827 33.32 22.6523 34.6732C25.8006 36.3982 27.8329 36.8064 31.1523 38.1732C34.4718 39.54 36.2518 40.5229 39.6523 41.6732C43.2864 42.9024 45.3773 43.4906 49.1523 44.1732C53.397 44.9407 55.8397 45.0897 60.1523 45.1732C65.6326 45.2793 68.7604 45.1587 74.1523 44.1732C77.9261 43.4834 79.9596 42.7129 83.6523 41.6732C88.1711 40.4009 95.1523 38.1732 95.1523 38.1732C95.1523 38.1732 93.9989 35.4 93.1523 33.6732C90.6011 28.4692 88.8051 25.6729 85.1523 21.1732C83.4967 19.1336 82.476 18.0641 80.6523 16.1732C77.8711 13.2894 76.274 11.6845 73.1523 9.17319C71.083 7.50844 69.9699 6.47023 67.6523 5.17319C63.7185 2.97163 61.0732 2.55531 56.6523 1.67319C52.4222 0.829131 49.9632 0.824828 45.6523 0.673191C42.9204 0.577091 41.3652 0.336342 38.6523 0.673191C35.6442 1.04671 34.0476 1.77538 31.1523 2.67319C27.376 3.84422 25.1198 4.27355 21.6523 6.17319C19.3724 7.42222 18.3002 8.45872 16.1523 9.92319C14.0045 11.3877 12.7692 12.1642 10.6523 13.6732Z'
@@ -94,35 +174,112 @@ const BACK_MUSCLES_FRONT_TRANSFORM = 'translate(182 268) scale(1)'
 const applyWorkedClasses = (
   root: HTMLElement | null,
   workedGroups: Set<string>,
-  selectedGroups: Set<string>
+  selectedGroups: Set<string>,
+  focusGroup?: string | null,
+  activeAreas?: string[]
 ) => {
   if (!root) return
+  const hasFocusGroup = Boolean(focusGroup)
+  const hasGroupFocus = hasFocusGroup && Boolean(root.querySelector(`[data-group="${focusGroup}"]`))
+  const areaSet = new Set((activeAreas ?? []).map((area) => area.trim().toLowerCase()).filter(Boolean))
+
   const regions = root.querySelectorAll<HTMLElement>('[data-group]')
   regions.forEach((region) => {
     const group = region.getAttribute('data-group')
     if (!group) return
     const inWeek = workedGroups.has(group)
     const inSelected = selectedGroups.has(group)
+    const isFocused = hasFocusGroup && group === focusGroup
 
     region.classList.toggle('worked-week', inWeek && !inSelected)
     region.classList.toggle('worked-selected', inSelected)
+    region.classList.toggle('is-focused', isFocused)
+    region.classList.toggle('is-dimmed', hasGroupFocus && !isFocused)
   })
+
+  const areas = root.querySelectorAll<HTMLElement>('[data-area]')
+  areas.forEach((area) => {
+    const key = area.getAttribute('data-area')?.trim().toLowerCase()
+    area.classList.toggle('is-active', Boolean(key && areaSet.has(key)))
+  })
+
+  root.classList.toggle('has-area-focus', areaSet.size > 0)
+  root.classList.toggle('has-group-focus', hasGroupFocus)
 }
 
 export default function MuscleMapSvg({
   workedGroups,
   selectedGroups,
   view,
+  focusGroup,
+  activeAreas,
+  compactFocus = false,
+  showFocusCornerPoints = false,
   onToggle,
   onFlip,
 }: MuscleMapSvgProps) {
   const frontRef = useRef<HTMLDivElement>(null)
   const backRef = useRef<HTMLDivElement>(null)
+  const [frontAspect, setFrontAspect] = useState(FRONT_BASE.width / FRONT_BASE.height)
+  const [backAspect, setBackAspect] = useState(BACK_BASE.width / BACK_BASE.height)
+  const [frontWidthPx, setFrontWidthPx] = useState(0)
+  const [backWidthPx, setBackWidthPx] = useState(0)
+
+  const frontFocusCorners = getFocusCorners(focusGroup, 'front')
+  const backFocusCorners = getFocusCorners(focusGroup, 'back')
+  const frontMaxXSpan = getFocusMaxXSpan(focusGroup, 'front')
+  const backMaxXSpan = getFocusMaxXSpan(focusGroup, 'back')
+
+  const frontViewBox = compactFocus
+    ? frontFocusCorners
+      ? computeCornerFocusViewBox(FRONT_BASE, frontFocusCorners, frontAspect, frontWidthPx, frontMaxXSpan)
+      : FRONT_VIEWBOX
+    : FRONT_VIEWBOX
+  const backViewBox = compactFocus
+    ? backFocusCorners
+      ? computeCornerFocusViewBox(BACK_BASE, backFocusCorners, backAspect, backWidthPx, backMaxXSpan)
+      : BACK_VIEWBOX
+    : BACK_VIEWBOX
 
   useEffect(() => {
-    applyWorkedClasses(frontRef.current, workedGroups, selectedGroups)
-    applyWorkedClasses(backRef.current, workedGroups, selectedGroups)
-  }, [workedGroups, selectedGroups])
+    if (!compactFocus) return
+    const frontEl = frontRef.current
+    const backEl = backRef.current
+    const observers: ResizeObserver[] = []
+
+    if (frontEl) {
+      const obs = new ResizeObserver((entries) => {
+        const entry = entries[0]
+        if (!entry) return
+        const width = entry.contentRect.width
+        const height = entry.contentRect.height
+        if (width > 0) setFrontWidthPx(width)
+        if (width > 0 && height > 0) setFrontAspect(width / height)
+      })
+      obs.observe(frontEl)
+      observers.push(obs)
+    }
+
+    if (backEl) {
+      const obs = new ResizeObserver((entries) => {
+        const entry = entries[0]
+        if (!entry) return
+        const width = entry.contentRect.width
+        const height = entry.contentRect.height
+        if (width > 0) setBackWidthPx(width)
+        if (width > 0 && height > 0) setBackAspect(width / height)
+      })
+      obs.observe(backEl)
+      observers.push(obs)
+    }
+
+    return () => observers.forEach((observer) => observer.disconnect())
+  }, [compactFocus])
+
+  useEffect(() => {
+    applyWorkedClasses(frontRef.current, workedGroups, selectedGroups, focusGroup, activeAreas)
+    applyWorkedClasses(backRef.current, workedGroups, selectedGroups, focusGroup, activeAreas)
+  }, [workedGroups, selectedGroups, focusGroup, activeAreas])
 
   const findRegionGroup = (target: EventTarget | null) => {
     let node = target as Element | null
@@ -157,22 +314,49 @@ export default function MuscleMapSvg({
         </div>
         <div
           ref={frontRef}
-          className="muscle-svg-frame"
+          className={`muscle-svg-frame ${compactFocus ? 'muscle-svg-frame-compact' : ''}`}
           role="img"
           aria-label="Front body map"
         >
-          <svg className="muscle-map" viewBox={FRONT_VIEWBOX} aria-hidden="true">
+          <svg className="muscle-map" viewBox={frontViewBox} aria-hidden="true">
+            <defs>
+              <clipPath id="muscle-clip-chest-front">
+                <path d={CHEST_PATH} transform={CHEST_TRANSFORM} />
+              </clipPath>
+            </defs>
             <image
               href={FRONT_SVG_URL}
               x="0"
               y="0"
               width="725"
               height="1145"
-              className="muscle-image"
+              className="muscle-image muscle-image-base"
               preserveAspectRatio="xMidYMid meet"
             />
+            {focusGroup === 'Chest' ? (
+              <g clipPath="url(#muscle-clip-chest-front)">
+                <image
+                  href={FRONT_SVG_URL}
+                  x="0"
+                  y="0"
+                  width="725"
+                  height="1145"
+                  className="muscle-image muscle-image-focus"
+                  preserveAspectRatio="xMidYMid meet"
+                />
+              </g>
+            ) : null}
             <g className="muscle-region" data-group="Chest" transform={CHEST_TRANSFORM}>
               <path d={CHEST_PATH} />
+            </g>
+            <g className="muscle-area-region" data-area="chest-upper" transform={CHEST_AREA_UPPER_TRANSFORM}>
+              <path d={CHEST_AREA_UPPER_PATH} />
+            </g>
+            <g className="muscle-area-region" data-area="chest-mid" transform={CHEST_AREA_MID_TRANSFORM}>
+              <path d={CHEST_AREA_MID_PATH} />
+            </g>
+            <g className="muscle-area-region" data-area="chest-lower" transform={CHEST_AREA_LOWER_TRANSFORM}>
+              <path d={CHEST_AREA_LOWER_PATH} />
             </g>
             <g className="muscle-region" data-group="Biceps" transform={BICEPS_TRANSFORM}>
               <path d={BICEPS_PATH_LEFT} />
@@ -201,6 +385,14 @@ export default function MuscleMapSvg({
               <path d={LEGS_FRONT_PATH_LEFT} />
               <path d={LEGS_FRONT_PATH_RIGHT} />
             </g>
+            {showFocusCornerPoints && frontFocusCorners ? (
+              <g className="focus-corner-points">
+                <circle cx={frontFocusCorners.topLeft.x} cy={frontFocusCorners.topLeft.y} r="8" />
+                <circle cx={frontFocusCorners.topRight.x} cy={frontFocusCorners.topRight.y} r="8" />
+                <circle cx={frontFocusCorners.bottomLeft.x} cy={frontFocusCorners.bottomLeft.y} r="8" />
+                <circle cx={frontFocusCorners.bottomRight.x} cy={frontFocusCorners.bottomRight.y} r="8" />
+              </g>
+            ) : null}
           </svg>
         </div>
       </div>
@@ -220,14 +412,14 @@ export default function MuscleMapSvg({
           role="img"
           aria-label="Back body map"
         >
-          <svg className="muscle-map" viewBox={BACK_VIEWBOX} aria-hidden="true">
+          <svg className="muscle-map" viewBox={backViewBox} aria-hidden="true">
             <image
               href={BACK_SVG_URL}
               x="0"
               y="0"
               width="731"
               height="1135"
-              className="muscle-image"
+              className="muscle-image muscle-image-base"
               preserveAspectRatio="xMidYMid meet"
             />
             <g className="muscle-region" data-group="Back" transform={BACK_MUSCLES_TRANSFORM}>
@@ -252,6 +444,14 @@ export default function MuscleMapSvg({
             <g className="muscle-region" data-group="Legs" transform={LEGS_BACK_TRANSFORM}>
               <path d={LEGS_BACK_PATH} />
             </g>
+            {showFocusCornerPoints && backFocusCorners ? (
+              <g className="focus-corner-points">
+                <circle cx={backFocusCorners.topLeft.x} cy={backFocusCorners.topLeft.y} r="8" />
+                <circle cx={backFocusCorners.topRight.x} cy={backFocusCorners.topRight.y} r="8" />
+                <circle cx={backFocusCorners.bottomLeft.x} cy={backFocusCorners.bottomLeft.y} r="8" />
+                <circle cx={backFocusCorners.bottomRight.x} cy={backFocusCorners.bottomRight.y} r="8" />
+              </g>
+            ) : null}
           </svg>
         </div>
       </div>

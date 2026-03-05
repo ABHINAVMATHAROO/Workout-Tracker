@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState, type CSSProperties } from 'react'
 
 type SelectDayCardProps = {
   weekDates: Date[]
@@ -24,7 +24,11 @@ export default function SelectDayCard({
   const [viewMode, setViewMode] = useState<'week' | 'month'>('week')
   const [displayedMonth, setDisplayedMonth] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1))
   const [monthTitleDateIso, setMonthTitleDateIso] = useState<string | null>(null)
-  const dragStartY = useRef<number | null>(null)
+  const calendarDragPointerId = useRef<number | null>(null)
+  const calendarDragStartY = useRef<number | null>(null)
+  const calendarDragDeltaY = useRef(0)
+  const [calendarDragOffsetY, setCalendarDragOffsetY] = useState(0)
+  const [isCalendarDragging, setIsCalendarDragging] = useState(false)
   const monthScrollLockUntil = useRef(0)
   const monthSwipeStartY = useRef<number | null>(null)
   const monthSwipePointerId = useRef<number | null>(null)
@@ -118,18 +122,34 @@ export default function SelectDayCard({
   const handleBarPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
     event.currentTarget.setPointerCapture(event.pointerId)
     event.preventDefault()
-    dragStartY.current = event.clientY
+    calendarDragPointerId.current = event.pointerId
+    calendarDragStartY.current = event.clientY
+    calendarDragDeltaY.current = 0
+    setCalendarDragOffsetY(0)
+    setIsCalendarDragging(true)
+  }
+
+  const handleBarPointerMove = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (calendarDragPointerId.current !== event.pointerId || calendarDragStartY.current === null) return
+    const deltaY = event.clientY - calendarDragStartY.current
+    calendarDragDeltaY.current = deltaY
+    const maxOffset = 120
+    setCalendarDragOffsetY(Math.max(-maxOffset, Math.min(maxOffset, deltaY)))
   }
 
   const handleBarPointerUp = (event: React.PointerEvent<HTMLButtonElement>) => {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId)
     }
-    if (dragStartY.current === null) {
+    if (calendarDragPointerId.current !== event.pointerId || calendarDragStartY.current === null) {
       return
     }
-    const deltaY = event.clientY - dragStartY.current
-    dragStartY.current = null
+    const deltaY = calendarDragDeltaY.current
+    calendarDragPointerId.current = null
+    calendarDragStartY.current = null
+    calendarDragDeltaY.current = 0
+    setIsCalendarDragging(false)
+    setCalendarDragOffsetY(0)
 
     if (deltaY > 24) {
       openMonthView()
@@ -141,10 +161,12 @@ export default function SelectDayCard({
       return
     }
 
-    if (viewMode === 'week') {
-      openMonthView()
-    } else {
-      openWeekView()
+    if (Math.abs(deltaY) < 10) {
+      if (viewMode === 'week') {
+        openMonthView()
+      } else {
+        openWeekView()
+      }
     }
   }
 
@@ -201,7 +223,10 @@ export default function SelectDayCard({
   }
 
   return (
-    <section className="card week-card">
+    <section
+      className={`card week-card ${isCalendarDragging ? 'is-dragging' : ''}`}
+      style={{ ['--calendar-shell-drag-offset' as string]: `${calendarDragOffsetY}px` } as CSSProperties}
+    >
       <div className="section-head section-head-inline">
         <div className="section-title">
           {viewMode === 'month' ? (
@@ -333,9 +358,14 @@ export default function SelectDayCard({
         className={`calendar-handle ${viewMode === 'month' ? 'is-open' : ''}`}
         aria-label={viewMode === 'month' ? 'Show week view' : 'Show month view'}
         onPointerDown={handleBarPointerDown}
+        onPointerMove={handleBarPointerMove}
         onPointerUp={handleBarPointerUp}
         onPointerCancel={() => {
-          dragStartY.current = null
+          calendarDragPointerId.current = null
+          calendarDragStartY.current = null
+          calendarDragDeltaY.current = 0
+          setIsCalendarDragging(false)
+          setCalendarDragOffsetY(0)
         }}
       >
         <span className="calendar-handle-bar" />

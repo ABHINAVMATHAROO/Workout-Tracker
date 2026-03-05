@@ -165,6 +165,7 @@ export default function App() {
 
   const [goalDays, setGoalDays] = useState(4)
   const [appMode, setAppMode] = useState<'log' | 'train' | 'coach'>('log')
+  const [isTrainFocusMode, setIsTrainFocusMode] = useState(false)
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading')
   const [user, setUser] = useState<User | null>(null)
@@ -270,6 +271,12 @@ export default function App() {
 
   const historyMax = 7
 
+
+  useEffect(() => {
+    if (appMode !== 'train') {
+      setIsTrainFocusMode(false)
+    }
+  }, [appMode])
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (nextUser) => {
@@ -470,26 +477,28 @@ export default function App() {
   return (
     <>
     <div className="app">
-      <header className="hero">
-        <div>
-          <p className="eyebrow">
-            {user?.displayName ? `Hi, ${user.displayName}` : 'Weekly focus'}
-          </p>
-          <h1 className="brand">
-            <img
-              className="brand-mark"
-              src={`${import.meta.env.BASE_URL}cadax.svg`}
-              alt=""
-            />
-            CADAX
-          </h1>
-          <p className="subhead">{formatRange(weekStart, addDays(weekStart, 6))}</p>
-        </div>
-        <StreakCard
-          currentWorkoutStreak={currentWorkoutStreak}
-          bestWorkoutStreak={bestWorkoutDisplay}
-        />
-      </header>
+      {!(appMode === 'train' && isTrainFocusMode) ? (
+        <header className="hero">
+          <div>
+            <p className="eyebrow">
+              {user?.displayName ? `Hi, ${user.displayName}` : 'Weekly focus'}
+            </p>
+            <h1 className="brand">
+              <img
+                className="brand-mark"
+                src={`${import.meta.env.BASE_URL}cadax.svg`}
+                alt=""
+              />
+              CADAX
+            </h1>
+            <p className="subhead">{formatRange(weekStart, addDays(weekStart, 6))}</p>
+          </div>
+          <StreakCard
+            currentWorkoutStreak={currentWorkoutStreak}
+            bestWorkoutStreak={bestWorkoutDisplay}
+          />
+        </header>
+      ) : null}
 
       {appMode === 'log' ? (
         <LogModeView
@@ -537,7 +546,11 @@ export default function App() {
             </section>
           }
         >
-          <TrainModeView userId={user?.uid ?? null} userName={user?.displayName ?? null} />
+          <TrainModeView
+            userId={user?.uid ?? null}
+            userName={user?.displayName ?? null}
+            onFocusModeChange={setIsTrainFocusMode}
+          />
         </Suspense>
       ) : (
         <Suspense

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { GeneratedTrainWorkout, LoadType, LoadUnit, PlanExerciseItem, RepsPreset } from '../types'
 
 type TrainPlanCardProps = {
@@ -7,6 +8,7 @@ type TrainPlanCardProps = {
   alternativeOptions: PlanExerciseItem[]
   warmupOptions: string[]
   stretchOptions: string[]
+  onActiveExerciseChange?: (activatedRegion: string[] | null) => void
   onChangeSet: (
     exerciseIndex: number,
     setIndex: number,
@@ -61,6 +63,7 @@ export default function TrainPlanCard({
   alternativeOptions,
   warmupOptions,
   stretchOptions,
+  onActiveExerciseChange,
   onChangeSet,
   onAddSet,
   onRemoveSet,
@@ -77,7 +80,27 @@ export default function TrainPlanCard({
     setExpandedExerciseIndex(null)
     setExpandedAuxSection(null)
     setRemoveExerciseIndex(null)
+    onActiveExerciseChange?.(null)
   }, [workout?.muscleGroup, workout?.intensity])
+
+  useEffect(() => {
+    if (!workout || expandedExerciseIndex === null) return
+    const exercise = workout.plan.mainExercises[expandedExerciseIndex]
+    onActiveExerciseChange?.(exercise?.activatedRegion ?? null)
+  }, [onActiveExerciseChange, expandedExerciseIndex, workout])
+
+  const handleExerciseToggle = (exerciseIndex: number) => {
+    setExpandedExerciseIndex((prev) => {
+      const next = prev === exerciseIndex ? null : exerciseIndex
+      if (!workout || next === null) {
+        onActiveExerciseChange?.(null)
+        return next
+      }
+      const exercise = workout.plan.mainExercises[next]
+      onActiveExerciseChange?.(exercise?.activatedRegion ?? null)
+      return next
+    })
+  }
 
   const saveLabel =
     saveState === 'saving'
@@ -90,15 +113,12 @@ export default function TrainPlanCard({
 
   return (
     <section className="card">
-      <div className="section-head section-head-inline">
-        <div className="section-title">
-          <h2 className="section-title-nowrap">Workout Plan</h2>
-        </div>
+      {saveLabel ? (
         <div className="chip-grid train-plan-actions">
-          {saveLabel ? <span className="pill pill-week">{saveLabel}</span> : null}
+          <span className="pill pill-week">{saveLabel}</span>
           {workout ? <span className="pill pill-done">{workout.plan.mainExercises.length} exercises</span> : null}
         </div>
-      </div>
+      ) : null}
 
       {!workout ? (
         <p className="muted">Choose muscle group and intensity, then generate your train plan.</p>
@@ -165,7 +185,7 @@ export default function TrainPlanCard({
                     <button
                       type="button"
                       className="train-accordion-head"
-                      onClick={() => setExpandedExerciseIndex((prev) => (prev === exerciseIndex ? null : exerciseIndex))}
+                      onClick={() => handleExerciseToggle(exerciseIndex)}
                       aria-expanded={isExpanded}
                     >
                       <span className="train-accordion-title">{exercise.exercise}</span>
@@ -290,14 +310,14 @@ export default function TrainPlanCard({
                               </div>
                             )
                           })}
-                        <div className="train-set-add-row">
-                          <span className="train-set-add-label">Add</span>
                           <button
                             type="button"
-                            className="train-set-add"
+                            className="train-set-add-row"
                             onClick={() => onAddSet(exerciseIndex)}
-                              aria-label="Add set"
-                            >
+                            aria-label="Add set"
+                          >
+                            <span className="train-set-add-label">Add</span>
+                            <span className="train-set-add" aria-hidden="true">
                               <svg
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -314,8 +334,8 @@ export default function TrainPlanCard({
                                   d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                                 />
                               </svg>
-                            </button>
-                          </div>
+                            </span>
+                          </button>
                         </div>
                       </div>
                     ) : null}
@@ -396,38 +416,41 @@ export default function TrainPlanCard({
         </>
       )}
 
-      {removeExerciseIndex !== null && workout ? (
-        <div className="dialog-backdrop" role="presentation" onClick={() => setRemoveExerciseIndex(null)}>
-          <div
-            className="dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="remove-exercise-dialog-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <h3 id="remove-exercise-dialog-title">Remove exercise?</h3>
-            <p className="muted">
-              Are you sure you want to remove{' '}
-              <strong>{workout.plan.mainExercises[removeExerciseIndex]?.exercise ?? 'this exercise'}</strong>?
-            </p>
-            <div className="dialog-actions">
-              <button type="button" className="ghost" onClick={() => setRemoveExerciseIndex(null)}>
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="train-danger-btn"
-                onClick={() => {
-                  onRemoveExercise(removeExerciseIndex)
-                  setRemoveExerciseIndex(null)
-                }}
+      {removeExerciseIndex !== null && workout && typeof document !== 'undefined'
+        ? createPortal(
+            <div className="dialog-backdrop" role="presentation" onClick={() => setRemoveExerciseIndex(null)}>
+              <div
+                className="dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="remove-exercise-dialog-title"
+                onClick={(event) => event.stopPropagation()}
               >
-                Remove
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+                <h3 id="remove-exercise-dialog-title">Remove exercise?</h3>
+                <p className="muted">
+                  Are you sure you want to remove{' '}
+                  <strong>{workout.plan.mainExercises[removeExerciseIndex]?.exercise ?? 'this exercise'}</strong>?
+                </p>
+                <div className="dialog-actions">
+                  <button type="button" className="ghost" onClick={() => setRemoveExerciseIndex(null)}>
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="train-danger-btn"
+                    onClick={() => {
+                      onRemoveExercise(removeExerciseIndex)
+                      setRemoveExerciseIndex(null)
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>,
+            document.body
+          )
+        : null}
     </section>
   )
 }

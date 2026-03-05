@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import TrainPlanCard from './components/TrainPlanCard'
 import TrainMuscleSelectCard from './components/TrainMuscleSelectCard'
+import TrainFocusStage from './components/TrainFocusStage'
+import TrainPlanDrawer, { getDefaultDrawerHeight } from './components/TrainPlanDrawer'
 import { generateWorkout } from './generateWorkout'
 import { fromCustomRoutineToWorkout, fromPresetToCustomRoutine } from './routineMapper'
 import { getCustomRoutine, getUserLoadUnit, saveCustomRoutine } from './trainRoutineStore'
@@ -9,6 +10,31 @@ import type { CustomTrainRoutine, GeneratedTrainWorkout, Intensity, LoadUnit, Mu
 type TrainModeViewProps = {
   userId: string | null
   userName: string | null
+  onFocusModeChange?: (isActive: boolean) => void
+}
+
+const FOCUS_VIEW_RULES: Record<MuscleGroup, { allowed: Array<'front' | 'back'>; defaultView: 'front' | 'back' }> = {
+  Chest: { allowed: ['front'], defaultView: 'front' },
+  Back: { allowed: ['back'], defaultView: 'back' },
+  Biceps: { allowed: ['front', 'back'], defaultView: 'front' },
+  Triceps: { allowed: ['front', 'back'], defaultView: 'front' },
+  Shoulder: { allowed: ['front', 'back'], defaultView: 'back' },
+  Forearms: { allowed: ['front', 'back'], defaultView: 'front' },
+  Core: { allowed: ['front'], defaultView: 'front' },
+  Legs: { allowed: ['front', 'back'], defaultView: 'front' },
+}
+
+const getFocusEntryView = (group: MuscleGroup, previousView: 'front' | 'back'): 'front' | 'back' => {
+  const rule = FOCUS_VIEW_RULES[group]
+  if (rule.allowed.length === 1) return rule.allowed[0]
+  if (group === 'Shoulder') return 'back'
+  return rule.allowed.includes(previousView) ? previousView : rule.defaultView
+}
+
+const getNextFocusView = (group: MuscleGroup, currentView: 'front' | 'back'): 'front' | 'back' => {
+  const rule = FOCUS_VIEW_RULES[group]
+  if (rule.allowed.length === 1) return rule.allowed[0]
+  return currentView === 'front' ? 'back' : 'front'
 }
 
 const getFirstName = (name: string | null) => {
@@ -17,7 +43,7 @@ const getFirstName = (name: string | null) => {
   return trimmed.split(/\s+/)[0] ?? 'Mine'
 }
 
-export default function TrainModeView({ userId: _userId, userName }: TrainModeViewProps) {
+export default function TrainModeView({ userId: _userId, userName, onFocusModeChange }: TrainModeViewProps) {
   const userId = _userId
   const [muscleGroup, setMuscleGroup] = useState<MuscleGroup>('Chest')
   const [intensity, setIntensity] = useState<Intensity>('Beginner')
@@ -31,8 +57,16 @@ export default function TrainModeView({ userId: _userId, userName }: TrainModeVi
   const [hasPendingSave, setHasPendingSave] = useState(false)
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [trainStatus, setTrainStatus] = useState('Tap a muscle region above to load your training plan.')
+  const [activeExerciseRegions, setActiveExerciseRegions] = useState<string[] | null>(null)
+  const [drawerHeightVh, setDrawerHeightVh] = useState<number>(getDefaultDrawerHeight('Chest'))
+  const [isDrawerUserAdjusted, setIsDrawerUserAdjusted] = useState(false)
   const loadRef = useRef(0)
   const mineLabel = useMemo(() => getFirstName(userName), [userName])
+  const canFlipInFocus = FOCUS_VIEW_RULES[muscleGroup].allowed.length > 1
+
+  useEffect(() => {
+    onFocusModeChange?.(hasSelectedFromMap)
+  }, [hasSelectedFromMap, onFocusModeChange])
 
   const applyPresetWorkout = useCallback((nextMuscleGroup: MuscleGroup, nextIntensity: Intensity) => {
     const nextWorkout = generateWorkout({ muscleGroup: nextMuscleGroup, intensity: nextIntensity })
@@ -295,42 +329,86 @@ export default function TrainModeView({ userId: _userId, userName }: TrainModeVi
   }
 
   const handleSelectMuscleFromMap = (group: MuscleGroup) => {
+    const entryView = getFocusEntryView(group, muscleView)
     setMuscleGroup(group)
+    setMuscleView(entryView)
+    setDrawerHeightVh(getDefaultDrawerHeight(group))
+    setIsDrawerUserAdjusted(false)
     setHasSelectedFromMap(true)
     setIsFocusExpanded(false)
     void applyWorkout(group, intensity)
   }
 
+  const handleBackFromFocus = () => {
+    setHasSelectedFromMap(false)
+    setIsFocusExpanded(true)
+    setActiveExerciseRegions(null)
+    setTrainStatus('Tap a muscle region above to load your training plan.')
+  }
+
+  const handleDrawerHeightChange = (value: number) => {
+    setIsDrawerUserAdjusted(true)
+    setDrawerHeightVh(value)
+  }
+
+  const handleSuggestedDrawerHeight = (value: number) => {
+    if (isDrawerUserAdjusted) return
+    setDrawerHeightVh(value)
+  }
+
   return (
     <>
-      <TrainMuscleSelectCard
-        selectedMuscle={hasSelectedFromMap ? muscleGroup : null}
-        isExpanded={isFocusExpanded}
-        intensity={intensity}
-        hasMineOption={Boolean(customRoutine)}
-        isMineSelected={Boolean(customRoutine) && !isPresetSession}
-        mineLabel={mineLabel}
-        view={muscleView}
-        onSelectMuscle={handleSelectMuscleFromMap}
-        onExpand={() => setIsFocusExpanded(true)}
-        onFlip={() => setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))}
-        onSelectIntensity={handleSelectIntensity}
-        onSelectMine={handleSelectMine}
-      />
+      {!hasSelectedFromMap ? (
+        <TrainMuscleSelectCard
+          selectedMuscle={null}
+          isExpanded={isFocusExpanded}
+          intensity={intensity}
+          hasMineOption={Boolean(customRoutine)}
+          isMineSelected={Boolean(customRoutine) && !isPresetSession}
+          mineLabel={mineLabel}
+          view={muscleView}
+          activeExerciseRegions={activeExerciseRegions}
+          onSelectMuscle={handleSelectMuscleFromMap}
+          onExpand={() => setIsFocusExpanded(true)}
+          onFlip={() => setMuscleView((prev) => (prev === 'front' ? 'back' : 'front'))}
+          onSelectIntensity={handleSelectIntensity}
+          onSelectMine={handleSelectMine}
+        />
+      ) : null}
 
       {hasSelectedFromMap ? (
-        <TrainPlanCard
-          workout={workout}
-          saveState={saveState}
-          alternativeOptions={presetReference.plan.alternatives}
-          warmupOptions={presetReference.plan.warmup}
-          stretchOptions={presetReference.plan.postWorkoutStretch}
-          onChangeSet={handleSetChange}
-          onAddSet={handleAddSet}
-          onRemoveSet={handleRemoveSet}
-          onRemoveExercise={handleRemoveExercise}
-          onReplaceExercise={handleReplaceExercise}
-        />
+        <section className="train-focus-mode">
+          <TrainFocusStage
+            selectedMuscle={muscleGroup}
+            view={muscleView}
+            canFlip={canFlipInFocus}
+            activeExerciseRegions={activeExerciseRegions}
+            onSuggestDrawerHeightVh={handleSuggestedDrawerHeight}
+            onBack={handleBackFromFocus}
+            onFlip={() => setMuscleView((prev) => getNextFocusView(muscleGroup, prev))}
+          />
+          <TrainPlanDrawer
+            drawerHeightVh={drawerHeightVh}
+            onDrawerHeightChange={handleDrawerHeightChange}
+            workout={workout}
+            saveState={saveState}
+            alternativeOptions={presetReference.plan.alternatives}
+            warmupOptions={presetReference.plan.warmup}
+            stretchOptions={presetReference.plan.postWorkoutStretch}
+            intensity={intensity}
+            hasMineOption={Boolean(customRoutine)}
+            isMineSelected={Boolean(customRoutine) && !isPresetSession}
+            mineLabel={mineLabel}
+            onSelectIntensity={handleSelectIntensity}
+            onSelectMine={handleSelectMine}
+            onActiveExerciseChange={setActiveExerciseRegions}
+            onChangeSet={handleSetChange}
+            onAddSet={handleAddSet}
+            onRemoveSet={handleRemoveSet}
+            onRemoveExercise={handleRemoveExercise}
+            onReplaceExercise={handleReplaceExercise}
+          />
+        </section>
       ) : (
         <section className="card">
           <p className="muted">{trainStatus}</p>

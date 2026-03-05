@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import MuscleMapSvg from '../../MuscleMapSvg'
+import { mapActiveRegionsToAreas } from '../muscleAreaMapper'
 import type { Intensity, MuscleGroup } from '../types'
 
 type TrainMuscleSelectCardProps = {
@@ -10,6 +11,7 @@ type TrainMuscleSelectCardProps = {
   isMineSelected: boolean
   mineLabel: string
   view: 'front' | 'back'
+  activeExerciseRegions?: string[] | null
   onSelectMuscle: (group: MuscleGroup) => void
   onExpand: () => void
   onFlip: () => void
@@ -28,6 +30,7 @@ export default function TrainMuscleSelectCard({
   isMineSelected,
   mineLabel,
   view,
+  activeExerciseRegions,
   onSelectMuscle,
   onExpand,
   onFlip,
@@ -51,6 +54,7 @@ export default function TrainMuscleSelectCard({
   const selectedSet = selectedMuscle ? new Set<string>([selectedMuscle]) : new Set<string>()
   const isCollapsed = selectedMuscle !== null && !isExpanded
   const title = selectedMuscle ? `${selectedMuscle} day` : 'Select workout'
+  const chestAreaHighlights = mapActiveRegionsToAreas(selectedMuscle, activeExerciseRegions)
 
   return (
     <section
@@ -79,15 +83,18 @@ export default function TrainMuscleSelectCard({
         </div>
       </div>
 
-      {!isCollapsed ? (
+      <div className={`train-focus-map-shell ${isCollapsed ? 'is-collapsed' : ''}`}>
         <MuscleMapSvg
           workedGroups={new Set<string>()}
           selectedGroups={selectedSet}
           view={view}
+          focusGroup={selectedMuscle}
+          activeAreas={selectedMuscle === 'Chest' ? chestAreaHighlights : []}
+          compactFocus={isCollapsed}
           onToggle={(group) => onSelectMuscle(group as MuscleGroup)}
           onFlip={onFlip}
         />
-      ) : null}
+      </div>
 
       <div
         className="train-intensity-block"

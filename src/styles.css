@@ -1688,6 +1688,20 @@ p {
   fill: rgb(var(--cadax-green-light) / 0.34);
 }
 
+.muscle-svg-frame.has-area-focus .muscle-region.worked-selected rect,
+.muscle-svg-frame.has-area-focus .muscle-region.worked-selected path,
+.muscle-svg-frame.has-area-focus .muscle-region.worked-selected polygon,
+.muscle-svg-frame.has-area-focus .muscle-region.worked-selected ellipse,
+.muscle-svg-frame.has-area-focus .muscle-region.worked-selected circle,
+.muscle-svg-frame.has-area-focus .muscle-region.is-focused rect,
+.muscle-svg-frame.has-area-focus .muscle-region.is-focused path,
+.muscle-svg-frame.has-area-focus .muscle-region.is-focused polygon,
+.muscle-svg-frame.has-area-focus .muscle-region.is-focused ellipse,
+.muscle-svg-frame.has-area-focus .muscle-region.is-focused circle {
+  fill: transparent;
+  stroke: transparent;
+}
+
 .muscle-area-region {
   pointer-events: none;
 }
@@ -1706,9 +1720,15 @@ p {
 }
 
 .muscle-area-region.is-active path {
-  fill: rgb(var(--cadax-orange) / 0.52);
-  stroke: transparent;
+  fill: rgb(var(--cadax-orange) / 0.18);
+  stroke: rgb(var(--cadax-orange) / 0.95);
+  stroke-width: 1.05;
+  stroke-linejoin: round;
+  stroke-linecap: round;
   opacity: 1;
+  filter:
+    drop-shadow(0 -0.6px 0 rgb(255 255 255 / 0.45))
+    drop-shadow(0 0.8px 1.2px rgb(0 0 0 / 0.22));
 }
 
 .muscle-count {

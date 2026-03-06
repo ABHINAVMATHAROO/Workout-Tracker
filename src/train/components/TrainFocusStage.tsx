@@ -23,15 +23,9 @@ export default function TrainFocusStage({
   onBack,
   onFlip,
 }: TrainFocusStageProps) {
-  const mappedAreas = mapActiveRegionsToAreas(selectedMuscle, activeExerciseRegions)
-  const regionText = (activeExerciseRegions ?? []).join(' ').trim().toLowerCase()
-  const hasCalfRegion = regionText.includes('calf')
-  const activeAreas = hasCalfRegion
-    ? Array.from(new Set([...mappedAreas, 'legs-calves']))
-    : mappedAreas
+  const activeAreas = mapActiveRegionsToAreas(selectedMuscle, activeExerciseRegions)
   const focusCorners = getFocusCorners(selectedMuscle, view)
   const maxXSpan = getFocusMaxXSpan(selectedMuscle, view)
-  const framingSource = focusCorners ? 'CORNERS' : 'FALLBACK'
   const labelRef = useRef<HTMLDivElement>(null)
   const [labelBottomPx, setLabelBottomPx] = useState(64)
   const [bottomAnchorPx, setBottomAnchorPx] = useState(520)
@@ -150,17 +144,6 @@ export default function TrainFocusStage({
         </button>
       ) : null}
       <div ref={labelRef} className="train-focus-muscle-label">{selectedMuscle} day</div>
-      <div className="train-focus-framing-debug" aria-live="polite">
-        Framing: {framingSource} ({view})
-        {' | '}
-        Regions: {activeExerciseRegions?.join(', ') || 'none'}
-        {' | '}
-        Areas: {activeAreas.join(', ') || 'none'}
-        {' | '}
-        hasCalf: {String(hasCalfRegion)}
-        {' | '}
-        mappedLen: {mappedAreas.length}
-      </div>
       <div className="train-focus-map-wrap">
         <MuscleMapSvg
           workedGroups={new Set<string>()}

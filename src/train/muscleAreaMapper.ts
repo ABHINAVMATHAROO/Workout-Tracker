@@ -56,7 +56,7 @@ export const mapActiveRegionsToAreas = (
       if (normalized.includes('adductor') || normalized.includes('inner thigh')) areas.push('legs-adductor')
       if (normalized.includes('glute')) areas.push('legs-glutes')
       if (normalized.includes('hamstring')) areas.push('legs-hamstring')
-      if (normalized.includes('calf')) areas.push('legs-calves')
+      if (normalized.includes('calf') || normalized.includes('calves')) areas.push('legs-calves')
       return areas
     }
 

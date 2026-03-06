@@ -22,6 +22,7 @@ type TrainPlanCardProps = {
 
 const REPS_OPTIONS: RepsPreset[] = ['5', '6-8', '8-10', '10-12', '12-15', '15-20', 'Max']
 const TOUCH_LONG_PRESS_MS = 420
+const TOUCH_CLICK_SUPPRESS_MS = 700
 
 const buildLoadOptions = (unit: LoadUnit, loadType: LoadType) => {
   const max = unit === 'lb'
@@ -86,6 +87,7 @@ export default function TrainPlanCard({
   const touchTimerRef = useRef<number | null>(null)
   const longPressTriggeredRef = useRef(false)
   const suppressNextClickRef = useRef(false)
+  const lastTouchInteractionAtRef = useRef(0)
 
   const clearTouchTimer = () => {
     if (touchTimerRef.current !== null) {
@@ -124,6 +126,7 @@ export default function TrainPlanCard({
   }
 
   const handleExerciseTouchStart = (exerciseIndex: number) => {
+    lastTouchInteractionAtRef.current = Date.now()
     clearTouchTimer()
     longPressTriggeredRef.current = false
     touchTimerRef.current = window.setTimeout(() => {
@@ -134,6 +137,7 @@ export default function TrainPlanCard({
   }
 
   const handleExerciseTouchEnd = (exerciseIndex: number) => {
+    lastTouchInteractionAtRef.current = Date.now()
     const wasLongPress = longPressTriggeredRef.current
     clearTouchTimer()
     longPressTriggeredRef.current = false
@@ -227,6 +231,9 @@ export default function TrainPlanCard({
                       type="button"
                       className="train-accordion-head"
                       onClick={() => {
+                        if (Date.now() - lastTouchInteractionAtRef.current < TOUCH_CLICK_SUPPRESS_MS) {
+                          return
+                        }
                         if (suppressNextClickRef.current) {
                           suppressNextClickRef.current = false
                           return

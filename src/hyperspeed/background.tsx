@@ -909,6 +909,9 @@ function resizeRendererToDisplaySize(
   const canvas = renderer.domElement;
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
+  if (width <= 0 || height <= 0) {
+    return false;
+  }
   const needResize = canvas.width !== width || canvas.height !== height;
   if (needResize) {
     setSize(width, height, false);
@@ -937,6 +940,7 @@ class App {
   speedUpTarget: number;
   speedUp: number;
   timeOffset: number;
+  boundOnWindowResize: () => void;
 
   constructor(container: HTMLElement, options: HyperspeedOptions) {
     this.options = options;
@@ -952,7 +956,7 @@ class App {
       antialias: false,
       alpha: true
     });
-    this.renderer.setSize(container.offsetWidth, container.offsetHeight, false);
+    this.renderer.setSize(Math.max(1, container.offsetWidth), Math.max(1, container.offsetHeight), false);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
     this.composer = new EffectComposer(this.renderer);
@@ -1010,13 +1014,15 @@ class App {
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onContextMenu = this.onContextMenu.bind(this);
+    this.boundOnWindowResize = this.onWindowResize.bind(this);
 
-    window.addEventListener('resize', this.onWindowResize.bind(this));
+    window.addEventListener('resize', this.boundOnWindowResize);
   }
 
   onWindowResize() {
     const width = this.container.offsetWidth;
     const height = this.container.offsetHeight;
+    if (width <= 0 || height <= 0) return;
 
     this.renderer.setSize(width, height);
     this.camera.aspect = width / height;
@@ -1183,7 +1189,7 @@ class App {
       this.scene.clear();
     }
 
-    window.removeEventListener('resize', this.onWindowResize.bind(this));
+    window.removeEventListener('resize', this.boundOnWindowResize);
     if (this.container) {
       this.container.removeEventListener('mousedown', this.onMouseDown);
       this.container.removeEventListener('mouseup', this.onMouseUp);
@@ -1202,8 +1208,12 @@ class App {
 
   tick() {
     if (this.disposed || !this) return;
+    const canvas = this.renderer.domElement;
+    if (canvas.clientWidth <= 0 || canvas.clientHeight <= 0) {
+      requestAnimationFrame(this.tick);
+      return;
+    }
     if (resizeRendererToDisplaySize(this.renderer, this.setSize)) {
-      const canvas = this.renderer.domElement;
       this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
       this.camera.updateProjectionMatrix();
     }

@@ -2,16 +2,19 @@
   "muscle": "Deltoids",
   "regions": [
     {
-      "area": "Anterior (Front)",
-      "focus": "Front of the shoulder; used in pressing."
+      "area": "Front",
+      "anatomical_name": "Anterior Deltoid",
+      "focus": "Front of the shoulder; primarily used in pressing and front-reaching movements."
     },
     {
-      "area": "Lateral (Side)",
-      "focus": "The 'cap' of the shoulder; creates width."
+      "area": "Medial",
+      "anatomical_name": "Lateral Deltoid",
+      "focus": "The 'cap' of the shoulder; creates width and provides the rounded look."
     },
     {
-      "area": "Posterior (Rear)",
-      "focus": "Back of the shoulder; crucial for posture and 3D look."
+      "area": "Rear",
+      "anatomical_name": "Posterior Deltoid",
+      "focus": "Back of the shoulder; crucial for posture and 3D detail."
     }
   ],
   "warmup": [
@@ -29,8 +32,8 @@
           "reps": "10-12",
           "sets": 3,
           "activated_region": [
-            "Front Delts",
-            "Side Delts"
+            "Front",
+            "Medial"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -44,7 +47,7 @@
           "reps": "12-15",
           "sets": 3,
           "activated_region": [
-            "Side Delts"
+            "Medial"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -58,7 +61,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Front Delts"
+            "Front"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -72,7 +75,7 @@
           "reps": "15",
           "sets": 3,
           "activated_region": [
-            "Rear Delts"
+            "Rear"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -88,7 +91,8 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "Front & Side Delts"
+            "Front",
+            "Medial"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -102,7 +106,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Upper Traps"
+            "Medial"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -121,8 +125,8 @@
           "reps": "8-10",
           "sets": 4,
           "activated_region": [
-            "Front Delts",
-            "Side Delts"
+            "Front",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -136,7 +140,7 @@
           "reps": "12-15",
           "sets": 3,
           "activated_region": [
-            "Side Delts"
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -150,8 +154,7 @@
           "reps": "15",
           "sets": 4,
           "activated_region": [
-            "Rear Delts",
-            "Traps"
+            "Rear"
           ],
           "default_load": {
             "type": "machine",
@@ -165,8 +168,7 @@
           "reps": "10-12",
           "sets": 3,
           "activated_region": [
-            "Side Delts",
-            "Traps"
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -182,7 +184,7 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "Front Delts"
+            "Front"
           ],
           "default_load": {
             "type": "machine",
@@ -196,7 +198,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Front Delts"
+            "Front"
           ],
           "default_load": {
             "type": "machine",
@@ -215,9 +217,8 @@
           "reps": "5-6",
           "sets": 5,
           "activated_region": [
-            "Front Delts",
-            "Side Delts",
-            "Core"
+            "Front",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -231,7 +232,9 @@
           "reps": "8-10",
           "sets": 4,
           "activated_region": [
-            "All Three Heads"
+            "Front",
+            "Medial",
+            "Rear"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -245,8 +248,7 @@
           "reps": "10",
           "sets": 4,
           "activated_region": [
-            "Rear Delts",
-            "Mid Back"
+            "Rear"
           ],
           "default_load": {
             "type": "machine",
@@ -260,8 +262,8 @@
           "reps": "Max",
           "sets": 3,
           "activated_region": [
-            "Front Delts",
-            "Side Delts"
+            "Front",
+            "Medial"
           ],
           "default_load": {
             "type": "bodyweight",
@@ -277,7 +279,7 @@
           "reps": "15",
           "sets": 3,
           "activated_region": [
-            "Rear Delts"
+            "Rear"
           ],
           "default_load": {
             "type": "machine",
@@ -291,8 +293,7 @@
           "reps": "8",
           "sets": 3,
           "activated_region": [
-            "Rear Delts",
-            "Traps"
+            "Rear"
           ],
           "default_load": {
             "type": "machine",

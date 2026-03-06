@@ -44,8 +44,7 @@
           "reps": "10-12",
           "sets": 3,
           "activated_region": [
-            "Brachialis",
-            "Forearms"
+            "Brachialis"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -59,7 +58,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Short Head (Peak)"
+            "Short Head"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -103,8 +102,9 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Biceps",
-            "Forearms"
+            "Long Head",
+            "Short Head",
+            "Brachialis"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -123,7 +123,9 @@
           "reps": "8-10",
           "sets": 4,
           "activated_region": [
-            "All Regions"
+            "Long Head",
+            "Short Head",
+            "Brachialis"
           ],
           "default_load": {
             "type": "machine",
@@ -166,7 +168,7 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "Long Head (Stretch focus)"
+            "Long Head"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -182,7 +184,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Short Head (Peak)"
+            "Short Head"
           ],
           "default_load": {
             "type": "machine",
@@ -196,8 +198,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Brachialis",
-            "Forearms"
+            "Brachialis"
           ],
           "default_load": {
             "type": "machine",
@@ -216,7 +217,9 @@
           "reps": "6-8",
           "sets": 3,
           "activated_region": [
-            "All Regions"
+            "Long Head",
+            "Short Head",
+            "Brachialis"
           ],
           "default_load": {
             "type": "machine",
@@ -244,7 +247,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Long Head (Deep Stretch)"
+            "Long Head"
           ],
           "default_load": {
             "type": "machine",
@@ -258,7 +261,9 @@
           "reps": "8-12 (to failure)",
           "sets": 4,
           "activated_region": [
-            "All Regions"
+            "Long Head",
+            "Short Head",
+            "Brachialis"
           ],
           "default_load": {
             "type": "machine",
@@ -288,7 +293,9 @@
           "reps": "21 (7/7/7)",
           "sets": 3,
           "activated_region": [
-            "All Regions"
+            "Long Head",
+            "Short Head",
+            "Brachialis"
           ],
           "default_load": {
             "type": "machine",

@@ -1696,6 +1696,8 @@ p {
   fill: transparent;
   stroke: transparent;
   stroke-width: 1.25;
+  fill-rule: evenodd;
+  clip-rule: evenodd;
   transition: fill 180ms ease, stroke 180ms ease, opacity 180ms ease;
 }
 

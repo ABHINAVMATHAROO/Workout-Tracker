@@ -2,20 +2,29 @@
   "muscle": "Legs (Lower Body)",
   "regions": [
     {
-      "area": "Quadriceps",
-      "focus": "Front of the thigh; knee extension."
+      "area": "Quads",
+      "anatomical_name": "Quadriceps Femoris",
+      "focus": "Front of the thigh; responsible for knee extension."
     },
     {
-      "area": "Hamstrings",
-      "focus": "Back of the thigh; leg curls and hip hinges."
+      "area": "Adductor",
+      "anatomical_name": "Adductor Group",
+      "focus": "Inner thigh; responsible for bringing the legs together and stabilizing the hip."
     },
     {
       "area": "Glutes",
-      "focus": "The buttocks; hip extension and power."
+      "anatomical_name": "Gluteus Maximus/Medius/Minimus",
+      "focus": "The buttocks; primary movers for hip extension and power."
+    },
+    {
+      "area": "Hamstring",
+      "anatomical_name": "Biceps Femoris / Semitendinosus",
+      "focus": "Back of the thigh; responsible for leg curls and hip hinges."
     },
     {
       "area": "Calves",
-      "focus": "Lower leg; ankle plantar flexion."
+      "anatomical_name": "Gastrocnemius / Soleus",
+      "focus": "Lower leg; responsible for ankle plantar flexion."
     }
   ],
   "warmup": [
@@ -33,8 +42,9 @@
           "reps": "10-12",
           "sets": 3,
           "activated_region": [
-            "Quadriceps",
-            "Glutes"
+            "Quads",
+            "Glutes",
+            "Adductor"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -48,7 +58,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Hamstrings",
+            "Hamstring",
             "Glutes"
           ],
           "default_load": {
@@ -63,8 +73,9 @@
           "reps": "10 per side",
           "sets": 3,
           "activated_region": [
-            "Quadriceps",
-            "Glutes"
+            "Quads",
+            "Glutes",
+            "Adductor"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -94,7 +105,7 @@
           "reps": "10 per side",
           "sets": 3,
           "activated_region": [
-            "Quadriceps",
+            "Quads",
             "Glutes"
           ],
           "default_load": {
@@ -110,7 +121,7 @@
           "sets": 3,
           "activated_region": [
             "Glutes",
-            "Hamstrings"
+            "Hamstring"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -129,8 +140,9 @@
           "reps": "8-10",
           "sets": 4,
           "activated_region": [
-            "All Regions",
-            "Quads focus"
+            "Quads",
+            "Glutes",
+            "Adductor"
           ],
           "default_load": {
             "type": "machine",
@@ -144,8 +156,9 @@
           "reps": "10-12",
           "sets": 3,
           "activated_region": [
-            "Quadriceps",
-            "Glutes"
+            "Quads",
+            "Glutes",
+            "Adductor"
           ],
           "default_load": {
             "type": "machine",
@@ -159,7 +172,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Hamstrings"
+            "Hamstring"
           ],
           "default_load": {
             "type": "machine",
@@ -173,7 +186,7 @@
           "reps": "15",
           "sets": 4,
           "activated_region": [
-            "Calves (Soleus)"
+            "Calves"
           ],
           "default_load": {
             "type": "machine",
@@ -190,7 +203,8 @@
           "sets": 3,
           "activated_region": [
             "Quads",
-            "Glutes"
+            "Glutes",
+            "Adductor"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -204,7 +218,7 @@
           "reps": "15",
           "sets": 3,
           "activated_region": [
-            "Quadriceps"
+            "Quads"
           ],
           "default_load": {
             "type": "machine",
@@ -224,8 +238,7 @@
           "sets": 5,
           "activated_region": [
             "Glutes",
-            "Hamstrings",
-            "Lower Back"
+            "Hamstring"
           ],
           "default_load": {
             "type": "machine",
@@ -239,8 +252,8 @@
           "reps": "6-8",
           "sets": 4,
           "activated_region": [
-            "Quadriceps",
-            "Core"
+            "Quads",
+            "Adductor"
           ],
           "default_load": {
             "type": "machine",
@@ -268,7 +281,8 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "Quadriceps"
+            "Quads",
+            "Calves"
           ],
           "default_load": {
             "type": "machine",
@@ -284,7 +298,7 @@
           "reps": "Max",
           "sets": 3,
           "activated_region": [
-            "Hamstrings"
+            "Hamstring"
           ],
           "default_load": {
             "type": "machine",
@@ -312,6 +326,7 @@
   "post_workout_stretch": [
     "Quad Stretch (Standing): 30s per side",
     "Hamstring Stretch (Touch toes): 45s",
-    "Pigeon Pose: 45s per side (Glute release)"
+    "Pigeon Pose: 45s per side (Glute release)",
+    "Butterfly Stretch: 45s (Adductor release)"
   ]
 }

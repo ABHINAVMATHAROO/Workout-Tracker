@@ -2,15 +2,18 @@
   "muscle": "Triceps Brachii",
   "regions": [
     {
-      "area": "Long Head",
+      "area": "Inner",
+      "anatomical_name": "Long Head",
       "focus": "Inner back of the arm; biggest part of the tricep."
     },
     {
-      "area": "Lateral Head",
+      "area": "Outer",
+      "anatomical_name": "Lateral Head",
       "focus": "Outer side of the arm; creates the 'horseshoe' look."
     },
     {
-      "area": "Medial Head",
+      "area": "Medial",
+      "anatomical_name": "Medial",
       "focus": "Lower tricep near the elbow; provides stability."
     }
   ],
@@ -29,7 +32,7 @@
           "reps": "10-12",
           "sets": 3,
           "activated_region": [
-            "Long Head"
+            "Inner"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -43,7 +46,7 @@
           "reps": "12-15",
           "sets": 3,
           "activated_region": [
-            "Lateral Head"
+            "Outer"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -57,7 +60,8 @@
           "reps": "Max",
           "sets": 3,
           "activated_region": [
-            "Lateral & Medial Head"
+            "Outer",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -71,7 +75,9 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "All Heads"
+            "Outer",
+            "Inner",
+            "Medial"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -87,7 +93,7 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "Long Head"
+            "Inner"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -101,7 +107,9 @@
           "reps": "Max",
           "sets": 3,
           "activated_region": [
-            "All Heads"
+            "Outer",
+            "Inner",
+            "Medial"
           ],
           "default_load": {
             "type": "bodyweight",
@@ -120,7 +128,7 @@
           "reps": "12-15",
           "sets": 4,
           "activated_region": [
-            "Lateral Head"
+            "Outer"
           ],
           "default_load": {
             "type": "machine",
@@ -134,7 +142,9 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "All Heads"
+            "Outer",
+            "Inner",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -148,7 +158,9 @@
           "reps": "8-10",
           "sets": 3,
           "activated_region": [
-            "All Heads"
+            "Outer",
+            "Inner",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -162,7 +174,8 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Medial & Lateral Head"
+            "Outer",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -178,7 +191,9 @@
           "reps": "Max",
           "sets": 3,
           "activated_region": [
-            "All Heads"
+            "Outer",
+            "Inner",
+            "Medial"
           ],
           "default_load": {
             "type": "bodyweight",
@@ -192,7 +207,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Long Head"
+            "Inner"
           ],
           "default_load": {
             "type": "machine",
@@ -211,7 +226,9 @@
           "reps": "6-8",
           "sets": 4,
           "activated_region": [
-            "All Heads"
+            "Outer",
+            "Inner",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -225,7 +242,8 @@
           "reps": "8-10",
           "sets": 3,
           "activated_region": [
-            "Lateral & Medial Head"
+            "Outer",
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -239,7 +257,7 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "Long Head (Deep Stretch)"
+            "Inner"
           ],
           "default_load": {
             "type": "machine",
@@ -253,7 +271,7 @@
           "reps": "15",
           "sets": 4,
           "activated_region": [
-            "Lateral Head"
+            "Outer"
           ],
           "default_load": {
             "type": "machine",
@@ -269,7 +287,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Medial Head"
+            "Medial"
           ],
           "default_load": {
             "type": "machine",
@@ -283,7 +301,7 @@
           "reps": "15",
           "sets": 3,
           "activated_region": [
-            "Lateral Head"
+            "Outer"
           ],
           "default_load": {
             "type": "machine",

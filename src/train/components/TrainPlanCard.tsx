@@ -56,6 +56,13 @@ const summaryLoadLabel = (load: number, unit: LoadUnit, loadType: LoadType) => {
 }
 
 const normalizeLabel = (value: string) => value.trim().toLowerCase()
+const resolveActivatedRegions = (exercise: PlanExerciseItem | undefined): string[] | null => {
+  if (!exercise) return null
+  const explicit = (exercise.activatedRegion ?? []).map((value) => value.trim()).filter(Boolean)
+  if (explicit.length > 0) return explicit
+  if (exercise.exercise.toLowerCase().includes('calf')) return ['Calves']
+  return null
+}
 
 export default function TrainPlanCard({
   workout,
@@ -84,22 +91,16 @@ export default function TrainPlanCard({
   }, [workout?.muscleGroup, workout?.intensity])
 
   useEffect(() => {
-    if (!workout || expandedExerciseIndex === null) return
+    if (!workout || expandedExerciseIndex === null) {
+      onActiveExerciseChange?.(null)
+      return
+    }
     const exercise = workout.plan.mainExercises[expandedExerciseIndex]
-    onActiveExerciseChange?.(exercise?.activatedRegion ?? null)
+    onActiveExerciseChange?.(resolveActivatedRegions(exercise))
   }, [onActiveExerciseChange, expandedExerciseIndex, workout])
 
   const handleExerciseToggle = (exerciseIndex: number) => {
-    setExpandedExerciseIndex((prev) => {
-      const next = prev === exerciseIndex ? null : exerciseIndex
-      if (!workout || next === null) {
-        onActiveExerciseChange?.(null)
-        return next
-      }
-      const exercise = workout.plan.mainExercises[next]
-      onActiveExerciseChange?.(exercise?.activatedRegion ?? null)
-      return next
-    })
+    setExpandedExerciseIndex((prev) => (prev === exerciseIndex ? null : exerciseIndex))
   }
 
   const saveLabel =

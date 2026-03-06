@@ -2,19 +2,24 @@
   "muscle": "Back (Posterior Chain)",
   "regions": [
     {
-      "area": "Lats (Latissimus Dorsi)",
-      "anatomical_name": "Lats",
-      "focus": "Vertical pulling; creates back width."
+      "area": "Lats",
+      "anatomical_name": "Latissimus Dorsi",
+      "focus": "Vertical pulling; creates back width and the V-taper."
     },
     {
-      "area": "Upper & Mid Back",
-      "anatomical_name": "Trapezius and Rhomboids",
-      "focus": "Horizontal pulling/shrugging; creates back thickness."
+      "area": "Traps",
+      "anatomical_name": "Trapezius",
+      "focus": "Shrugging and scapular elevation/depression; creates upper back thickness."
     },
     {
-      "area": "Lower Back",
-      "anatomical_name": "Erector Spinae",
-      "focus": "Stability and extension; supports the spine."
+      "area": "Rhomboids",
+      "anatomical_name": "Rhomboid Major/Minor",
+      "focus": "Horizontal pulling and scapular retraction; adds 3D detail to the mid-back."
+    },
+    {
+      "area": "Erector",
+      "anatomical_name": "Erector Spinae Group",
+      "focus": "Spinal stability and extension; the powerhouse of the lower back."
     }
   ],
   "warmup": [
@@ -33,7 +38,7 @@
           "sets": 3,
           "activated_region": [
             "Lats",
-            "Mid Back"
+            "Rhomboids"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -47,7 +52,7 @@
           "reps": "12-15",
           "sets": 3,
           "activated_region": [
-            "Upper Back (Traps)"
+            "Traps"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -61,7 +66,7 @@
           "reps": "12-15",
           "sets": 3,
           "activated_region": [
-            "Lower Back"
+            "Erector"
           ],
           "default_load": {
             "type": "bodyweight",
@@ -75,7 +80,7 @@
           "reps": "Max",
           "sets": 3,
           "activated_region": [
-            "Mid Back",
+            "Rhomboids",
             "Lats"
           ],
           "default_load": {
@@ -92,8 +97,8 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Upper Back",
-            "Rear Delts"
+            "Traps",
+            "Rhomboids"
           ],
           "default_load": {
             "type": "dumbbell",
@@ -107,8 +112,7 @@
           "reps": "10 per side",
           "sets": 3,
           "activated_region": [
-            "Lower Back",
-            "Core"
+            "Erector"
           ],
           "default_load": {
             "type": "bodyweight",
@@ -141,7 +145,6 @@
           "reps": "10",
           "sets": 3,
           "activated_region": [
-            "Mid Back",
             "Rhomboids"
           ],
           "default_load": {
@@ -157,7 +160,7 @@
           "sets": 3,
           "activated_region": [
             "Lats",
-            "Upper Back"
+            "Traps"
           ],
           "default_load": {
             "type": "bodyweight",
@@ -171,8 +174,8 @@
           "reps": "15",
           "sets": 3,
           "activated_region": [
-            "Upper Back",
-            "Rear Delts"
+            "Traps",
+            "Rhomboids"
           ],
           "default_load": {
             "type": "machine",
@@ -202,7 +205,7 @@
           "reps": "12",
           "sets": 3,
           "activated_region": [
-            "Lower Back"
+            "Erector"
           ],
           "default_load": {
             "type": "machine",
@@ -221,8 +224,10 @@
           "reps": "5",
           "sets": 5,
           "activated_region": [
-            "Lower Back",
-            "All Regions"
+            "Erector",
+            "Lats",
+            "Traps",
+            "Rhomboids"
           ],
           "default_load": {
             "type": "machine",
@@ -236,7 +241,7 @@
           "reps": "8",
           "sets": 4,
           "activated_region": [
-            "Mid Back",
+            "Rhomboids",
             "Lats"
           ],
           "default_load": {
@@ -252,7 +257,7 @@
           "sets": 3,
           "activated_region": [
             "Lats",
-            "Upper Back"
+            "Traps"
           ],
           "default_load": {
             "type": "machine",
@@ -266,8 +271,8 @@
           "reps": "8-10",
           "sets": 4,
           "activated_region": [
-            "Mid Back",
-            "Upper Back"
+            "Rhomboids",
+            "Traps"
           ],
           "default_load": {
             "type": "machine",
@@ -283,8 +288,8 @@
           "reps": "5-8",
           "sets": 3,
           "activated_region": [
-            "Upper Back",
-            "Lower Back"
+            "Traps",
+            "Erector"
           ],
           "default_load": {
             "type": "machine",
@@ -298,8 +303,8 @@
           "reps": "10 per side",
           "sets": 3,
           "activated_region": [
-            "Lower Lats",
-            "Mid Back"
+            "Lats",
+            "Rhomboids"
           ],
           "default_load": {
             "type": "machine",

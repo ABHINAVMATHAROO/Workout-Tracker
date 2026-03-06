@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { GeneratedTrainWorkout, LoadType, LoadUnit, PlanExerciseItem, RepsPreset } from '../types'
 
@@ -21,6 +21,7 @@ type TrainPlanCardProps = {
 }
 
 const REPS_OPTIONS: RepsPreset[] = ['5', '6-8', '8-10', '10-12', '12-15', '15-20', 'Max']
+const TOUCH_LONG_PRESS_MS = 420
 
 const buildLoadOptions = (unit: LoadUnit, loadType: LoadType) => {
   const max = unit === 'lb'
@@ -79,28 +80,67 @@ export default function TrainPlanCard({
 }: TrainPlanCardProps) {
   const [showAlternatives, setShowAlternatives] = useState(false)
   const [expandedExerciseIndex, setExpandedExerciseIndex] = useState<number | null>(null)
+  const [highlightedExerciseIndex, setHighlightedExerciseIndex] = useState<number | null>(null)
   const [expandedAuxSection, setExpandedAuxSection] = useState<'warmup' | 'stretch' | null>(null)
   const [removeExerciseIndex, setRemoveExerciseIndex] = useState<number | null>(null)
+  const touchTimerRef = useRef<number | null>(null)
+  const longPressTriggeredRef = useRef(false)
+  const suppressNextClickRef = useRef(false)
+
+  const clearTouchTimer = () => {
+    if (touchTimerRef.current !== null) {
+      window.clearTimeout(touchTimerRef.current)
+      touchTimerRef.current = null
+    }
+  }
+
+  useEffect(() => {
+    return () => clearTouchTimer()
+  }, [])
 
   useEffect(() => {
     setShowAlternatives(false)
     setExpandedExerciseIndex(null)
+    setHighlightedExerciseIndex(null)
     setExpandedAuxSection(null)
     setRemoveExerciseIndex(null)
     onActiveExerciseChange?.(null)
   }, [workout?.muscleGroup, workout?.intensity])
 
   useEffect(() => {
-    if (!workout || expandedExerciseIndex === null) {
+    const activeExerciseIndex = expandedExerciseIndex ?? highlightedExerciseIndex
+    if (!workout || activeExerciseIndex === null) {
       onActiveExerciseChange?.(null)
       return
     }
-    const exercise = workout.plan.mainExercises[expandedExerciseIndex]
+    const exercise = workout.plan.mainExercises[activeExerciseIndex]
     onActiveExerciseChange?.(resolveActivatedRegions(exercise))
-  }, [onActiveExerciseChange, expandedExerciseIndex, workout])
+  }, [onActiveExerciseChange, expandedExerciseIndex, highlightedExerciseIndex, workout])
 
   const handleExerciseToggle = (exerciseIndex: number) => {
-    setExpandedExerciseIndex((prev) => (prev === exerciseIndex ? null : exerciseIndex))
+    const isExpanded = expandedExerciseIndex === exerciseIndex
+    setExpandedExerciseIndex(isExpanded ? null : exerciseIndex)
+    if (!isExpanded) setHighlightedExerciseIndex(exerciseIndex)
+  }
+
+  const handleExerciseTouchStart = (exerciseIndex: number) => {
+    clearTouchTimer()
+    longPressTriggeredRef.current = false
+    touchTimerRef.current = window.setTimeout(() => {
+      longPressTriggeredRef.current = true
+      suppressNextClickRef.current = true
+      handleExerciseToggle(exerciseIndex)
+    }, TOUCH_LONG_PRESS_MS)
+  }
+
+  const handleExerciseTouchEnd = (exerciseIndex: number) => {
+    const wasLongPress = longPressTriggeredRef.current
+    clearTouchTimer()
+    longPressTriggeredRef.current = false
+    suppressNextClickRef.current = true
+    if (!wasLongPress) {
+      setHighlightedExerciseIndex(exerciseIndex)
+    }
   }
 
   const saveLabel =
@@ -186,7 +226,17 @@ export default function TrainPlanCard({
                     <button
                       type="button"
                       className="train-accordion-head"
-                      onClick={() => handleExerciseToggle(exerciseIndex)}
+                      onClick={() => {
+                        if (suppressNextClickRef.current) {
+                          suppressNextClickRef.current = false
+                          return
+                        }
+                        handleExerciseToggle(exerciseIndex)
+                      }}
+                      onTouchStart={() => handleExerciseTouchStart(exerciseIndex)}
+                      onTouchEnd={() => handleExerciseTouchEnd(exerciseIndex)}
+                      onTouchCancel={() => handleExerciseTouchEnd(exerciseIndex)}
+                      onTouchMove={clearTouchTimer}
                       aria-expanded={isExpanded}
                     >
                       <span className="train-accordion-title">{exercise.exercise}</span>

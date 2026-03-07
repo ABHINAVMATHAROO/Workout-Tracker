@@ -328,6 +328,30 @@ p {
   );
 }
 
+/* Monthly workout time blurb (LogModeView) */
+.monthly-workout-blurb {
+  animation: rise 600ms ease both;
+}
+
+.monthly-workout-blurb p {
+  color: #ffffff;
+  font-size: clamp(1.55rem, 3.3vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  max-width: 24ch;
+}
+
+.monthly-workout-percent {
+  color: rgb(var(--cadax-orange));
+  font-weight: 700;
+}
+
+.monthly-workout-month {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 .label {
   font-size: 0.85rem;
   text-transform: uppercase;

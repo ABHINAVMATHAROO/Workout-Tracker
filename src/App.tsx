@@ -188,6 +188,24 @@ export default function App() {
     )
   }, [weekStart, workouts])
 
+  const currentMonthLabel = useMemo(
+    () => new Intl.DateTimeFormat('en-US', { month: 'long' }).format(today),
+    [today]
+  )
+
+  const monthlyWorkoutTimePercentLabel = useMemo(() => {
+    const year = today.getFullYear()
+    const month = today.getMonth()
+    const monthStartIso = formatLocalIsoDate(new Date(year, month, 1))
+    const monthEndIso = formatLocalIsoDate(new Date(year, month + 1, 0))
+    const workoutsThisMonth = workouts.filter(
+      (workout) => workout.date >= monthStartIso && workout.date <= monthEndIso
+    ).length
+    const daysInMonth = new Date(year, month + 1, 0).getDate()
+    const percent = (workoutsThisMonth / (24 * daysInMonth)) * 100
+    return `${percent.toFixed(2)}%`
+  }, [today, workouts])
+
   const workoutsThisWeekSet = useMemo(() => {
     const set = new Set<string>()
     workoutsThisWeek.forEach((workout) => set.add(workout.date))
@@ -537,6 +555,8 @@ export default function App() {
           onEditGoal={() => setShowGoalDialog(true)}
           historyWeeks={historyWeeks}
           historyMax={historyMax}
+          currentMonthLabel={currentMonthLabel}
+          monthlyWorkoutTimePercentLabel={monthlyWorkoutTimePercentLabel}
         />
       ) : appMode === 'train' ? (
         <Suspense

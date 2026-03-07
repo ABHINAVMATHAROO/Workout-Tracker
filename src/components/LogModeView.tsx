@@ -4,6 +4,7 @@ import LogWorkoutCard from './LogWorkoutCard'
 import WorkoutDetailsCard from './WorkoutDetailsCard'
 import ThisWeekCard from './ThisWeekCard'
 import WorkoutHistoryCard from './WorkoutHistoryCard'
+import MonthlyWorkoutTimeBlurb from './MonthlyWorkoutTimeBlurb'
 
 type HistoryWeek = {
   start: Date
@@ -37,6 +38,8 @@ type LogModeViewProps = {
   onEditGoal: () => void
   historyWeeks: HistoryWeek[]
   historyMax: number
+  currentMonthLabel: string
+  monthlyWorkoutTimePercentLabel: string
 }
 
 export default function LogModeView({
@@ -65,9 +68,16 @@ export default function LogModeView({
   onEditGoal,
   historyWeeks,
   historyMax,
+  currentMonthLabel,
+  monthlyWorkoutTimePercentLabel,
 }: LogModeViewProps) {
   return (
     <>
+      <MonthlyWorkoutTimeBlurb
+        monthLabel={currentMonthLabel}
+        percentLabel={monthlyWorkoutTimePercentLabel}
+      />
+
       <SelectDayCard
         weekDates={weekDates}
         today={today}

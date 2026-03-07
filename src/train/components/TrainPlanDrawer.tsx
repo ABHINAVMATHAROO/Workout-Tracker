@@ -1,5 +1,6 @@
 import { useRef, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
 import TrainPlanCard from './TrainPlanCard'
+import IntensityStepSlider from './IntensityStepSlider'
 import type { GeneratedTrainWorkout, Intensity, LoadUnit, MuscleGroup, PlanExerciseItem, RepsPreset } from '../types'
 
 type TrainPlanDrawerProps = {
@@ -28,8 +29,6 @@ type TrainPlanDrawerProps = {
   onReplaceExercise: (exerciseIndex: number, exercise: PlanExerciseItem) => void
 }
 
-const INTENSITY_VALUES: Intensity[] = ['Beginner', 'Intermediate', 'Pro']
-const MINE_OPTION_VALUE = '__mine__'
 export const DEFAULT_DRAWER_HEIGHT_BY_MUSCLE: Record<MuscleGroup, number> = {
   Chest: 70,
   Back: 64,
@@ -110,31 +109,14 @@ export default function TrainPlanDrawer({
       <div className="train-plan-drawer-header">
         <h2 className="train-plan-drawer-title">Workout Plan</h2>
         <div className="train-plan-drawer-header-actions">
-          <label className="train-plan-drawer-intensity">
-            <span>Intensity</span>
-            <select
-              value={isMineSelected && hasMineOption ? MINE_OPTION_VALUE : intensity}
-              onChange={(event) => {
-                if (event.target.value === MINE_OPTION_VALUE) {
-                  onSelectMine()
-                  return
-                }
-                onSelectIntensity(event.target.value as Intensity)
-              }}
-              aria-label="Select intensity"
-            >
-              {INTENSITY_VALUES.map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-              {hasMineOption ? (
-                <option value={MINE_OPTION_VALUE}>
-                  {mineLabel}
-                </option>
-              ) : null}
-            </select>
-          </label>
+          <IntensityStepSlider
+            intensity={intensity}
+            hasMineOption={hasMineOption}
+            isMineSelected={isMineSelected}
+            mineLabel={mineLabel}
+            onSelectIntensity={onSelectIntensity}
+            onSelectMine={onSelectMine}
+          />
         </div>
       </div>
 

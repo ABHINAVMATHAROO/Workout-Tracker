@@ -125,6 +125,11 @@ export default function TrainPlanCard({
     if (!isExpanded) setHighlightedExerciseIndex(exerciseIndex)
   }
 
+  const openExerciseEditor = (exerciseIndex: number) => {
+    setExpandedExerciseIndex(exerciseIndex)
+    setHighlightedExerciseIndex(exerciseIndex)
+  }
+
   const handleExerciseTouchStart = (exerciseIndex: number) => {
     lastTouchInteractionAtRef.current = Date.now()
     clearTouchTimer()
@@ -132,7 +137,7 @@ export default function TrainPlanCard({
     touchTimerRef.current = window.setTimeout(() => {
       longPressTriggeredRef.current = true
       suppressNextClickRef.current = true
-      handleExerciseToggle(exerciseIndex)
+      openExerciseEditor(exerciseIndex)
     }, TOUCH_LONG_PRESS_MS)
   }
 
@@ -143,6 +148,11 @@ export default function TrainPlanCard({
     longPressTriggeredRef.current = false
     suppressNextClickRef.current = true
     if (!wasLongPress) {
+      if (expandedExerciseIndex === exerciseIndex) {
+        setExpandedExerciseIndex(null)
+        setHighlightedExerciseIndex(null)
+        return
+      }
       setHighlightedExerciseIndex(exerciseIndex)
     }
   }

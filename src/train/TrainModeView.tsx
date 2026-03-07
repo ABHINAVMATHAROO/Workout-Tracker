@@ -311,9 +311,12 @@ export default function TrainModeView({ userId: _userId, userName, onFocusModeCh
 
   const handleSelectIntensity = (nextIntensity: Intensity) => {
     setIntensity(nextIntensity)
+    if (customRoutine && !isPresetSession) {
+      // Leaving "Mine" should immediately reflect in selector state on both train and focus headers.
+      setIsPresetSession(true)
+    }
     if (!hasSelectedFromMap) return
     if (customRoutine && !isPresetSession) {
-      setIsPresetSession(true)
       applyPresetWorkout(muscleGroup, nextIntensity)
       setTrainStatus('Showing preset plan.')
       return
